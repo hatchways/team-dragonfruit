@@ -3,7 +3,7 @@ const User = require('../models/user');
 
 const auth = async (req, res, next) => {
 	try {
-		const token = req.header('Authorization').replace('Bearer', '');
+		const token = req.header('Cookie');
 		const deciphered = jwt.verify(token, 'thisismysecret'); //!!!** Don't forget to move secret to .env **!!!//
 		const user = await User.findOne({
 			_id: deciphered._id,
@@ -17,7 +17,6 @@ const auth = async (req, res, next) => {
 		req.user = user;
 		res.cookie('accessToken', token, { httpOnly: true }); //!!!** maxAge? **!!!//
 		next();
-		
 	} catch {
 		res.status(401).send({ error: 'Please authenticate!' });
 	}
