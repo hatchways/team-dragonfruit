@@ -51,8 +51,7 @@ const userSchema = new mongoose.Schema({
 
 /////// A method for generating a token ///////
 userSchema.methods.generateAuthToken = async function () {
-	const token = jwt.sign({ _id: this._id.toString() }, process.env.JWT_SECRET); 
-	this.tokens = this.tokens.concat({ token });
+	const token = jwt.sign({ _id: this._id.toString() }, process.env.JWT_SECRET);
 	await this.save();
 	return token;
 };
@@ -68,17 +67,21 @@ userSchema.pre('save', async function (next) {
 /////// A method for verifying a user's password ///////
 userSchema.statics.findUserByCredentials = async (email, password) => {
 	const user = await User.findOne({ email });
-
 	if (!user) {
 		throw new Error('Unable to login!');
 	}
-
 	const passwordMatched = await bcrypt.compare(password, user.password);
 	if (!passwordMatched) {
 		throw new Error('Unable to login!');
 	}
-
 	return user;
+};
+
+/////// A method for hiding private data /////////
+userSchema.methods.toJSON = function () {
+	const userObject = this.toObject();
+	delete userObject.password;
+	return userObject;
 };
 
 const User = mongoose.model('User', userSchema);
