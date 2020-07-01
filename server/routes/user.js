@@ -26,6 +26,7 @@ router.post('/users/login', async (req, res) => {
 		const user = await User.findUserByCredentials(email, password);
 		const token = await user.generateAuthToken();
 		res.cookie('accessToken', token, { httpOnly: true });
+		console.log('from route handler try part', user);
 		res.send(user);
 	} catch (e) {
 		res.status(400).send(e);
@@ -34,7 +35,6 @@ router.post('/users/login', async (req, res) => {
 
 /////// User log out route handler ///////
 router.post('/users/logout', auth, async (req, res) => {
-
 	res.cookie('accessToken', '', { maxAge: 0, httpOnly: true });
 	res.send('logged out successfully.');
 });

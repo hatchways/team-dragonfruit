@@ -15,10 +15,10 @@ const auth = async (req, res, next) => {
 		}
 
 		req.user = user;
-		res.cookie('accessToken', token, { httpOnly: true }); //!!!** maxAge? **!!!//
+		res.cookie('accessToken', token, { httpOnly: true }); //!!!** Is maxAge required? **!!!//
 		next();
 	} catch {
-		res.status(401).send({ error: 'Please authenticate!' });
+		res.status(401).send({ error: 'Please authenticate.' });
 	}
 };
 
