@@ -58,6 +58,7 @@ const userSchema = new mongoose.Schema({
 	],
 });
 
+
 /////// A method for generating a token ///////
 userSchema.methods.generateAuthToken = async function () {
 	const token = jwt.sign({ _id: this._id.toString() }, 'thisismysecret'); //!!!** Don't forget to move secret to .env **!!!//
@@ -66,6 +67,7 @@ userSchema.methods.generateAuthToken = async function () {
 	return token;
 };
 
+
 /////// A middleware for hashing the plain text password before saving ///////
 userSchema.pre('save', async function (next) {
 	if (this.isModified('password')) {
@@ -73,6 +75,7 @@ userSchema.pre('save', async function (next) {
 	}
 	next();
 });
+
 
 /////// A method for verifying a user's password ///////
 userSchema.statics.findUserByCredentials = async (email, password) => {
