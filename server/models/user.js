@@ -47,26 +47,15 @@ const userSchema = new mongoose.Schema({
 		type: Number,
 		default: 3,
 	},
-	tokens: [
-		//**!!! Array of tokens for different sessions/devices or only one token? !!!**//
-		{
-			token: {
-				type: String,
-				required: true,
-			},
-		},
-	],
 });
-
 
 /////// A method for generating a token ///////
 userSchema.methods.generateAuthToken = async function () {
-	const token = jwt.sign({ _id: this._id.toString() }, 'thisismysecret'); //!!!** Don't forget to move secret to .env **!!!//
+	const token = jwt.sign({ _id: this._id.toString() }, process.env.JWT_SECRET); 
 	this.tokens = this.tokens.concat({ token });
 	await this.save();
 	return token;
 };
-
 
 /////// A middleware for hashing the plain text password before saving ///////
 userSchema.pre('save', async function (next) {
@@ -75,7 +64,6 @@ userSchema.pre('save', async function (next) {
 	}
 	next();
 });
-
 
 /////// A method for verifying a user's password ///////
 userSchema.statics.findUserByCredentials = async (email, password) => {

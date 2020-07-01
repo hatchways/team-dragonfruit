@@ -4,10 +4,9 @@ const User = require('../models/user');
 const auth = async (req, res, next) => {
 	try {
 		const token = req.header('Cookie');
-		const deciphered = jwt.verify(token, 'thisismysecret'); //!!!** Don't forget to move secret to .env **!!!//
+		const deciphered = jwt.verify(token, process.env.JWT_SECRET);
 		const user = await User.findOne({
 			_id: deciphered._id,
-			'tokens.token': token,
 		});
 
 		if (!user) {

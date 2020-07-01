@@ -1,7 +1,7 @@
 const express = require('express');
 const User = require('../models/user');
 
-const router = express.Router;
+const router = express.Router();
 
 /////// User sign up route handler ///////
 router.post('/users/signup', async (req, res) => {
