@@ -6,7 +6,7 @@ const auth = require('../middleware/auth');
 const router = express.Router();
 
 /////// User sign up route handler ///////
-router.post('/users/signup', async (req, res) => {
+router.post('/api/users/signup', async (req, res) => {
 	const user = new User(req.body);
 
 	try {
@@ -20,13 +20,12 @@ router.post('/users/signup', async (req, res) => {
 });
 
 /////// User login route handler ///////
-router.post('/users/login', async (req, res) => {
+router.post('/api/users/login', async (req, res) => {
 	const { email, password } = req.body;
 	try {
 		const user = await User.findUserByCredentials(email, password);
 		const token = await user.generateAuthToken();
 		res.cookie('accessToken', token, { httpOnly: true });
-		console.log('from route handler try part', user);
 		res.send(user);
 	} catch (e) {
 		res.status(400).send(e);
@@ -34,7 +33,7 @@ router.post('/users/login', async (req, res) => {
 });
 
 /////// User log out route handler ///////
-router.post('/users/logout', auth, async (req, res) => {
+router.post('/api/users/logout', auth, async (req, res) => {
 	res.cookie('accessToken', '', { maxAge: 0, httpOnly: true });
 	res.send('logged out successfully.');
 });
