@@ -60,12 +60,12 @@ const userSchema = new mongoose.Schema({
 
 
 /////// A method for generating a token ///////
-userSchema.methods.generateAuthToken = async function () {
-	const token = jwt.sign({ _id: this._id.toString() }, 'thisismysecret'); //!!!** Don't forget to move secret to .env **!!!//
-	this.tokens = this.tokens.concat({ token });
-	await this.save();
-	return token;
-};
+// userSchema.methods.generateAuthToken = async function () {
+// 	const token = jwt.sign({ _id: this._id.toString() }, 'thisismysecret'); //!!!** Don't forget to move secret to .env **!!!//
+// 	this.tokens = this.tokens.concat({ token });
+// 	await this.save();
+// 	return token;
+// };
 
 
 /////// A middleware for hashing the plain text password before saving ///////
