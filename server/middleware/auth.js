@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
-const User = require('../models/user');
+const User = require("../models/user");
 
 const auth = async (req, res, next) => {
 	try {
@@ -15,10 +15,13 @@ const auth = async (req, res, next) => {
 		}
 
 		req.user = user;
-		res.cookie('accessToken', token, { httpOnly: true }); //!!!** Is maxAge required? **!!!//
+		res.cookie("accessToken", token, {
+			httpOnly: true,
+			maxAge: 30 * 24 * 60 * 60 * 1000,
+		});
 		next();
 	} catch {
-		res.status(401).send({ error: 'Please authenticate.' });
+		res.status(401).send({ error: "Please authenticate." });
 	}
 };
 

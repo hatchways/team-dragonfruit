@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const validator = require('validator');
+const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const validator = require("validator");
 
 const userSchema = new mongoose.Schema({
 	name: {
@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
 		lowercase: true,
 		validate(value) {
 			if (!validator.isEmail(value)) {
-				throw new Error('Please provide a valid email address.');
+				throw new Error("Please provide a valid email address.");
 			}
 		},
 	},
@@ -57,8 +57,8 @@ userSchema.methods.generateAuthToken = async function () {
 };
 
 /////// A middleware for hashing the plain text password before saving ///////
-userSchema.pre('save', async function (next) {
-	if (this.isModified('password')) {
+userSchema.pre("save", async function (next) {
+	if (this.isModified("password")) {
 		this.password = await bcrypt.hash(this.password, 8);
 	}
 	next();
@@ -68,11 +68,11 @@ userSchema.pre('save', async function (next) {
 userSchema.statics.findUserByCredentials = async (email, password) => {
 	const user = await User.findOne({ email });
 	if (!user) {
-		throw new Error('Unable to login!');
+		throw new Error("Unable to login!");
 	}
 	const passwordMatched = await bcrypt.compare(password, user.password);
 	if (!passwordMatched) {
-		throw new Error('Unable to login!');
+		throw new Error("Unable to login!");
 	}
 	return user;
 };
@@ -84,6 +84,6 @@ userSchema.methods.toJSON = function () {
 	return userObject;
 };
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
