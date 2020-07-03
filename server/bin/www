@@ -9,6 +9,7 @@ require("dotenv").config();
 
 var app = require("../app");
 var http = require("http");
+require('../db/mongoose');
 
 /**
  * Get port from environment and store in Express.
