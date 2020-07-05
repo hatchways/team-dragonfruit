@@ -14,6 +14,8 @@ import BadgeMenu from "../utilities/BadgeMenu";
 import JohnDoe from "../../src/images/avatar1.png";
 import logo from "../../src/images/logo.png";
 
+///////***** To Be Implemented: DIFFERENT CONTENT BASED ON BEING LOGGED IN OR NOT *******/////////
+
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,

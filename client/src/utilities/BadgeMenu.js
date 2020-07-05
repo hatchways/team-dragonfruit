@@ -25,10 +25,6 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: "large",
 		//??** How can I center the bell icon properly??**//
 	},
-	badgeDot: {
-		//??** How can I change the color of the dot??**//
-		backgroundColor: theme.palette.turquoise.main,
-	},
 }));
 
 export default function BadgeOverlap() {
