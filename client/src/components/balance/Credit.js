@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
@@ -17,10 +17,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Credit = () => {
+const Credit = ({ user }) => {
   const classes = useStyles();
 
-  const [credit, setCredit] = useState(3);
   return (
     <div>
       <Typography variant='h3' className={classes.title}>
@@ -32,7 +31,7 @@ const Credit = () => {
         align='center'
         color='primary'
       >
-        {credit} {credit === 1 ? ' credit' : ' credits'}
+        {user.balance} {user.balance === 1 ? ' credit' : ' credits'}
       </Typography>
     </div>
   );

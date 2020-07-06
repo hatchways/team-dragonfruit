@@ -20,7 +20,7 @@ function App() {
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
         <Route exact path='/' component={LandingPage} />
-        <Route path='/balance' component={Balance} />
+        <PrivateRoute path='/balance' component={Balance} />
 
         <UnPrivateRoute path='/signup' component={Signup} />
         <UnPrivateRoute path='/login' component={Login} />

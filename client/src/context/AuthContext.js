@@ -1,6 +1,6 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState } from 'react';
 
-import Loading from '../components/Loading';
+// import Loading from '../components/Loading';
 
 export const AuthContext = createContext();
 

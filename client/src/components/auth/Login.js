@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
   input: {
     width: '300px',
-    marginBottom: '1rem',
+    marginBottom: '0.5rem',
   },
   loginBtn: {
     padding: '0.7rem 4rem',
@@ -64,12 +64,19 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: '0.7rem',
     textDecoration: 'none',
   },
+  error: {
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: '0.5rem',
+    marginTop: '0.5rem',
+  },
 }));
 
 const Login = () => {
   const classes = useStyles();
 
   const authContext = useContext(AuthContext);
+  // console.log(authContext);
 
   const [userData, setUserData] = useState({
     name: 'default',
@@ -137,7 +144,9 @@ const Login = () => {
             onChange={handleChange}
           />
           {errorData.email && (
-            <Message open={true} type='error' message={errorData.email} />
+            <Typography variant='subtitle1' className={classes.error}>
+              {errorData.email}
+            </Typography>
           )}
 
           <FormControl variant='outlined' className={classes.input}>
@@ -160,10 +169,12 @@ const Login = () => {
               }
               labelWidth={70}
             />
+            {errorData.password && (
+              <Typography variant='subtitle1' className={classes.error}>
+                {errorData.password}
+              </Typography>
+            )}
           </FormControl>
-          {errorData.password && (
-            <Message open={true} type='error' message={errorData.password} />
-          )}
 
           <Button
             type='submit'

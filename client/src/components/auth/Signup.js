@@ -52,6 +52,11 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: '0.7rem',
     textDecoration: 'none',
   },
+  error: {
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: '0.5rem',
+  },
 }));
 
 const Signup = () => {
@@ -89,7 +94,6 @@ const Signup = () => {
     if (Object.keys(errorData).length === 0 && isSubmitting) {
       AuthService.signup(userData).then((data) => {
         if (data.errorMsg) {
-          console.log(data.errorMsg);
           setSignupError(data.errorMsg.msg);
         } else {
           authContext.setUser(data);
@@ -125,7 +129,9 @@ const Signup = () => {
             onChange={handleChange}
           />
           {errorData.email && (
-            <Message open={true} type='error' message={errorData.email} />
+            <Typography variant='subtitle1' className={classes.error}>
+              {errorData.email}
+            </Typography>
           )}
 
           <TextField
@@ -143,7 +149,9 @@ const Signup = () => {
             onChange={handleChange}
           />
           {errorData.password && (
-            <Message open={true} type='error' message={errorData.password} />
+            <Typography variant='subtitle1' className={classes.error}>
+              {errorData.password}
+            </Typography>
           )}
 
           <Button
