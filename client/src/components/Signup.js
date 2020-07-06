@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import { AuthContext } from '../../context/AuthContext';
+import { AuthContext } from '../context/AuthContext';
 
-import AuthService from '../../services/AuthService';
+import AuthService from '../services/AuthService';
 
-import Message from '../utils/Message';
+import Message from './Message';
 
 import { Typography, TextField, Box, Paper, Button } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/styles';
 
-import validate from '../../utils/validateForm';
+import validate from '../utils/validateForm';
 
 const useStyles = makeStyles((theme) => ({
   registerContainer: {

@@ -4,10 +4,10 @@ import { Typography, Container, Button } from '@material-ui/core';
 
 import { Remove, Add } from '@material-ui/icons';
 
-import UserService from '../../services/UserService';
-import { UserContext } from '../../context/UserContext';
+import UserService from '../services/UserService';
+import { AuthContext } from '../context/AuthContext';
 
-import Message from '../utils/Message';
+import Message from './Message';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -24,15 +24,10 @@ const useStyles = makeStyles((theme) => ({
     border: '1px solid #dee2e6',
     borderRadius: '20px',
   },
-  iconBtn: {
-    padding: '0px',
-    margin: '0px',
-    width: 'auto',
-  },
   icon: {
-    padding: '0.3rem',
+    padding: '0.4rem',
     background: '#dee2e6',
-    borderRadius: '5px',
+    borderRadius: '7px',
     margin: '0 1rem',
     '&:hover': {
       background: '#6E3ADB',
@@ -45,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     background: 'turquoise',
     textTransform: 'capitalize',
     fontSize: '1rem',
-    margin: '3rem 0',
+    margin: '2rem 0',
     '&:hover': {
       backgroundColor: '#43dd9a',
       color: '#6E3ADB',
@@ -56,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 const Topup = () => {
   const classes = useStyles();
 
-  const { setUser } = useContext(UserContext);
+  const { setUser } = useContext(AuthContext);
 
   const [topupCredit, setTopupCredit] = useState(1);
   const [message, setMessage] = useState(null);
@@ -87,25 +82,14 @@ const Topup = () => {
           Top Up:
         </Typography>
         <Container className={classes.topupContainer}>
-          <Button
-            disableElevation
-            disableRipple
-            className={classes.iconBtn}
+          <Remove
+            className={classes.icon}
             onClick={() => decrease(topupCredit)}
-          >
-            <Remove className={classes.icon} />
-          </Button>
+          />
           <Typography variant='h5' align='center'>
             {topupCredit}
           </Typography>
-          <Button
-            disableElevation
-            disableRipple
-            className={classes.iconBtn}
-            onClick={() => increase(topupCredit)}
-          >
-            <Add className={classes.icon} />
-          </Button>
+          <Add className={classes.icon} onClick={() => increase(topupCredit)} />
         </Container>
 
         <Button

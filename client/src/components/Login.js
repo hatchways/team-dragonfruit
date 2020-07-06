@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import { AuthContext } from '../../context/AuthContext';
+import { AuthContext } from '../context/AuthContext';
 
-import AuthService from '../../services/AuthService';
+import AuthService from '../services/AuthService';
 
-import validate from '../../utils/validateForm';
+import validate from '../utils/validateForm';
 
 import {
   Typography,
@@ -21,7 +21,7 @@ import {
 
 import { makeStyles } from '@material-ui/styles';
 
-import Message from '../utils/Message';
+import Message from './Message';
 
 const useStyles = makeStyles((theme) => ({
   loginContainer: {

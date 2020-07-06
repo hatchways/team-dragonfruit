@@ -2,7 +2,7 @@ import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import Balance from '../components/balance/Balance';
+import Balance from '../components/Balance';
 
 const useStyles = makeStyles((theme) => ({
   balanceContainer: {

@@ -1,7 +1,7 @@
 import React from 'react';
 import WithBackground from '../hocs/withBackground';
 
-import Signup from '../components/auth/Signup';
+import Signup from '../components/Signup';
 
 const SignupPage = () => {
   return (

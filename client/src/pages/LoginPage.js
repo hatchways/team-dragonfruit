@@ -1,7 +1,7 @@
 import React from 'react';
 import WithBackground from '../hocs/withBackground';
 
-import Login from '../components/auth/Login';
+import Login from '../components/Login';
 
 const LoginPage = () => {
   return (

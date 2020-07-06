@@ -13,13 +13,13 @@ export default {
   },
   // get user info
   getUser: () => {
-    return fetch('/api/user/balance')
+    return fetch('/api/users/balance')
       .then((res) => res.json())
       .then((data) => data);
   },
   // topup credit
   topup: (credit) => {
-    return fetch('/api/user/topup', {
+    return fetch('/api/users/topup', {
       method: 'POST',
       body: JSON.stringify({ credit }),
       headers: { 'Content-Type': 'application/json' },

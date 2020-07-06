@@ -4,7 +4,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
+  mainContainer: {
+    width: '400px',
+    maxWidth: '450px',
+  },
   title: {
+    marginTop: '1.5rem',
     marginBottom: '1.5rem',
     fontWeight: '500',
     letterSpacing: '1px',
@@ -12,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   credit: {
     paddingBottom: '1.5rem',
     fontWeight: 'bold',
-    borderBottom: '1px solid #dee2e6',
+    // borderBottom: '1px solid #dee2e6',
     letterSpacing: '1px',
   },
 }));
@@ -21,7 +26,7 @@ const Credit = ({ user }) => {
   const classes = useStyles();
 
   return (
-    <div>
+    <div className='mainContainer'>
       <Typography variant='h3' className={classes.title}>
         Your balance:
       </Typography>
