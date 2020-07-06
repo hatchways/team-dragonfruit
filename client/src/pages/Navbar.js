@@ -15,8 +15,6 @@ import BadgeMenu from "../utilities/BadgeMenu";
 import JohnDoe from "../../src/images/avatar1.png";
 import logo from "../../src/images/logo.png";
 
-///////***** To Be Implemented: DIFFERENT CONTENT BASED ON BEING LOGGED IN OR NOT *******/////////
-
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
@@ -79,7 +77,7 @@ export default function Navbar() {
 						color="primary"
 						className={classes.btn}
 						onClick={() => {
-							history.push("/users/reviews");
+							history.push("/reviews");
 						}}>
 						Reviews
 					</Button>
@@ -88,7 +86,7 @@ export default function Navbar() {
 						color="primary"
 						className={classes.btn}
 						onClick={() => {
-							history.push("/users/balance");
+							history.push("/balance");
 						}}>
 						Balance
 					</Button>
@@ -96,7 +94,7 @@ export default function Navbar() {
 					<Button
 						variant="outlined"
 						className={classes.uploadBtn}
-						onClick={() => history.push("/users/upload")}>
+						onClick={() => history.push("/upload")}>
 						Upload code
 					</Button>
 					<ImageAvatar alt="John Doe" src={JohnDoe} />

@@ -17,12 +17,11 @@ function App() {
 		<MuiThemeProvider theme={theme}>
 			<BrowserRouter>
 				<div>
-					<Navbar />
 					{/* <Route path="/" component={LandingPage} /> */}
-					<Route path="/users/profile" exact component={Profile} />
-					<Route path="/users/reviews" exact component={Reviews} />
-					<Route path="/users/balance" exact component={Balance} />
-					<Route path="/users/upload" exact component={Upload} />
+					<Route path="/profile" exact component={Profile} />
+					<Route path="/reviews" exact component={Reviews} />
+					<Route path="/balance" exact component={Balance} />
+					<Route path="/upload" exact component={Upload} />
 				</div>
 			</BrowserRouter>
 		</MuiThemeProvider>
