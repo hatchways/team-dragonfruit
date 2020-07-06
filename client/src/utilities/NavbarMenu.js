@@ -4,6 +4,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import { makeStyles } from "@material-ui/core/styles";
+import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -21,6 +22,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 	icon: {
 		marginLeft: "10px",
+	},
+	link: {
+		color: "black",
+		"&:hover": {
+			color: theme.palette.primary.main,
+			textDecoration: "none",
+		},
 	},
 }));
 
@@ -54,9 +62,21 @@ export default function SimpleMenu(props) {
 				keepMounted
 				open={Boolean(anchorEl)}
 				onClose={handleClose}>
-				<MenuItem onClick={handleClose}>Dashboard</MenuItem>
-				<MenuItem onClick={handleClose}>My account</MenuItem>
-				<MenuItem onClick={handleClose}>Logout</MenuItem>
+				<MenuItem onClick={handleClose}>
+					<Link href="/users/dashboard" className={classes.link}>
+						Dashboard
+					</Link>
+				</MenuItem>
+				<MenuItem onClick={handleClose}>
+					<Link href="/users/profile" className={classes.link}>
+						My account
+					</Link>
+				</MenuItem>
+				<MenuItem onClick={handleClose}>
+					<Link href="/api/users/logout" className={classes.link}>
+						Logout
+					</Link>
+				</MenuItem>
 			</Menu>
 		</div>
 	);

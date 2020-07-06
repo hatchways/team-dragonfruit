@@ -1,11 +1,12 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import Image from "material-ui-image";
 
-import SimpleMenu from "../utilities/SimpleMenu";
+import Menu from "../utilities/NavbarMenu";
 import ImageAvatar from "../utilities/Avatar";
 import BadgeMenu from "../utilities/BadgeMenu";
 
@@ -64,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar() {
 	const classes = useStyles();
+	const history = useHistory();
 
 	return (
 		<AppBar position="static" className={classes.root}>
@@ -72,18 +74,33 @@ export default function Navbar() {
 			</div>
 			<div className={classes.toolbar}>
 				<Toolbar className={classes.navbar}>
-					<Button variant="contained" color="primary" className={classes.btn}>
+					<Button
+						variant="contained"
+						color="primary"
+						className={classes.btn}
+						onClick={() => {
+							history.push("/users/reviews");
+						}}>
 						Reviews
 					</Button>
-					<Button variant="contained" color="primary" className={classes.btn}>
+					<Button
+						variant="contained"
+						color="primary"
+						className={classes.btn}
+						onClick={() => {
+							history.push("/users/balance");
+						}}>
 						Balance
 					</Button>
 					<BadgeMenu />
-					<Button variant="outlined" className={classes.uploadBtn}>
+					<Button
+						variant="outlined"
+						className={classes.uploadBtn}
+						onClick={() => history.push("/users/upload")}>
 						Upload code
 					</Button>
 					<ImageAvatar alt="John Doe" src={JohnDoe} />
-					<SimpleMenu title="Profile" />
+					<Menu title="Profile" />
 				</Toolbar>
 			</div>
 		</AppBar>
