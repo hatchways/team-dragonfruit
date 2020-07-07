@@ -1,27 +1,24 @@
+import axios from "axios";
 import React from "react";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core/styles";
-
 import {
-	Typography,
 	Button,
 	TextField,
 	Dialog,
-	Input,
 	Select,
 	MenuItem,
 	InputLabel,
 	FormControl,
 } from "@material-ui/core";
-
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import MUIRichTextEditor from "mui-rte";
 
 import CodeEditor from "./CodeEditor";
 
+// Styling the MuiRichTextEditor //
 const defaultTheme = createMuiTheme();
 Object.assign(defaultTheme, {
 	overrides: {
@@ -37,11 +34,11 @@ Object.assign(defaultTheme, {
 				margin: "20px",
 				height: "100px",
 			},
-			container: {},
 		},
 	},
 });
 
+// Styling the Dialog From //
 const useStyles = makeStyles((theme) => ({
 	container: {
 		margin: theme.spacing(3),
@@ -75,15 +72,13 @@ const useStyles = makeStyles((theme) => ({
 			backgroundColor: "#43dd9a",
 			color: "#6E3ADB",
 		},
-		editor: {
-			border: "1px solid grey",
-		},
 	},
 }));
 
 export default function UploadDialog() {
 	const [open, setOpen] = React.useState(false);
 	const [language, setLanguage] = React.useState("");
+	const [title, setTitle] = React.useState("");
 	const classes = useStyles();
 
 	const handleClickOpen = () => {
@@ -94,8 +89,19 @@ export default function UploadDialog() {
 		setOpen(false);
 	};
 
-	const handleChange = (event) => {
+	const handleSubmit = async () => {
+		setOpen(false);
+		const snippet = { language, title, code: "some sample code" };
+		console.log(snippet);
+		await axios.post("/api/users/upload", snippet);
+	};
+
+	const handleChangeLang = (event) => {
 		setLanguage(event.target.value);
+	};
+
+	const handleChangeTitle = (event) => {
+		setTitle(event.target.value);
 	};
 
 	return (
@@ -118,6 +124,7 @@ export default function UploadDialog() {
 						label="Title"
 						type="text"
 						variant="outlined"
+						onChange={handleChangeTitle}
 						style={{ width: "500px" }}
 					/>
 
@@ -128,7 +135,7 @@ export default function UploadDialog() {
 						<Select
 							id="select-language"
 							value={language}
-							onChange={handleChange}
+							onChange={handleChangeLang}
 							label="Language"
 							style={{ width: "350px" }}>
 							<MenuItem value={"javascript"}>JavaScript</MenuItem>
@@ -138,20 +145,19 @@ export default function UploadDialog() {
 						</Select>
 					</FormControl>
 				</DialogContent>
+
 				{/* <div style={{ height: "200px"}}> */}
 				{/**??Only inline styling works here! Why??**/}
 				{/* <CodeEditor />
 				</div> */}
-				{/* <MUIRichTextEditor
-					inlineToolbar={true}
-					label="Enter your text..."
-					className={classes.editor}
-				/> */}
+
+				{/* I couldn't style it like the other components using classes object.*/}
 				<MuiThemeProvider theme={defaultTheme}>
 					<MUIRichTextEditor />
 				</MuiThemeProvider>
+
 				<DialogActions>
-					<Button onClick={handleClose} className={classes.submitBtn}>
+					<Button onClick={handleSubmit} className={classes.submitBtn}>
 						Submit
 					</Button>
 				</DialogActions>
