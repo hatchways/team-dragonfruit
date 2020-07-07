@@ -4,6 +4,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core/styles";
+
 import {
 	Typography,
 	Button,
@@ -14,15 +15,40 @@ import {
 	MenuItem,
 	InputLabel,
 	FormControl,
-	Grid,
 } from "@material-ui/core";
+
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import MUIRichTextEditor from "mui-rte";
 
 import CodeEditor from "./CodeEditor";
 
+const defaultTheme = createMuiTheme();
+Object.assign(defaultTheme, {
+	overrides: {
+		MUIRichTextEditor: {
+			root: {
+				marginTop: "-150px",
+				marginBottom: "50px",
+				width: "80%",
+				paddingLeft: "50px",
+			},
+			editor: {
+				border: "1px solid gray",
+				margin: "20px",
+				height: "100px",
+			},
+			container: {},
+		},
+	},
+});
+
 const useStyles = makeStyles((theme) => ({
-	formControl: {
-		margin: theme.spacing(2),
+	container: {
+		margin: theme.spacing(3),
 		minWidth: 120,
+		display: "flex",
+		justifyContent: "space-between",
+		height: "200px",
 	},
 	uploadBtn: {
 		color: theme.palette.turquoise.main,
@@ -49,12 +75,8 @@ const useStyles = makeStyles((theme) => ({
 			backgroundColor: "#43dd9a",
 			color: "#6E3ADB",
 		},
-		title: {
-			height: "50px",
-			marginBottom: "100px",
-		},
 		editor: {
-			height: "250px",
+			border: "1px solid grey",
 		},
 	},
 }));
@@ -85,55 +107,54 @@ export default function UploadDialog() {
 				Upload code
 			</Button>
 
-			<Dialog open={open} onClose={handleClose}>
-				{/* <Grid container justify="center"> */}
-				<DialogTitle
-					id="form-dialog-title"
-					className={classes.title}
-					align="center">
+			<Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+				<DialogTitle id="form-dialog-title" align="center">
 					Request a code review
 				</DialogTitle>
 
-				<DialogContent>
-					<FormControl
+				<DialogContent className={classes.container}>
+					<TextField
+						id="code-title"
+						label="Title"
+						type="text"
 						variant="outlined"
-						className={classes.formControl}
-						fullWidth>
-						<Grid container direction="row">
-							<Grid item>
-								<TextField
-									id="code-title"
-									label="Title"
-									type="text"
-									variant="outlined"
-								/>
-							</Grid>
-							<Grid item>
-								<InputLabel id="select-language">Language</InputLabel>
-								<Select
-									id="select-language"
-									value={language}
-									onChange={handleChange}
-									label="Language">
-									<MenuItem value={"javascript"}>JavaScript</MenuItem>
-									<MenuItem value={"java"}>Java</MenuItem>
-									<MenuItem value={"c++"}>C++</MenuItem>
-									<MenuItem value={"python"}>Python</MenuItem>
-								</Select>
-							</Grid>
-						</Grid>
+						style={{ width: "500px" }}
+					/>
+
+					<FormControl variant="outlined">
+						<InputLabel id="select-language" maxWidth="md" fullWidth>
+							Language
+						</InputLabel>
+						<Select
+							id="select-language"
+							value={language}
+							onChange={handleChange}
+							label="Language"
+							style={{ width: "350px" }}>
+							<MenuItem value={"javascript"}>JavaScript</MenuItem>
+							<MenuItem value={"java"}>Java</MenuItem>
+							<MenuItem value={"c++"}>C++</MenuItem>
+							<MenuItem value={"python"}>Python</MenuItem>
+						</Select>
 					</FormControl>
-					<div style={{ height: "250px" }}>
-						{/**??Only inline styling works here! Why??**/}
-						<CodeEditor />
-					</div>
 				</DialogContent>
+				{/* <div style={{ height: "200px"}}> */}
+				{/**??Only inline styling works here! Why??**/}
+				{/* <CodeEditor />
+				</div> */}
+				{/* <MUIRichTextEditor
+					inlineToolbar={true}
+					label="Enter your text..."
+					className={classes.editor}
+				/> */}
+				<MuiThemeProvider theme={defaultTheme}>
+					<MUIRichTextEditor />
+				</MuiThemeProvider>
 				<DialogActions>
 					<Button onClick={handleClose} className={classes.submitBtn}>
 						Submit
 					</Button>
 				</DialogActions>
-				{/* </Grid> */}
 			</Dialog>
 		</div>
 	);
