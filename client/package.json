@@ -5,8 +5,10 @@
 	"dependencies": {
 		"@material-ui/core": "^4.11.0",
 		"@material-ui/icons": "^4.9.1",
+		"ace-builds": "^1.4.12",
 		"material-ui-image": "^3.2.3",
 		"react": "^16.8.6",
+		"react-ace": "^9.1.1",
 		"react-dom": "^16.8.6",
 		"react-router-dom": "^5.2.0",
 		"react-scripts": "3.0.1"

@@ -4,7 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import { Typography } from "@material-ui/core";
 
 import Navbar from "./Navbar";
-import ProjectCard from "../utilities/ProjectCard";
+import ProjectCard from "../utils/ProjectCard";
 import project1 from "../../src/images/project1.png";
 import project2 from "../../src/images/project2.png";
 
