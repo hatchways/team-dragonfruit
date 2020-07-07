@@ -6,7 +6,7 @@ const auth = require("../middleware/auth");
 const router = express.Router();
 
 /////// User sign up route handler ///////
-router.post("/api/users/signup", async (req, res) => {
+router.post("/signup", async (req, res) => {
 	const user = new User(req.body);
 
 	try {
@@ -23,7 +23,7 @@ router.post("/api/users/signup", async (req, res) => {
 });
 
 /////// User login route handler ///////
-router.post("/api/users/login", async (req, res) => {
+router.post("/login", async (req, res) => {
 	const { email, password } = req.body;
 	try {
 		const user = await User.findUserByCredentials(email, password);
@@ -39,13 +39,13 @@ router.post("/api/users/login", async (req, res) => {
 });
 
 /////// User log out route handler ///////
-router.post("/api/users/logout", auth, async (req, res) => {
+router.post("/logout", auth, async (req, res) => {
 	res.clearCookie("accessToken");
 	res.send("logged out successfully.");
 });
 
 /////// User profile route handler ///////
-router.get("/api/users/me", auth, async (req, res) => {
+router.get("/me", auth, async (req, res) => {
 	const user = req.user;
 	res.send(user);
 });
