@@ -1,3 +1,7 @@
+body {
+	background-color: #ecf0fa;
+}
+
 .App {
   text-align: center;
 }
@@ -30,4 +34,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.MuiBadge-dot {
+	background-color: #43DDC1 !important;
 }
