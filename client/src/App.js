@@ -7,7 +7,7 @@ import LandingPage from "./pages/Landing";
 import Profile from "./pages/Profile";
 import Reviews from "./pages/Reviews";
 import Balance from "./pages/Balance";
-
+import Onboarding from "./pages/Onboarding";
 
 import "./App.css";
 
@@ -20,7 +20,7 @@ function App() {
 					<Route path="/profile" exact component={Profile} />
 					<Route path="/reviews" exact component={Reviews} />
 					<Route path="/balance" exact component={Balance} />
-					
+					<Route path="/onboarding" exact component={Onboarding} />
 				</div>
 			</BrowserRouter>
 		</MuiThemeProvider>
