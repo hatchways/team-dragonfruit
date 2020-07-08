@@ -1,0 +1,23 @@
+option, #demo-customized-select-native{
+  color: #6E3ADB;
+}
+
+#btn {
+  background-color: rgb(241, 177, 191); /* Green */
+  border: none;
+  padding: 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 5px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+#btn:hover {
+  background-color: RoyalBlue;
+}
+i{
+  font-size: 12px;
+  color: #db4444;
+}

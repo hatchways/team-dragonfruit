@@ -47,6 +47,15 @@ const userSchema = new mongoose.Schema({
 		type: Number,
 		default: 3,
 	},
+	tokens: [
+		//**!!! Array of tokens for different sessions/devices or only one token? !!!**//
+		{
+			token: {
+				type: String,
+				required: true,
+			},
+		},
+	],
 });
 
 userSchema.virtual("snippets", {
