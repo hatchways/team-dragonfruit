@@ -102,4 +102,4 @@ const SelectLanguage = (props) => {
     </div>
   );
 }
-export default SelectLanguage
+export default SelectLanguage;
