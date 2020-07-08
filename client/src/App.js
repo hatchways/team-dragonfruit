@@ -7,7 +7,7 @@ import LandingPage from "./pages/Landing";
 import Profile from "./pages/Profile";
 import Reviews from "./pages/Reviews";
 import Balance from "./pages/Balance";
-import MuiCustomBlock from "./utils/MuiCustomBlock";
+
 
 import "./App.css";
 
@@ -20,7 +20,7 @@ function App() {
 					<Route path="/profile" exact component={Profile} />
 					<Route path="/reviews" exact component={Reviews} />
 					<Route path="/balance" exact component={Balance} />
-					{/* <Route path="/test" exact component={MuiCustomBlock} /> */}
+					
 				</div>
 			</BrowserRouter>
 		</MuiThemeProvider>
