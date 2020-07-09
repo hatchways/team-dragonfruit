@@ -1,7 +1,12 @@
 const express = require('express');
+require('dotenv').config();
 
 const User = require('../models/user');
 const auth = require('../middleware/auth');
+
+const Stripe = require('stripe');
+
+const stripe = new Stripe('sk_test_K8NZO2appEvdrzL0VgWSuufF00JURnLCKL');
 
 const router = express.Router();
 
@@ -70,6 +75,28 @@ router.post('/api/users/topup', auth, async (req, res) => {
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
+  }
+});
+
+// Stripe processing to accept payment
+router.post('/api/users/charge', async (req, res) => {
+  const { id, amount } = req.body;
+
+  try {
+    const payment = await stripe.paymentIntents.create({
+      amount: amount,
+      currency: 'CAD',
+      description: 'Topup Payment',
+      payment_method: id,
+      confirm: true,
+    });
+
+    return res.status(200).json({
+      confirm: 'Successful transaction',
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ message: err.message });
   }
 });
 
