@@ -1,12 +1,12 @@
 const express = require('express');
-require('dotenv').config();
 
 const User = require('../models/user');
 const auth = require('../middleware/auth');
 
 const Stripe = require('stripe');
+require('dotenv').config();
 
-const stripe = new Stripe('sk_test_K8NZO2appEvdrzL0VgWSuufF00JURnLCKL');
+const stripe = new Stripe(process.env.STRIPE_SECRET);
 
 const router = express.Router();
 
@@ -97,6 +97,25 @@ router.post('/api/users/charge', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(400).json({ message: err.message });
+  }
+});
+
+// credit check for code review
+router.get('/api/users/review', auth, async (req, res) => {
+  try {
+    const user = req.user;
+    if (user.balance <= 0) {
+      return res
+        .status(400)
+        .json({ msg: 'You do not have enough credit for code review' });
+    } else {
+      user.balance -= 1;
+      await user.save();
+      res.status(200).send(user);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
   }
 });
 
