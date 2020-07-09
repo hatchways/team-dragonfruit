@@ -100,4 +100,23 @@ router.post('/api/users/charge', async (req, res) => {
   }
 });
 
+// credit check for code review
+router.get('/api/users/review', auth, async (req, res) => {
+  try {
+    const user = req.user;
+    if (user.balance <= 0) {
+      return res
+        .status(400)
+        .json({ msg: 'You do not have enough credit for code review' });
+    } else {
+      user.balance -= 1;
+      await user.save();
+      res.status(200).send(user);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;
