@@ -49,6 +49,12 @@ const userSchema = new mongoose.Schema({
 	},
 });
 
+userSchema.virtual("snippets", {
+	ref: "Snippet",
+	localField: "_id",
+	foreignField: "author",
+});
+
 /////// A method for generating a token ///////
 userSchema.methods.generateAuthToken = async function () {
 	const token = jwt.sign({ _id: this._id.toString() }, process.env.JWT_SECRET);

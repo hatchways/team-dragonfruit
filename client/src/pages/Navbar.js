@@ -6,9 +6,10 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import Image from "material-ui-image";
 
-import Menu from "../utilities/NavbarMenu";
-import ImageAvatar from "../utilities/Avatar";
-import BadgeMenu from "../utilities/BadgeMenu";
+import Menu from "../utils/NavbarMenu";
+import ImageAvatar from "../utils/Avatar";
+import BadgeMenu from "../utils/BadgeMenu";
+import UploadDialog from "../utils/UploadDialog";
 
 //??** Is it the only way to show the image to import the file?
 //??** I couldn't get it to show just by passing the src props!
@@ -91,12 +92,13 @@ export default function Navbar() {
 						Balance
 					</Button>
 					<BadgeMenu />
-					<Button
+					{/* <Button
 						variant="outlined"
 						className={classes.uploadBtn}
 						onClick={() => history.push("/upload")}>
 						Upload code
-					</Button>
+					</Button> */}
+					<UploadDialog />
 					<ImageAvatar alt="John Doe" src={JohnDoe} />
 					<Menu title="Profile" />
 				</Toolbar>
