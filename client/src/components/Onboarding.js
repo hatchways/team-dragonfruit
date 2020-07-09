@@ -1,12 +1,12 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Typography, Box, Paper, Button, Select } from "@material-ui/core";
-import MenuItem from "@material-ui/core/MenuItem";
+import { Typography, Box, Paper, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import AddIcon from "@material-ui/icons/Add";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import { IconButton } from "@material-ui/core";
 
-// import LanguageSelector from "./LanguageSelector";
+import LanguageSelector from "./LanguageSelector";
 
 const useStyles = makeStyles((theme) => ({
 	registerContainer: {
@@ -47,33 +47,55 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		justifyContent: "space-between",
 	},
+	iconBtn: {
+		border: "1px solid grey",
+		borderRadius: "5px",
+		background: "turquoise",
+		margin: "20px",
+	},
 }));
 
 const userExp = [];
+const Langs = [];
+const Levels = [];
 
 const Onboarding = () => {
+	
 	const classes = useStyles();
+	const [selectLanguages, setSelectLanguages] = React.useState([]);
 
-	const [language, setLanguage] = React.useState("");
-	const [level, setLevel] = React.useState("");
-
-	const handleChangeLang = (e) => {
-		setLanguage(e.target.value);
+	const removeLanguage = () => {
+		let selectedLangs = [...selectLanguages];
+		selectedLangs.pop();
+		setSelectLanguages(selectedLangs);
 	};
 
-	const handleChangeLevel = (e) => {
-		setLevel(e.target.value);
-	};
-
-	const handleAdd = (e) => {
-		const result = { language, level };
-		userExp.push(result);
+	const addLanguage = () => {
+		const id = Math.random();
+		const selectedLangs = [...selectLanguages];
+		selectedLangs.push({
+			item: <LanguageSelector getLang={getLang} getLevel={getLevel} key={id} />,
+		});
+		setSelectLanguages(selectedLangs);
 	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+
+		Langs.forEach((lang, i) => {
+			const newObj = { language: lang, level: Levels[i] };
+			userExp.push(newObj);
+		});
 		console.log(userExp);
 		await axios.post("/api/users/experience", { userExp });
+	};
+
+	const getLang = (lang) => {
+		Langs.push(lang);
+	};
+
+	const getLevel = (level) => {
+		Levels.push(level);
 	};
 
 	return (
@@ -83,43 +105,24 @@ const Onboarding = () => {
 					Add your experience here:
 				</Typography>
 
-				<Box className={classes.form}>
-					<Typography className={classes.text}>Language:</Typography>
-					<Select
-						variant="outlined"
-						value={language}
-						onChange={handleChangeLang}
-						style={{ width: "200px" }}>
-						<MenuItem value="JavaScript">JavaScript</MenuItem>
-						<MenuItem value="Java">Java</MenuItem>
-						<MenuItem value="Python">Python</MenuItem>
-						<MenuItem value="C++">C++</MenuItem>
-						<MenuItem value="Ruby">Ruby</MenuItem>
-					</Select>
-					<Typography className={classes.text}>Level:</Typography>
-					<Select
-						variant="outlined"
-						value={level}
-						onChange={handleChangeLevel}
-						style={{ width: "200px" }}>
-						<MenuItem value={1}>Beginner</MenuItem>
-						<MenuItem value={2}>Intermediate</MenuItem>
-						<MenuItem value={3}>Advanced</MenuItem>
-					</Select>
-					<IconButton label="Add" onClick={handleAdd}>
-						<AddIcon color="primary" />
-						<Typography color="primary">Add</Typography>
-					</IconButton>
-				</Box>
+				{selectLanguages.map((language) => language.item)}
 
-				{/* <Button
-					variant="outlined"
-					color="primary"
-					disableElevation
-					onClick={handleAdd}
-					className={classes.registerBtn}>
-					Add another language
-				</Button> */}
+				<div style={{ display: "flex" }}>
+					<IconButton
+						className={classes.iconBtn}
+						label="Add"
+						onClick={addLanguage}>
+						<AddCircleOutlineIcon color="primary" />
+						<Typography color="primary">Add one language</Typography>
+					</IconButton>
+					<IconButton
+						className={classes.iconBtn}
+						label="Add"
+						onClick={removeLanguage}>
+						<RemoveCircleOutlineIcon color="primary" />
+						<Typography color="primary">Remove one language</Typography>
+					</IconButton>
+				</div>
 
 				<Button
 					type="submit"

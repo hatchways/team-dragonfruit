@@ -60,26 +60,26 @@ router.post("/experience", auth, async (req, res) => {
 });
 
 // get balance
-router.get('/api/users/balance', auth, (req, res) => {
-  const user = req.user;
-  res.status(200).send(user);
+router.get("/api/users/balance", auth, (req, res) => {
+	const user = req.user;
+	res.status(200).send(user);
 });
 
 // add credit to top-up
-router.post('/api/users/topup', auth, async (req, res) => {
-  const { credit } = req.body;
+router.post("/api/users/topup", auth, async (req, res) => {
+	const { credit } = req.body;
 
-  try {
-    const user = req.user;
+	try {
+		const user = req.user;
 
-    user.balance += credit;
+		user.balance += credit;
 
-    await user.save();
-    res.status(200).send(user);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
+		await user.save();
+		res.status(200).send(user);
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send("Server Error");
+	}
 });
 
 module.exports = router;
