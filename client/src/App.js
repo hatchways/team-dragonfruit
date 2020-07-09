@@ -30,7 +30,7 @@ function App() {
 					<PrivateRoute path="/dashboard" component={Dashboard} />
 					<PrivateRoute path="/balance" component={Balance} />
 					<Route path="/profile" exact component={Profile} />
-					<Route path="/reviews" exact component={Reviews} /> */}
+					<Route path="/reviews" exact component={Reviews} /> 
 					<Route path="/onboarding" exact component={OnboardingPage} />
 				</BrowserRouter>
 			</AuthProvider>
