@@ -14,6 +14,7 @@ import Signup from './pages/Signup';
 
 import Dashboard from './pages/Dashboard';
 import Balance from './pages/Balance';
+import Checkout from './pages/Checkout';
 
 import PrivateRoute from './hocs/PrivateRoute';
 import PublicRoute from './hocs/PublicRoute';
@@ -34,6 +35,7 @@ function App() {
           <Route path='/profile' exact component={Profile} />
           <Route path='/reviews' exact component={Reviews} />
           <Route path='/upload' exact component={Upload} />
+          <Route path='/checkout' component={Checkout} />
         </BrowserRouter>
       </AuthProvider>
     </MuiThemeProvider>

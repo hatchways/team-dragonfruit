@@ -1,13 +1,12 @@
 import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Container, Button } from '@material-ui/core';
 
 import { Remove, Add } from '@material-ui/icons';
 
-import UserService from '../services/UserService';
+// import UserService from '../services/UserService';
 import { AuthContext } from '../context/AuthContext';
-
-import Message from './Message';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -17,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
   topupContainer: {
     display: 'flex',
+    width: '200px',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: '1.5rem',
@@ -51,10 +51,10 @@ const useStyles = makeStyles((theme) => ({
 const Topup = () => {
   const classes = useStyles();
 
-  const { setUser } = useContext(AuthContext);
+  const { setTopupAmount } = useContext(AuthContext);
+  const history = useHistory();
 
   const [topupCredit, setTopupCredit] = useState(1);
-  const [message, setMessage] = useState(null);
 
   const increase = (topupCredit) => {
     setTopupCredit(topupCredit + 1);
@@ -67,12 +67,9 @@ const Topup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // topup credit
-    UserService.topup(topupCredit).then((data) => {
-      setUser(data);
-      setTopupCredit(1);
-      setMessage('Top Up Successfully');
-    });
+    setTopupAmount(topupCredit);
+    setTopupCredit(1);
+    history.push('/checkout');
   };
 
   return (
@@ -99,10 +96,9 @@ const Topup = () => {
           disableElevation
           className={classes.checkoutBtn}
         >
-          Checkout
+          Checkout - ${topupCredit * 3}
         </Button>
       </div>
-      {message && <Message open={true} type='success' message={message} />}
     </form>
   );
 };
