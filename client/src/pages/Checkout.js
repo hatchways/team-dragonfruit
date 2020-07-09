@@ -2,12 +2,12 @@ import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import Balance from '../components/Balance';
-
 import Navbar from './Navbar';
 
+import StripeInput from '../components/StripeInput';
+
 const useStyles = makeStyles((theme) => ({
-  balanceContainer: {
+  checkoutContainer: {
     display: 'flex',
     backgroundColor: '#dee2e6',
     alignItems: 'center',
@@ -17,16 +17,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BalancePage = () => {
+const Checkout = () => {
   const classes = useStyles();
   return (
     <>
       <Navbar />
-      <div className={classes.balanceContainer}>
-        <Balance />
+      <div className={classes.checkoutContainer}>
+        <StripeInput />
       </div>
     </>
   );
 };
 
-export default BalancePage;
+export default Checkout;
