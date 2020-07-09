@@ -23,17 +23,17 @@ import "./App.css";
 function App() {
 	return (
 		<MuiThemeProvider theme={theme}>
-			{/* <AuthProvider> */}
-			<BrowserRouter>
-				{/* <PublicRoute path="/signup" component={Signup} />
-				<PublicRoute path="/login" component={Login} />
-				<PrivateRoute path="/dashboard" component={Dashboard} />
-				<PrivateRoute path="/balance" component={Balance} /> */}
-				<Route path="/profile" exact component={Profile} />
-				<Route path="/reviews" exact component={Reviews} /> */}
-				<Route path="/onboarding" exact component={OnboardingPage} />
-			</BrowserRouter>
-			{/* </AuthProvider> */}
+			<AuthProvider>
+				<BrowserRouter>
+					<PublicRoute path="/signup" component={Signup} />
+					<PublicRoute path="/login" component={Login} />
+					<PrivateRoute path="/dashboard" component={Dashboard} />
+					<PrivateRoute path="/balance" component={Balance} />
+					<Route path="/profile" exact component={Profile} />
+					<Route path="/reviews" exact component={Reviews} /> */}
+					<Route path="/onboarding" exact component={OnboardingPage} />
+				</BrowserRouter>
+			</AuthProvider>
 		</MuiThemeProvider>
 	);
 }

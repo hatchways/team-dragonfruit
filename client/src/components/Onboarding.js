@@ -70,9 +70,10 @@ const Onboarding = () => {
 		userExp.push(result);
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		console.log(userExp);
+		await axios.post("/api/users/experience", { userExp });
 	};
 
 	return (
