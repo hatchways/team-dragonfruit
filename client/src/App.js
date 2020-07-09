@@ -1,18 +1,14 @@
 import React from 'react';
 import { MuiThemeProvider } from '@material-ui/core';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 
 import { theme } from './themes/theme';
 
 import Profile from './pages/Profile';
 import Reviews from './pages/Reviews';
-
 import Upload from './pages/Upload';
-
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-
-import Dashboard from './pages/Dashboard';
 import Balance from './pages/Balance';
 import Checkout from './pages/Checkout';
 
@@ -28,14 +24,16 @@ function App() {
     <MuiThemeProvider theme={theme}>
       <AuthProvider>
         <BrowserRouter>
-          <PublicRoute path='/signup' component={Signup} />
-          <PublicRoute path='/login' component={Login} />
-          <PrivateRoute path='/dashboard' component={Dashboard} />
-          <PrivateRoute path='/balance' component={Balance} />
-          <Route path='/profile' exact component={Profile} />
-          <Route path='/reviews' exact component={Reviews} />
-          <Route path='/upload' exact component={Upload} />
-          <Route path='/checkout' component={Checkout} />
+          <Switch>
+            <PublicRoute path='/signup' component={Signup} />
+            <PublicRoute path='/login' component={Login} />
+            <PrivateRoute path='/' exact component={Profile} />
+            <PrivateRoute path='/balance' component={Balance} />
+            <PrivateRoute path='/checkout' component={Checkout} />
+            <Route path='/reviews' exact component={Reviews} />
+            <Route path='/upload' exact component={Upload} />
+            <Redirect to='/' />
+          </Switch>
         </BrowserRouter>
       </AuthProvider>
     </MuiThemeProvider>

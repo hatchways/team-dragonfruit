@@ -1,12 +1,12 @@
 const express = require('express');
-require('dotenv').config();
 
 const User = require('../models/user');
 const auth = require('../middleware/auth');
 
 const Stripe = require('stripe');
+require('dotenv').config();
 
-const stripe = new Stripe('sk_test_K8NZO2appEvdrzL0VgWSuufF00JURnLCKL');
+const stripe = new Stripe(process.env.STRIPE_SECRET);
 
 const router = express.Router();
 

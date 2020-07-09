@@ -13,9 +13,7 @@ const PublicRoute = ({ component: Component, ...rest }) => {
         // Prevent login or signup again, redirect to Dashboard
         if (isAuthenticated)
           return (
-            <Redirect
-              to={{ pathname: '/dashboard', state: { from: props.location } }}
-            />
+            <Redirect to={{ pathname: '/', state: { from: props.location } }} />
           );
 
         return <Component {...props} />;
