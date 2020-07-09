@@ -1,19 +1,12 @@
+import axios from "axios";
 import React, { useState } from "react";
-
-import {
-	Typography,
-	TextField,
-	Box,
-	Paper,
-	Button,
-	Select,
-} from "@material-ui/core";
-import InputLabel from "@material-ui/core/InputLabel";
+import { Typography, Box, Paper, Button, Select } from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-
 import { makeStyles } from "@material-ui/styles";
+import AddIcon from "@material-ui/icons/Add";
+import { IconButton } from "@material-ui/core";
+
+// import LanguageSelector from "./LanguageSelector";
 
 const useStyles = makeStyles((theme) => ({
 	registerContainer: {
@@ -29,10 +22,6 @@ const useStyles = makeStyles((theme) => ({
 	title: {
 		marginBottom: "3rem",
 	},
-	input: {
-		width: "300px",
-		marginBottom: "1rem",
-	},
 	registerBtn: {
 		padding: "0.7rem 4rem",
 		borderRadius: "2rem",
@@ -47,40 +36,44 @@ const useStyles = makeStyles((theme) => ({
 	},
 	text: {
 		fontWeight: "bold",
+		fontSize: "16px",
+		margin: "10px",
+		marginLeft: "35px",
+		padding: "0",
 	},
-
-	formControl: {
-		margin: theme.spacing(4),
+	form: {
+		margin: theme.spacing(1),
 		minWidth: 120,
 		display: "flex",
 		justifyContent: "space-between",
 	},
-	selectEmpty: {
-		marginTop: theme.spacing(4),
-	},
-	selectField: {
-		width: "200px",
-		margin: "30px",
-	},
 }));
+
+const userExp = [];
 
 const Onboarding = () => {
 	const classes = useStyles();
 
-	const [userExp, setUserExp] = useState({});
+	const [language, setLanguage] = React.useState("");
+	const [level, setLevel] = React.useState("");
 
-	const handleChange = (e) => {
-		const result = { ...userExp, [e.target.name]: e.target.value };
-		setUserExp(userExp.push(result));
-		console.log(result);
+	const handleChangeLang = (e) => {
+		setLanguage(e.target.value);
+	};
+
+	const handleChangeLevel = (e) => {
+		setLevel(e.target.value);
+	};
+
+	const handleAdd = (e) => {
+		const result = { language, level };
+		userExp.push(result);
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		console.log(userExp);
 	};
-
-	// const [language, setLanguage] = React.useState("");
-	// const [level, setLevel] = React.useState("");
 
 	return (
 		<form>
@@ -89,101 +82,43 @@ const Onboarding = () => {
 					Add your experience here:
 				</Typography>
 
-				<Box className={classes.formControl}>
-					<Typography>Language:</Typography>
-
+				<Box className={classes.form}>
+					<Typography className={classes.text}>Language:</Typography>
 					<Select
 						variant="outlined"
-						name="language"
-						onChange={handleChange}
-						label="Language"
+						value={language}
+						onChange={handleChangeLang}
 						style={{ width: "200px" }}>
-						<MenuItem value={userExp.javascript} name="javascript">
-							JavaScript
-						</MenuItem>
-						<MenuItem value={userExp.java} name="java">
-							Java
-						</MenuItem>
-						<MenuItem value={userExp.python} name="python">
-							Python
-						</MenuItem>
+						<MenuItem value="JavaScript">JavaScript</MenuItem>
+						<MenuItem value="Java">Java</MenuItem>
+						<MenuItem value="Python">Python</MenuItem>
+						<MenuItem value="C++">C++</MenuItem>
+						<MenuItem value="Ruby">Ruby</MenuItem>
 					</Select>
-
-					<Typography>Level:</Typography>
+					<Typography className={classes.text}>Level:</Typography>
 					<Select
 						variant="outlined"
-						onChange={handleChange}
-						label="Level"
+						value={level}
+						onChange={handleChangeLevel}
 						style={{ width: "200px" }}>
 						<MenuItem value={1}>Beginner</MenuItem>
 						<MenuItem value={2}>Intermediate</MenuItem>
 						<MenuItem value={3}>Advanced</MenuItem>
 					</Select>
+					<IconButton label="Add" onClick={handleAdd}>
+						<AddIcon color="primary" />
+						<Typography color="primary">Add</Typography>
+					</IconButton>
 				</Box>
 
-				<Box className={classes.formControl}>
-					<Typography>Language:</Typography>
-
-					<Select
-						variant="outlined"
-						name="language"
-						onChange={handleChange}
-						label="Language"
-						style={{ width: "200px" }}>
-						<MenuItem value={userExp.javascript} name="javascript">
-							JavaScript
-						</MenuItem>
-						<MenuItem value={userExp.java} name="java">
-							Java
-						</MenuItem>
-						<MenuItem value={userExp.python} name="python">
-							Python
-						</MenuItem>
-					</Select>
-
-					<Typography>Level:</Typography>
-					<Select
-						variant="outlined"
-						onChange={handleChange}
-						label="Level"
-						style={{ width: "200px" }}>
-						<MenuItem value={1}>Beginner</MenuItem>
-						<MenuItem value={2}>Intermediate</MenuItem>
-						<MenuItem value={3}>Advanced</MenuItem>
-					</Select>
-				</Box>
-
-				<Box className={classes.formControl}>
-					<Typography>Language:</Typography>
-
-					<Select
-						variant="outlined"
-						name="language"
-						onChange={handleChange}
-						label="Language"
-						style={{ width: "200px" }}>
-						<MenuItem value={userExp.javascript} name="javascript">
-							JavaScript
-						</MenuItem>
-						<MenuItem value={userExp.java} name="java">
-							Java
-						</MenuItem>
-						<MenuItem value={userExp.python} name="python">
-							Python
-						</MenuItem>
-					</Select>
-
-					<Typography>Level:</Typography>
-					<Select
-						id="demo-simple-select-outlined"
-						onChange={handleChange}
-						label="Level"
-						style={{ width: "200px" }}>
-						<MenuItem value={1}>Beginner</MenuItem>
-						<MenuItem value={2}>Intermediate</MenuItem>
-						<MenuItem value={3}>Advanced</MenuItem>
-					</Select>
-				</Box>
+				{/* <Button
+					variant="outlined"
+					color="primary"
+					disableElevation
+					onClick={handleAdd}
+					className={classes.registerBtn}>
+					Add another language
+				</Button> */}
 
 				<Button
 					type="submit"
