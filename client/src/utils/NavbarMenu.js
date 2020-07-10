@@ -7,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { makeStyles } from '@material-ui/core/styles';
 // import Link from '@material-ui/core/Link';
-import { useHistory } from 'react-router-dom';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,12 +55,16 @@ export default function SimpleMenu(props) {
     setAnchorEl(null);
   };
 
-  const handleLogout = async () => {
-    setAnchorEl(null);
-    await axios.post('/api/users/logout');
-    localStorage.removeItem('user');
 
+	const handleLogout = async () => {
+		setAnchorEl(null);
+		await axios.post("/api/users/logout");
+		localStorage.removeItem("user");
     window.location.replace('login');
+		
+	};
+
+    
   };
 
   return (
