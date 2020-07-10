@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
@@ -5,6 +6,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "@material-ui/core/Link";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -30,12 +32,19 @@ const useStyles = makeStyles((theme) => ({
 			textDecoration: "none",
 		},
 	},
+	logoutBtn: {
+		textTransform: "none",
+		"&:hover": {
+			backgroundColor: "transparent",
+		},
+	},
 }));
 
 export default function SimpleMenu(props) {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
 	const classes = useStyles();
+	const history = useHistory();
 
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
@@ -43,6 +52,12 @@ export default function SimpleMenu(props) {
 
 	const handleClose = () => {
 		setAnchorEl(null);
+	};
+
+	const handleLogout = async () => {
+		setAnchorEl(null);
+		await axios.post("/api/users/logout");
+		history.push("/login");
 	};
 
 	return (
@@ -63,14 +78,14 @@ export default function SimpleMenu(props) {
 				open={Boolean(anchorEl)}
 				onClose={handleClose}>
 				<MenuItem onClick={handleClose}>
-					<Link href="/profile" className={classes.link}>
-						My account
+					<Link href="/onboarding" className={classes.link}>
+						My experience
 					</Link>
 				</MenuItem>
-				<MenuItem onClick={handleClose}>
-					<Link href="/api/users/logout" className={classes.link}>
+				<MenuItem>
+					<Button onClick={handleLogout} className={classes.logoutBtn}>
 						Logout
-					</Link>
+					</Button>
 				</MenuItem>
 			</Menu>
 		</div>

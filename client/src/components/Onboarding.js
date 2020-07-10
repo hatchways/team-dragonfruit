@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Typography, Box, Paper, Button } from "@material-ui/core";
+import { Typography, Paper, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
@@ -60,7 +60,6 @@ const Langs = [];
 const Levels = [];
 
 const Onboarding = () => {
-	
 	const classes = useStyles();
 	const [selectLanguages, setSelectLanguages] = React.useState([]);
 

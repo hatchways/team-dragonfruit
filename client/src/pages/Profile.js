@@ -102,7 +102,7 @@ export default function CenteredGrid() {
 							container
 							xs={12}
 							className={classes.projects}
-							spacing="3"
+							spacing={3}
 							justify="center">
 							<Grid item xs={12}>
 								<Typography variant="h4" align="center">
