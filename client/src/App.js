@@ -12,6 +12,7 @@ import Checkout from "./pages/Checkout";
 import PrivateRoute from "./hocs/PrivateRoute";
 import PublicRoute from "./hocs/PublicRoute";
 import AuthProvider from "./context/AuthContext";
+import OnboardingPage from "./pages/OnboardingPage";
 import "./App.css";
 
 function App() {
@@ -25,7 +26,8 @@ function App() {
 						<PrivateRoute path="/" exact component={Profile} />
 						<PrivateRoute path="/balance" component={Balance} />
 						<PrivateRoute path="/checkout" component={Checkout} />
-						<Route path="/reviews" exact component={Reviews} />
+						<PrivateRoute path="/reviews" exact component={Reviews} />
+						<PrivateRoute path="/onboarding" exact component={OnboardingPage} />
 						<Redirect to="/" />
 					</Switch>
 				</BrowserRouter>

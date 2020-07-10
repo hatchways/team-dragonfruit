@@ -11,7 +11,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET);
 const router = express.Router();
 
 /////// User sign up route handler ///////
-router.post("/api/users/signup", async (req, res) => {
+router.post("/signup", async (req, res) => {
 	const user = new User(req.body);
 
 	try {
@@ -28,7 +28,7 @@ router.post("/api/users/signup", async (req, res) => {
 });
 
 /////// User login route handler ///////
-router.post("/api/users/login", async (req, res) => {
+router.post("/login", async (req, res) => {
 	const { email, password } = req.body;
 	try {
 		const user = await User.findUserByCredentials(email, password);
@@ -44,25 +44,25 @@ router.post("/api/users/login", async (req, res) => {
 });
 
 /////// User log out route handler ///////
-router.post("/api/users/logout", auth, async (req, res) => {
+router.post("/logout", auth, async (req, res) => {
 	res.clearCookie("accessToken");
 	res.send("logged out successfully.");
 });
 
 /////// User profile route handler ///////
-router.get("/api/users/me", auth, async (req, res) => {
+router.get("/me", auth, async (req, res) => {
 	const user = req.user;
 	res.send(user);
 });
 
 // get balance
-router.get("/api/users/balance", auth, (req, res) => {
+router.get("/balance", auth, (req, res) => {
 	const user = req.user;
 	res.status(200).send(user);
 });
 
 // add credit to top-up
-router.post("/api/users/topup", auth, async (req, res) => {
+router.post("/topup", auth, async (req, res) => {
 	const { credit } = req.body;
 
 	try {
@@ -79,7 +79,7 @@ router.post("/api/users/topup", auth, async (req, res) => {
 });
 
 // Stripe processing to accept payment
-router.post("/api/users/charge", async (req, res) => {
+router.post("/charge", async (req, res) => {
 	const { id, amount } = req.body;
 
 	try {
@@ -101,7 +101,7 @@ router.post("/api/users/charge", async (req, res) => {
 });
 
 // credit check for code review
-router.get("/api/users/review", auth, async (req, res) => {
+router.get("/review", auth, async (req, res) => {
 	try {
 		const user = req.user;
 		if (user.balance <= 0) {
@@ -115,8 +115,16 @@ router.get("/api/users/review", auth, async (req, res) => {
 		}
 	} catch (err) {
 		console.error(err);
-		res.status(500).send("Server Error");
 	}
+});
+
+/////// Update user experience route handler ///////
+router.post("/experience", auth, async (req, res) => {
+	const user = await User.findById(req.user._id);
+	user.experience = req.body.userExp;
+	user.profileCompleted = true;
+	await user.save();
+	res.send(user);
 });
 
 module.exports = router;
