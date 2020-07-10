@@ -37,9 +37,7 @@ export default function ImgMediaCard(props) {
 					Project Title
 				</Typography>
 				<Link href="#" className={classes.link}>
-					<Typography variant="caption text">
-						https://websitelink.com
-					</Typography>
+					<Typography variant="caption">https://websitelink.com</Typography>
 				</Link>
 			</CardContent>
 		</Card>

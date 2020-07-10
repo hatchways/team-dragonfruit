@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
@@ -30,6 +31,12 @@ const useStyles = makeStyles((theme) => ({
 			textDecoration: "none",
 		},
 	},
+	logoutBtn: {
+		textTransform: "none",
+		"&:hover": {
+			backgroundColor: "transparent",
+		},
+	},
 }));
 
 export default function SimpleMenu(props) {
@@ -43,6 +50,11 @@ export default function SimpleMenu(props) {
 
 	const handleClose = () => {
 		setAnchorEl(null);
+	};
+
+	const handleLogout = async () => {
+		setAnchorEl(null);
+		await axios.post("/api/users/logout");
 	};
 
 	return (
@@ -67,10 +79,10 @@ export default function SimpleMenu(props) {
 						My account
 					</Link>
 				</MenuItem>
-				<MenuItem onClick={handleClose}>
-					<Link href="/api/users/logout" className={classes.link}>
+				<MenuItem>
+					<Button onClick={handleLogout} className={classes.logoutBtn}>
 						Logout
-					</Link>
+					</Button>
 				</MenuItem>
 			</Menu>
 		</div>
