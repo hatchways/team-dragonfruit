@@ -57,6 +57,7 @@ export default function SimpleMenu(props) {
 	const handleLogout = async () => {
 		setAnchorEl(null);
 		await axios.post("/api/users/logout");
+		localStorage.removeItem("user");
 		history.push("/login");
 	};
 

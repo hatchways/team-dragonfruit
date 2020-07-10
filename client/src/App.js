@@ -28,7 +28,6 @@ function App() {
 						<PrivateRoute path="/checkout" component={Checkout} />
 						<PrivateRoute path="/reviews" exact component={Reviews} />
 						<PrivateRoute path="/onboarding" exact component={OnboardingPage} />
-						<Redirect to="/" />
 					</Switch>
 				</BrowserRouter>
 			</AuthProvider>
