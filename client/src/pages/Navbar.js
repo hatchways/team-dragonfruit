@@ -92,12 +92,6 @@ export default function Navbar() {
 						Balance
 					</Button>
 					<BadgeMenu />
-					{/* <Button
-						variant="outlined"
-						className={classes.uploadBtn}
-						onClick={() => history.push("/upload")}>
-						Upload code
-					</Button> */}
 					<UploadDialog />
 					<ImageAvatar alt="John Doe" src={JohnDoe} />
 					<Menu title="Profile" />

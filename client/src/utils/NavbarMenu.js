@@ -6,6 +6,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "@material-ui/core/Link";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -43,6 +44,7 @@ export default function SimpleMenu(props) {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
 	const classes = useStyles();
+	const history = useHistory();
 
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
@@ -55,6 +57,7 @@ export default function SimpleMenu(props) {
 	const handleLogout = async () => {
 		setAnchorEl(null);
 		await axios.post("/api/users/logout");
+		history.push("/login");
 	};
 
 	return (
@@ -75,8 +78,8 @@ export default function SimpleMenu(props) {
 				open={Boolean(anchorEl)}
 				onClose={handleClose}>
 				<MenuItem onClick={handleClose}>
-					<Link href="/profile" className={classes.link}>
-						My account
+					<Link href="/onboarding" className={classes.link}>
+						My experience
 					</Link>
 				</MenuItem>
 				<MenuItem>
