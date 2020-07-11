@@ -8,15 +8,18 @@ Object.assign(defaultTheme, {
 	overrides: {
 		MUIRichTextEditor: {
 			root: {
+				margin: "0 auto",
 				marginBottom: "50px",
 				width: "85%",
 				paddingLeft: "50px",
 				paddingRight: "50px",
+				height: "80%",
 			},
 			editor: {
 				border: "1px solid gray",
 				minHeight: "300px",
 				overFlow: "scroll",
+				borderRadius: "5px",
 			},
 		},
 	},

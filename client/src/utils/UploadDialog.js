@@ -23,7 +23,15 @@ const useStyles = makeStyles((theme) => ({
 		minWidth: 120,
 		display: "flex",
 		justifyContent: "space-between",
-		height: "700px",
+		minHeight: "700px",
+	},
+	content: {
+		display: "flex",
+		justifyContent: "space-between",
+		minHeight: "10vh",
+		width: "80%",
+		overflowY: "auto",
+		margin: "0 auto",
 	},
 	uploadBtn: {
 		color: theme.palette.turquoise.main,
@@ -101,14 +109,14 @@ export default function UploadDialog() {
 					Request a code review
 				</DialogTitle>
 
-				<DialogContent className={classes.container}>
+				<DialogContent className={classes.content}>
 					<TextField
 						id="code-title"
 						label="Title"
 						type="text"
 						variant="outlined"
 						onChange={handleChangeTitle}
-						style={{ width: "500px" }}
+						style={{ width: "70%", margin: "0 auto" }}
 					/>
 
 					<FormControl variant="outlined">
@@ -118,8 +126,7 @@ export default function UploadDialog() {
 							value={language}
 							onChange={handleChangeLang}
 							label="Language"
-							style={{ width: "350px" }}>
-							
+							style={{ width: "20vw", margin: "0 auto" }}>
 							<MenuItem value={"javascript"}>JavaScript</MenuItem>
 							<MenuItem value={"java"}>Java</MenuItem>
 							<MenuItem value={"c++"}>C++</MenuItem>
