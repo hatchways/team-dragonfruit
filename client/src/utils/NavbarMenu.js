@@ -8,7 +8,6 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { makeStyles } from '@material-ui/core/styles';
 // import Link from '@material-ui/core/Link';
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -55,16 +54,11 @@ export default function SimpleMenu(props) {
     setAnchorEl(null);
   };
 
-
-	const handleLogout = async () => {
-		setAnchorEl(null);
-		await axios.post("/api/users/logout");
-		localStorage.removeItem("user");
+  const handleLogout = async () => {
+    setAnchorEl(null);
+    await axios.post('/api/users/logout');
+    localStorage.removeItem('user');
     window.location.replace('login');
-		
-	};
-
-    
   };
 
   return (

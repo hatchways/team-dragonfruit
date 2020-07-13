@@ -6,11 +6,33 @@ import UserService from '../services/UserService';
 
 export const AuthContext = createContext();
 
+const reviewData = [
+  {
+    id: 1,
+    title: 'Animation',
+    author: 'Robert',
+    code: 'abcd code',
+    review: 'review',
+    reviewer: 'John',
+    date: 'Jun 20, 2020',
+  },
+  {
+    id: 2,
+    title: 'Application',
+    author: 'Robert 12',
+    code: 'abcd code',
+    review: 'review',
+    reviewer: 'John 12',
+    date: 'Jun 15, 2020',
+  },
+];
+
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [topupAmount, setTopupAmount] = useState(0);
   const [amount, setAmount] = useState(0);
+  const [reviews, setReviews] = useState(reviewData);
 
   useEffect(() => {
     UserService.getUser().then((data) => setUser(data));
@@ -30,6 +52,8 @@ const AuthProvider = ({ children }) => {
         setTopupAmount,
         amount,
         setAmount,
+        reviews,
+        setReviews,
       }}
     >
       {children}
