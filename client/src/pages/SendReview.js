@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Navbar from './Navbar';
 import ReviewList from '../components/ReviewList';
-import ReviewDetails from '../components/ReviewDetails';
+import ReviewDetails1 from '../components/ReviewDetails1';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Reviews = () => {
+const SendReview = () => {
   const classes = useStyles();
 
   return (
@@ -21,10 +21,10 @@ const Reviews = () => {
       <div className={classes.root}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={4}>
-            <ReviewList title='Reviews' />
+            <ReviewList title='Code to review' />
           </Grid>
           <Grid item xs={12} md={8}>
-            <ReviewDetails />
+            <ReviewDetails1 />
           </Grid>
         </Grid>
       </div>
@@ -32,4 +32,4 @@ const Reviews = () => {
   );
 };
 
-export default Reviews;
+export default SendReview;
