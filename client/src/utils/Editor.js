@@ -4,6 +4,9 @@ import MUIRichTextEditor from "mui-rte";
 import { EditorState } from "draft-js";
 import CodeEditor from "./CodeEditor";
 import CodeIcon from "@material-ui/icons/Code";
+import PrismDecorator from "draft-js-prism";
+import Prism from "prismjs";
+import "../../src/prism.css";
 
 const defaultTheme = createMuiTheme();
 Object.assign(defaultTheme, {
@@ -27,11 +30,13 @@ Object.assign(defaultTheme, {
 	},
 });
 
-
 class MyEditor extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			// 	editorState: EditorState.createEmpty(
+			// 		new PrismDecorator({ prism: Prism }),
+			// 	),
 			editorState: EditorState.createEmpty(),
 			text: "",
 			language: "",
