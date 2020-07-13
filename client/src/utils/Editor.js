@@ -2,6 +2,8 @@ import React from "react";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import MUIRichTextEditor from "mui-rte";
 import { EditorState } from "draft-js";
+import CodeEditor from "./CodeEditor";
+import CodeIcon from "@material-ui/icons/Code";
 
 const defaultTheme = createMuiTheme();
 Object.assign(defaultTheme, {
@@ -25,25 +27,74 @@ Object.assign(defaultTheme, {
 	},
 });
 
+
 class MyEditor extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { editorState: EditorState.createEmpty() };
-		this.onChange = (editorState) => {
-			this.setState({ editorState });
-			const contentState = this.state.editorState.getCurrentContent();
-			const text = contentState.getPlainText();
-			this.props.sendCode(text);
+		this.state = {
+			editorState: EditorState.createEmpty(),
+			text: "",
+			language: "",
 		};
 	}
+
+	componentDidMount() {
+		this.setState({ language: this.props.language });
+	}
+
+	onChange = (editorState) => {
+		this.setState({ editorState });
+		const contentState = this.state.editorState.getCurrentContent();
+		const text = contentState.getPlainText();
+		this.props.sendCode(text);
+		console.log(text);
+		this.setState({ text });
+		console.log("changed");
+		console.log("language is:", this.state.language);
+	};
+
+	save = (data) => {
+		console.log(data);
+		this.setState({ text: data });
+	};
 
 	render() {
 		return (
 			<MuiThemeProvider theme={defaultTheme}>
 				<MUIRichTextEditor
-					label="Enter your code here..."
 					editorState={this.state.editorState}
 					onChange={this.onChange}
+					label="Enter your code here..."
+					controls={[
+						"title",
+						"bold",
+						"italic",
+						"underline",
+						"strikethrough",
+						"highlight",
+						"link",
+						"media",
+						"save",
+						"code-block",
+					]}
+					onSave={this.save}
+					customControls={[
+						{
+							name: "code-block",
+							icon: <CodeIcon />,
+							type: "block",
+							blockWrapper: (
+								<CodeEditor
+									language={this.state.language}
+									text={() => this.state.editorState.getCurrentContent()}
+								/>
+							),
+							// onClick: (editorState) => {
+							// 	const code = editorState.getSelection();
+							// 	console.log(code);
+							// },
+						},
+					]}
 				/>
 			</MuiThemeProvider>
 		);

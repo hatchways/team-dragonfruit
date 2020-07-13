@@ -15,8 +15,8 @@ import {
 } from "@material-ui/core";
 
 import Editor from "./Editor";
+import PrismEditor from "./PrismEditorExample";
 
-// Styling the Dialog From //
 const useStyles = makeStyles((theme) => ({
 	container: {
 		margin: theme.spacing(2),
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		justifyContent: "space-between",
 		minHeight: "10vh",
-		width: "80%",
+		width: "90%",
 		overflowY: "auto",
 		margin: "0 auto",
 	},
@@ -135,8 +135,8 @@ export default function UploadDialog() {
 					</FormControl>
 				</DialogContent>
 
-				<Editor sendCode={handleChangeCode} />
-
+				<Editor sendCode={handleChangeCode} language={language} />
+				{/* <PrismEditor /> */}
 				<DialogActions>
 					<Button onClick={handleSubmit} className={classes.submitBtn}>
 						Submit
