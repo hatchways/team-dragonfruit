@@ -1,16 +1,11 @@
 import React from "react";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import MUIRichTextEditor from "mui-rte";
 import {
 	Editor,
 	EditorState,
 	RichUtils,
-	DefaultDraftBlockRenderMap,
-	Decorator,
 	convertFromRaw,
 	convertToRaw,
 } from "draft-js";
-import CodeEditor from "./CodeEditor";
 import IconButton from "@material-ui/core/IconButton";
 import CodeIcon from "@material-ui/icons/Code";
 import FormatBoldIcon from "@material-ui/icons/FormatBold";
@@ -22,12 +17,12 @@ import FormatQuoteIcon from "@material-ui/icons/FormatQuote";
 import { makeStyles } from "@material-ui/core/styles";
 import PrismDecorator from "draft-js-prism";
 import Prism from "prismjs";
-// var PrismDecorator = require('draft-js-prism');
 import "../../src/prism.css";
 
 const useStyles = makeStyles((theme) => ({
 	iconBtn: {
 		borderRadius: "2rem",
+		cursor: "default",
 	},
 }));
 
@@ -46,7 +41,7 @@ const BLOCK_TYPES = [
 	},
 ];
 
-var INLINE_STYLES = [
+const INLINE_STYLES = [
 	{ label: "Bold", style: "BOLD", icon: <FormatBoldIcon /> },
 	{ label: "Italic", style: "ITALIC", icon: <FormatItalicIcon /> },
 	{ label: "Underline", style: "UNDERLINE", icon: <FormatUnderlinedIcon /> },
@@ -58,8 +53,8 @@ const InlineStyleControls = (props) => {
 	return (
 		<div className="RichEditor-controls">
 			{INLINE_STYLES.map((type) => (
-				<div>
-					<IconButton className={classes.iconBtn} key={type.label}>
+				<div key={type.label}>
+					<IconButton className={classes.iconBtn}>
 						{type.icon}
 						<StyleButton
 							active={currentStyle.has(type.style)}
@@ -127,8 +122,8 @@ const BlockStyleControls = (props) => {
 	return (
 		<div className="RichEditor-controls">
 			{BLOCK_TYPES.map((type) => (
-				<div>
-					<IconButton className={classes.iconBtn} key={type.label}>
+				<div key={type.label}>
+					<IconButton className={classes.iconBtn}>
 						{type.icon}
 						<StyleButton
 							active={type.style === blockType}
@@ -143,7 +138,7 @@ const BlockStyleControls = (props) => {
 	);
 };
 
-class PrismEditorExample extends React.Component {
+class PrismEditor extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -152,22 +147,7 @@ class PrismEditorExample extends React.Component {
 		});
 		var contentState = convertFromRaw({
 			entityMap: {},
-			blocks:
-				// this.props.code,
-				[ { key: "60cce", text: "module.exports = Task;", type: "code-block", depth: 0, inlineStyleRanges: Array(0) }],
-			// {
-			// 	type: "header-one",
-			// 	text: "Demo for draft-js-prism",
-			// },
-			// {
-			// 	type: "unstyled",
-			// 	text: "Type your code here:",
-			// },
-			// {
-			// 	type: "code-block",
-			// 	text: 'var message = "This is awesome!";',
-			// },
-			// ]
+			blocks: this.props.code,
 		});
 
 		this.state = {
@@ -177,9 +157,8 @@ class PrismEditorExample extends React.Component {
 		this.focus = () => this.refs.editor.focus();
 		this.onChange = (editorState) => {
 			this.setState({ editorState });
-
-			var contentState = editorState.getCurrentContent();
-			var converted = convertToRaw(contentState);
+			const contentState = editorState.getCurrentContent();
+			const converted = convertToRaw(contentState);
 			this.props.sendCode(converted.blocks);
 		};
 
@@ -214,17 +193,8 @@ class PrismEditorExample extends React.Component {
 
 	render() {
 		const { editorState } = this.state;
-
-		// If the user changes block type before entering any text, we can
-		// either style the placeholder or hide it. Let's just hide it now.
 		let className = "RichEditor-editor";
-		var contentState = editorState.getCurrentContent();
-		var converted = convertToRaw(contentState);
-		var contentStateJSON = JSON.stringify(convertToRaw(contentState));
-
-		// console.log("contenetstate", contentState, editorState);
-		// console.log("converting: blocks", converted.blocks);
-		// console.log("JSON", contentStateJSON);
+		const contentState = editorState.getCurrentContent();
 
 		if (!contentState.hasText()) {
 			if (contentState.getBlockMap().first().getType() !== "unstyled") {
@@ -249,7 +219,7 @@ class PrismEditorExample extends React.Component {
 						editorState={editorState}
 						handleKeyCommand={this.handleKeyCommand}
 						onChange={this.onChange}
-						// placeholder="Enter your code here..."
+						placeholder="Enter your code:"
 						ref="editor"
 						spellCheck={true}
 					/>
@@ -259,4 +229,4 @@ class PrismEditorExample extends React.Component {
 	}
 }
 
-export default PrismEditorExample;
+export default PrismEditor;

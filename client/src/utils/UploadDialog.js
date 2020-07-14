@@ -14,9 +14,7 @@ import {
 	FormControl,
 } from "@material-ui/core";
 
-import Editor from "./Editor";
-import PrismEditor from "./PrismEditorExample";
-import PrismDemo from "./PrismDemo";
+import PrismDraft from "./PrismDraft";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -80,8 +78,11 @@ export default function UploadDialog() {
 	const handleSubmit = async () => {
 		setOpen(false);
 		const snippet = { language, title, code };
-		console.log(snippet);
+		console.log("snippet: ", snippet);
 		await axios.post("/api/users/upload", snippet);
+		setLanguage("");
+		setTitle("");
+		setCode("");
 	};
 
 	const handleChangeLang = (event) => {
@@ -92,9 +93,8 @@ export default function UploadDialog() {
 		setTitle(event.target.value);
 	};
 
-	const handleChangeCode = (text) => {
-		setCode(text);
-		console.log("from UploadDialog", text);
+	const handleChangeCode = (content) => {
+		setCode(content);
 	};
 
 	return (
@@ -137,9 +137,8 @@ export default function UploadDialog() {
 					</FormControl>
 				</DialogContent>
 
-				{/* <Editor sendCode={handleChangeCode} language={language} /> */}
-				<PrismDemo language={language} sendCode={handleChangeCode} code={[]} />
-				{/* <PrismEditor /> */}
+				<PrismDraft language={language} sendCode={handleChangeCode} code={[]} />
+
 				<DialogActions>
 					<Button onClick={handleSubmit} className={classes.submitBtn}>
 						Submit
