@@ -19,4 +19,11 @@ router.post("/upload", auth, balance, async (req, res) => {
 	}
 });
 
+/////// Retrieve code route handler ///////
+router.get("/code", auth, async (req, res) => {
+	const snippets = await Snippet.find({ author: req.user._id }).exec();
+	snippets.forEach(snippet => console.log(snippet.code));
+	res.send(snippets);
+});
+
 module.exports = router;

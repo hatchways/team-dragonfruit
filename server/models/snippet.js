@@ -2,9 +2,8 @@ const mongoose = require("mongoose");
 
 const snippetSchema = new mongoose.Schema({
 	code: {
-		type: String,
+		type: Array,
 		required: true,
-		
 	},
 	author: {
 		type: mongoose.Schema.Types.ObjectId,

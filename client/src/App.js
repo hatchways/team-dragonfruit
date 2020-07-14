@@ -1,6 +1,6 @@
 import React from "react";
 import { MuiThemeProvider } from "@material-ui/core";
-import { BrowserRouter, Switch } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import { theme } from "./themes/theme";
 import Profile from "./pages/Profile";
@@ -15,6 +15,8 @@ import AuthProvider from "./context/AuthContext";
 import OnboardingPage from "./pages/OnboardingPage";
 import "./App.css";
 
+import CodeEditor from './utils/CodeEditor';
+
 function App() {
 	return (
 		<MuiThemeProvider theme={theme}>
@@ -28,6 +30,7 @@ function App() {
 						<PrivateRoute path="/checkout" component={Checkout} />
 						<PrivateRoute path="/reviews" exact component={Reviews} />
 						<PrivateRoute path="/onboarding" exact component={OnboardingPage} />
+						<Route path="/test" exact component={CodeEditor} />
 					</Switch>
 				</BrowserRouter>
 			</AuthProvider>

@@ -16,7 +16,7 @@ import {
 
 import Editor from "./Editor";
 import PrismEditor from "./PrismEditorExample";
-
+import PrismDemo from "./PrismDemo";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -94,6 +94,7 @@ export default function UploadDialog() {
 
 	const handleChangeCode = (text) => {
 		setCode(text);
+		console.log("from UploadDialog", text);
 	};
 
 	return (
@@ -117,7 +118,7 @@ export default function UploadDialog() {
 						type="text"
 						variant="outlined"
 						onChange={handleChangeTitle}
-						style={{ width: "70%", margin: "0 auto" }}
+						style={{ width: "60%", margin: "0 auto" }}
 					/>
 
 					<FormControl variant="outlined">
@@ -136,7 +137,8 @@ export default function UploadDialog() {
 					</FormControl>
 				</DialogContent>
 
-				<Editor sendCode={handleChangeCode} language={language} />
+				{/* <Editor sendCode={handleChangeCode} language={language} /> */}
+				<PrismDemo language={language} sendCode={handleChangeCode} code={[]} />
 				{/* <PrismEditor /> */}
 				<DialogActions>
 					<Button onClick={handleSubmit} className={classes.submitBtn}>

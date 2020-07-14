@@ -88,16 +88,7 @@ class MyEditor extends React.Component {
 							name: "code-block",
 							icon: <CodeIcon />,
 							type: "block",
-							blockWrapper: (
-								<CodeEditor
-									language={this.state.language}
-									text={() => this.state.editorState.getCurrentContent()}
-								/>
-							),
-							// onClick: (editorState) => {
-							// 	const code = editorState.getSelection();
-							// 	console.log(code);
-							// },
+							blockWrapper: <CodeEditor />,
 						},
 					]}
 				/>
