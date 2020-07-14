@@ -19,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     background: '#ffffff',
     paddingTop: '3rem',
-    height: '100vh',
+    height: 'auto',
+    minHeight: '100vh',
   },
   title: {
     fontSize: '1.5rem',
@@ -44,12 +45,24 @@ const useStyles = makeStyles((theme) => ({
 const ReviewList = ({ title }) => {
   const classes = useStyles();
 
-  const { reviews } = useContext(AuthContext);
+  const { user, reviews } = useContext(AuthContext);
+
+  // get the reviews needed
+  const requestedReviews = reviews.filter(
+    (review) => review.author === user._id
+  );
+  const receivedReviews = reviews.filter(
+    (review) => review.author !== user._id
+  );
+
+  // total of each kind of reviews
+  const requestedReviewNum = requestedReviews.length;
+  const receivedReviewNum = receivedReviews.length;
 
   return (
     <Container className={classes.root}>
       <Typography align='center' className={classes.title}>
-        {title}
+        {title}{' '}
         <Box component='span' className={classes.total}>
           ({reviews.length})
         </Box>
@@ -61,15 +74,15 @@ const ReviewList = ({ title }) => {
           aria-controls='panel1a-content'
           id='panel1a-header'
         >
-          <Typography className={classes.heading}>Requested</Typography>
+          <Typography className={classes.heading}>
+            Requested ({requestedReviewNum})
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <div className={classes.list}>
-            {reviews
-              .filter((review) => review.type === 'request')
-              .map((review) => (
-                <Review key={review.id} review={review} />
-              ))}
+            {requestedReviews.map((review) => (
+              <Review review={review} key={review.id} />
+            ))}
           </div>
         </AccordionDetails>
       </Accordion>
@@ -80,15 +93,15 @@ const ReviewList = ({ title }) => {
           aria-controls='panel1a-content'
           id='panel1a-header'
         >
-          <Typography className={classes.heading}>Received</Typography>
+          <Typography className={classes.heading}>
+            Received ({receivedReviewNum})
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <div className={classes.list}>
-            {reviews
-              .filter((review) => review.type === 'receive')
-              .map((review) => (
-                <Review key={review.id} review={review} />
-              ))}
+            {receivedReviews.map((review) => (
+              <Review review={review} key={review.id} />
+            ))}
           </div>
         </AccordionDetails>
       </Accordion>

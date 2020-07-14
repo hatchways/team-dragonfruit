@@ -5,7 +5,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { theme } from './themes/theme';
 import Profile from './pages/Profile';
 import Reviews from './pages/Reviews';
-import SendReview from './pages/SendReview';
 import Balance from './pages/Balance';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -27,8 +26,7 @@ function App() {
             <PrivateRoute path='/' exact component={Profile} />
             <PrivateRoute path='/balance' component={Balance} />
             <PrivateRoute path='/checkout' component={Checkout} />
-            <Route path='/reviews' exact component={Reviews} />
-            <Route path='/sendreview' exact component={SendReview} />
+            <PrivateRoute path='/reviews' exact component={Reviews} />
             <PrivateRoute path='/onboarding' exact component={OnboardingPage} />
           </Switch>
         </BrowserRouter>

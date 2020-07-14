@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Box, Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+
+import { AuthContext } from '../context/AuthContext';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -36,8 +38,14 @@ const useStyles = makeStyles((theme) => ({
 const Review = ({ review }) => {
   const classes = useStyles();
 
+  const { setSelectedReview } = useContext(AuthContext);
+
+  const handleSelected = () => {
+    setSelectedReview(review);
+  };
+
   return (
-    <Box className={classes.card}>
+    <Box className={classes.card} onClick={handleSelected}>
       <Typography variant='h6' className={classes.title}>
         {review.title}
       </Typography>
