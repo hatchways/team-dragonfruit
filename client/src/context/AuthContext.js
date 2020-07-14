@@ -10,6 +10,7 @@ const reviewData = [
   {
     id: 1,
     title: 'Animation',
+    type: 'request',
     author: 'Robert',
     code: 'abcd code',
     review: 'review',
@@ -18,7 +19,8 @@ const reviewData = [
   },
   {
     id: 2,
-    title: 'Application',
+    title: 'Stuck with component',
+    type: 'receive',
     author: 'Robert 12',
     code: 'abcd code',
     review: 'review',
