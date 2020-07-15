@@ -2,9 +2,8 @@ const mongoose = require("mongoose");
 
 const snippetSchema = new mongoose.Schema({
 	code: {
-		type: String,
+		type: Array,
 		required: true,
-		
 	},
 	author: {
 		type: mongoose.Schema.Types.ObjectId,
@@ -17,7 +16,6 @@ const snippetSchema = new mongoose.Schema({
 	},
 	title: {
 		type: String,
-		required: true,
 		default: "Unknown",
 	},
 	language: {
