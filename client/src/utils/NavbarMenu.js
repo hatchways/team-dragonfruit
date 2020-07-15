@@ -50,24 +50,27 @@ export default function SimpleMenu(props) {
 		setAnchorEl(event.currentTarget);
 	};
 
-  const handleLogout = async () => {
-    setAnchorEl(null);
-    await axios.post('/api/users/logout');
-    localStorage.removeItem('user');
-    window.location.replace('login');
-  };
+	const handleLogout = async () => {
+		setAnchorEl(null);
+		await axios.post("/api/users/logout");
+		localStorage.removeItem("user");
+		window.location.replace("login");
+	};
 
-  return (
-    <div>
-      <Button
-        aria-controls='simple-menu'
-        aria-haspopup='true'
-        onClick={handleClick}
-        className={classes.menu}
-      >
-        {props.title}
-        <ArrowDropDownIcon className={classes.icon} />
-      </Button>
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+
+	return (
+		<div>
+			<Button
+				aria-controls="simple-menu"
+				aria-haspopup="true"
+				onClick={handleClick}
+				className={classes.menu}>
+				{props.title}
+				<ArrowDropDownIcon className={classes.icon} />
+			</Button>
 
 			<Menu
 				id="simple-menu"
