@@ -147,7 +147,7 @@ class PrismEditor extends React.Component {
 		});
 		var contentState = convertFromRaw({
 			entityMap: {},
-			blocks: this.props.code,
+			blocks: [],
 		});
 
 		this.state = {
@@ -219,7 +219,7 @@ class PrismEditor extends React.Component {
 						editorState={editorState}
 						handleKeyCommand={this.handleKeyCommand}
 						onChange={this.onChange}
-						placeholder="Enter your code:"
+						placeholder="Enter your text:"
 						ref="editor"
 						spellCheck={true}
 					/>

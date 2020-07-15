@@ -94,7 +94,6 @@ export default function UploadDialog() {
 		e.preventDefault();
 		setErrorData(validate(data));
 		setIsSubmitting(true);
-
 	};
 
 	useEffect(() => {
@@ -185,11 +184,7 @@ export default function UploadDialog() {
 						{errorData.code}
 					</Typography>
 				) : null}
-				<PrismDraft
-					language={data.language}
-					sendCode={handleChangeCode}
-					code={[]}
-				/>
+				<PrismDraft language={data.language} sendCode={handleChangeCode} />
 
 				<DialogActions>
 					<Button
