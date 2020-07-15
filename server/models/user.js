@@ -32,10 +32,12 @@ const userSchema = new mongoose.Schema({
 			language: {
 				type: String,
 				required: true,
+				index: true,
 			},
 			level: {
 				type: Number,
 				required: true,
+				index: true,
 			},
 		},
 	],
