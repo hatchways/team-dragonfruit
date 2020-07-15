@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Typography, Paper, Button } from "@material-ui/core";
+import { Typography, Paper, Button, Dialog } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import { IconButton } from "@material-ui/core";
@@ -61,11 +61,16 @@ let Levels = [];
 
 const Onboarding = () => {
 	const classes = useStyles();
-	const [selectLanguages, setSelectLanguages] = React.useState([]);
+	const history = useHistory();
 
+	const [open, setOpen] = React.useState(true);
+	const [selectLanguages, setSelectLanguages] = React.useState([]);
 	const [exp, setExp] = React.useState({});
 
-	const history = useHistory();
+	const handleClose = () => {
+		setOpen(false);
+		history.push("/");
+	};
 
 	const removeLanguage = (name) => {
 		let selectedLangs = [...selectLanguages];
@@ -121,35 +126,40 @@ const Onboarding = () => {
 	};
 
 	return (
-		<form>
-			<Paper className={classes.registerContainer}>
-				<Typography variant="h3" className={classes.title}>
-					Add your experience here:
-				</Typography>
+		<Dialog open={open} fullWidth maxWidth="md">
+			<form>
+				<Paper className={classes.registerContainer}>
+					<Typography variant="h3" className={classes.title}>
+						Add your experience here:
+					</Typography>
 
-				{selectLanguages.map((language) => language.item)}
+					{selectLanguages.map((language) => language.item)}
 
-				<div style={{ display: "flex" }}>
-					<IconButton
-						className={classes.iconBtn}
-						label="Add"
-						onClick={addLanguage}>
-						<AddCircleOutlineIcon color="primary" />
-						<Typography color="primary">Add one language</Typography>
-					</IconButton>
-				</div>
+					<div style={{ display: "flex" }}>
+						<IconButton
+							className={classes.iconBtn}
+							label="Add"
+							onClick={addLanguage}>
+							<AddCircleOutlineIcon color="primary" />
+							<Typography color="primary">Add one language</Typography>
+						</IconButton>
+					</div>
 
-				<Button
-					type="submit"
-					variant="contained"
-					color="primary"
-					disableElevation
-					onClick={handleSubmit}
-					className={classes.registerBtn}>
-					Submit
-				</Button>
-			</Paper>
-		</form>
+					<Button
+						type="submit"
+						variant="contained"
+						color="primary"
+						disableElevation
+						onClick={handleSubmit}
+						className={classes.registerBtn}>
+						Submit
+					</Button>
+					<Button onClick={handleClose} color="primary">
+						Close
+					</Button>
+				</Paper>
+			</form>
+		</Dialog>
 	);
 };
 
