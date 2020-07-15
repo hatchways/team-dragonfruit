@@ -20,9 +20,8 @@ router.post("/upload", auth, balance, async (req, res) => {
 });
 
 /////// Retrieve code route handler ///////
-router.get("/code", auth, async (req, res) => {
-	const snippets = await Snippet.find({ author: req.user._id }).exec();
-	snippets.forEach(snippet => console.log(snippet.code));
+router.get("/snippet", auth, async (req, res) => {
+	const snippets = await Snippet.find({ author: req.user._id });
 	res.send(snippets);
 });
 
