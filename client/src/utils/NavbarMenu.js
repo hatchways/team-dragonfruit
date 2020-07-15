@@ -50,6 +50,7 @@ export default function SimpleMenu(props) {
 		setAnchorEl(event.currentTarget);
 	};
 
+
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
@@ -71,6 +72,7 @@ export default function SimpleMenu(props) {
 				{props.title}
 				<ArrowDropDownIcon className={classes.icon} />
 			</Button>
+
 
 			<Menu
 				id="simple-menu"
