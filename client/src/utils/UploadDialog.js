@@ -64,6 +64,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UploadDialog() {
 	const [open, setOpen] = React.useState(false);
+	// const [language, setLanguage] = React.useState("");
+	// const [title, setTitle] = React.useState("");
 	const [code, setCode] = React.useState("");
 	const classes = useStyles();
 
