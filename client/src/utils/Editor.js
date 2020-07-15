@@ -2,8 +2,8 @@
 // The sendCode prop should be set properly according to the parent component //
 // that is responsible for handling the editor content //
 
-// <PrismDraft> is an editor with toolbar
-// <CodeReader> is a renderer in read-only mode 
+// <PrismDraft> is an editor with toolbar //
+// <CodeReader> is a renderer in read-only mode //
 
 import axios from "axios";
 import React from "react";
@@ -17,7 +17,7 @@ class Editor extends React.Component {
 		const response = await axios.get("/api/users/snippet");
 		console.log("fetched from db: ", response.data);
 
-		// Some hardcoded example 
+		// Some hardcoded example
 		this.setState({ code: response.data[4].code });
 	}
 	render() {
