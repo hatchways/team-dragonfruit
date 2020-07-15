@@ -2,6 +2,9 @@ import React from "react";
 import { Typography, Box, Select } from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/styles";
+import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import { IconButton } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
 	text: {
@@ -17,27 +20,45 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		justifyContent: "space-between",
 	},
+	iconDone: {
+		color: "green !important",
+	},
+	iconRemove: {
+		color: "red !important",
+		marginRight: "-25px",
+	},
 }));
 
 const LanguageSelector = (props) => {
 	const classes = useStyles();
-	const [language, setLanguage] = React.useState([]);
-	const [level, setLevel] = React.useState([]);
+	const [language, setLanguage] = React.useState("");
+	const [level, setLevel] = React.useState("");
 
+	
 	const handleChangeLang = (e) => {
 		const lang = e.target.value;
 		setLanguage(lang);
-		props.getLang(lang);
+		console.log(language);
+		
+		// props.getLang(lang);
 	};
 
 	const handleChangeLevel = (e) => {
 		const lev = e.target.value;
 		setLevel(lev);
-		props.getLevel(lev);
+		console.log(level);
+		
+		// props.getLevel(lev);
 	};
 
 	return (
 		<Box className={classes.formControl}>
+			<IconButton
+				className={classes.iconRemove}
+				onClick={() => props.remove(language)}>
+				<RemoveCircleOutlineIcon fontSize="large" />
+			</IconButton>
+
 			<Typography className={classes.text}>Language:</Typography>
 
 			<Select
@@ -64,6 +85,17 @@ const LanguageSelector = (props) => {
 				<MenuItem value={2}>Intermediate</MenuItem>
 				<MenuItem value={3}>Advanced</MenuItem>
 			</Select>
+
+			<IconButton
+				className={classes.iconDone}
+				onClick={() => {
+					props.sendState(language, level);
+					setLevel("");
+					setLanguage("");
+				}}>
+				<CheckCircleOutlineIcon fontSize="large" />
+				Add
+			</IconButton>
 		</Box>
 	);
 };

@@ -5,6 +5,11 @@ const snippetSchema = new mongoose.Schema({
 		type: Array,
 		required: true,
 	},
+	status: {
+		type: String,
+		enum: ["pending", "in-review", "completed"],
+		default: "pending",
+	},
 	author: {
 		type: mongoose.Schema.Types.ObjectId,
 		required: true,
@@ -21,6 +26,25 @@ const snippetSchema = new mongoose.Schema({
 	language: {
 		type: String,
 		required: true,
+	},
+	comments: {
+		type: String,
+	},
+	rating: {
+		type: Number,
+		min: 0,
+		max: 5,
+	},
+	date_requested: {
+		type: Date,
+		required: true,
+		default: Date.now,
+	},
+	date_submitted: {
+		type: Date,
+	},
+	date_accepted: {
+		type: Date,
 	},
 });
 
