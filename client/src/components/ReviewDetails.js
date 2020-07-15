@@ -154,69 +154,6 @@ const ReviewDetails = () => {
               {selectedReview.date}
             </Typography>
           </Box>
-          <Box className={classes.avatarHeader}>
-            <Avatar src={img1} className={classes.avatarImg} />
-            <Box>
-              <Typography className={classes.posted}>Posted by</Typography>
-              <Typography className={classes.authorName}>
-                Robert Clark
-              </Typography>
-            </Box>
-          </Box>
-        </Container>
-        <Divider />
-
-        <Container>
-          <TextareaAutosize
-            rowsMax={10}
-            rowsMin={6}
-            placeholder='Code To Review'
-            className={classes.code}
-          />
-        </Container>
-
-        <Container>
-          <TextareaAutosize
-            rowsMax={10}
-            rowsMin={6}
-            placeholder='Your Review'
-            className={classes.review}
-          />
-        </Container>
-        <Container className={classes.reviewFooter}>
-          <Box className={classes.avatarHeader}>
-            <Avatar src={img2} className={classes.avatarImg} />
-            <Box>
-              <Typography className={classes.authorName}>John Doe</Typography>
-              <Typography className={classes.position}>
-                Senior Developer
-              </Typography>
-            </Box>
-          </Box>
-          <Button
-            type='button'
-            variant='contained'
-            disableElevation
-            color='primary'
-            className={classes.sendBtn}
-          >
-            Submit review
-          </Button>
-        </Container>
-      </Paper>
-    );
-  }
-  // for received
-  else {
-    return (
-      <Paper className={classes.root}>
-        <Container className={classes.header}>
-          <Box>
-            <Typography variant='h6'>{selectedReview.title}</Typography>
-            <Typography className={classes.date}>
-              {selectedReview.date}
-            </Typography>
-          </Box>
           <Box>
             <form className={classes.ratingForm}>
               <Box className={classes.ratingTitle}>
@@ -274,6 +211,69 @@ const ReviewDetails = () => {
               className={classes.code}
             />
           </Box>
+        </Container>
+      </Paper>
+    );
+  }
+  // for received
+  else {
+    return (
+      <Paper className={classes.root}>
+        <Container className={classes.header}>
+          <Box>
+            <Typography variant='h6'>{selectedReview.title}</Typography>
+            <Typography className={classes.date}>
+              {selectedReview.date}
+            </Typography>
+          </Box>
+          <Box className={classes.avatarHeader}>
+            <Avatar src={img1} className={classes.avatarImg} />
+            <Box>
+              <Typography className={classes.posted}>Posted by</Typography>
+              <Typography className={classes.authorName}>
+                Robert Clark
+              </Typography>
+            </Box>
+          </Box>
+        </Container>
+        <Divider />
+
+        <Container>
+          <TextareaAutosize
+            rowsMax={10}
+            rowsMin={6}
+            placeholder='Code To Review'
+            className={classes.code}
+          />
+        </Container>
+
+        <Container>
+          <TextareaAutosize
+            rowsMax={10}
+            rowsMin={6}
+            placeholder='Your Review'
+            className={classes.review}
+          />
+        </Container>
+        <Container className={classes.reviewFooter}>
+          <Box className={classes.avatarHeader}>
+            <Avatar src={img2} className={classes.avatarImg} />
+            <Box>
+              <Typography className={classes.authorName}>John Doe</Typography>
+              <Typography className={classes.position}>
+                Senior Developer
+              </Typography>
+            </Box>
+          </Box>
+          <Button
+            type='button'
+            variant='contained'
+            disableElevation
+            color='primary'
+            className={classes.sendBtn}
+          >
+            Submit review
+          </Button>
         </Container>
       </Paper>
     );
