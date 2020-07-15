@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const snippetSchema = new mongoose.Schema({
+
   code: {
     type: String,
     required: true,
@@ -47,6 +48,7 @@ const snippetSchema = new mongoose.Schema({
   date_accepted: {
     type: Date,
   },
+
 });
 
 const Snippet = mongoose.model('Snippet', snippetSchema);
