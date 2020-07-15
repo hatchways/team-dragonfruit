@@ -43,6 +43,7 @@ class CodeReader extends React.Component {
 		var decorator = new PrismDecorator({
 			defaultSyntax: "javascript",
 		});
+
 		var contentState = convertFromRaw({
 			entityMap: {},
 			blocks: this.props.code,
@@ -67,6 +68,21 @@ class CodeReader extends React.Component {
 
 	componentDidMount() {
 		Prism.highlightAll();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.code !== this.props.code) {
+			var decorator = new PrismDecorator({
+				defaultSyntax: "javascript",
+			});
+			var contentState = convertFromRaw({
+				entityMap: {},
+				blocks: this.props.code,
+			});
+			this.setState({
+				editorState: EditorState.createWithContent(contentState, decorator),
+			});
+		}
 	}
 
 	_handleKeyCommand(command) {
