@@ -10,20 +10,42 @@ const reviewData = [
   {
     id: 1,
     title: 'Animation',
-    author: 'Robert',
+    type: 'request',
+    author: '5f033469193d9013749866a2',
     code: 'abcd code',
     review: 'review',
-    reviewer: 'John',
+    reviewer: '5f0dc24b5f95d207fc196b79',
     date: 'Jun 20, 2020',
   },
   {
     id: 2,
-    title: 'Application',
-    author: 'Robert 12',
+    title: 'Stuck with component',
+    type: 'receive',
+    author: '5f0dc24b5f95d207fc196b79',
     code: 'abcd code',
     review: 'review',
-    reviewer: 'John 12',
+    reviewer: '5f033469193d9013749866a2',
     date: 'Jun 15, 2020',
+  },
+  {
+    id: 3,
+    title: 'Latest Request',
+    type: 'request',
+    author: '5f033469193d9013749866a2',
+    code: 'abcd code',
+    review: 'review',
+    reviewer: '5f0dc24b5f95d207fc196b79',
+    date: 'Jun 20, 2020',
+  },
+  {
+    id: 4,
+    title: 'Latest Request 4',
+    type: 'request',
+    author: '5f033469193d9013749866a2',
+    code: 'abcd code',
+    review: 'review',
+    reviewer: '5f0dc24b5f95d207fc196b79',
+    date: 'Jun 20, 2020',
   },
 ];
 
@@ -33,6 +55,7 @@ const AuthProvider = ({ children }) => {
   const [topupAmount, setTopupAmount] = useState(0);
   const [amount, setAmount] = useState(0);
   const [reviews, setReviews] = useState(reviewData);
+  const [selectedReview, setSelectedReview] = useState(null);
 
   useEffect(() => {
     UserService.getUser().then((data) => setUser(data));
@@ -54,6 +77,8 @@ const AuthProvider = ({ children }) => {
         setAmount,
         reviews,
         setReviews,
+        selectedReview,
+        setSelectedReview,
       }}
     >
       {children}
