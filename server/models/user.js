@@ -29,6 +29,7 @@ const userSchema = new mongoose.Schema({
 	experience: {
 		type: Map,
 		of: Number,
+		default: {},
 		index: true,
 	},
 	profileCompleted: {

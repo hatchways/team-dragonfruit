@@ -12,7 +12,8 @@ const router = express.Router();
 
 /////// User sign up route handler ///////
 router.post("/signup", async (req, res) => {
-	const user = new User(req.body);
+	const { name, email, password } = req.body;
+	const user = new User({ name, email, password });
 
 	try {
 		await user.save();
@@ -126,9 +127,9 @@ router.post("/experience", auth, async (req, res) => {
 		user.experience.set(key, value);
 	}
 
-	// user.profileCompleted = true;
-	// await user.save();
-	// res.send(user);
+	user.profileCompleted = true;
+	await user.save();
+	res.send(user);
 });
 
 module.exports = router;
