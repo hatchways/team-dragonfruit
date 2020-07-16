@@ -118,9 +118,10 @@ const Onboarding = () => {
 		// testExp.set("Ruby", 2);
 		const testExp = {
 			Java: 1,
-			Ruby: 2,
-			Python: 3,
+			Ruby: 3,
+			Python: 2,
 		};
+
 		console.log(testExp);
 		await axios.post("/api/users/experience", testExp);
 		// history.push("/");
