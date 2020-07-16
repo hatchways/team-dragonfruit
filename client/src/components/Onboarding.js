@@ -111,9 +111,19 @@ const Onboarding = () => {
 		// 	const newObj = { language: lang, level: Levels[i] };
 		// 	userExp.push(newObj);
 		// });
-		console.log(userExp);
-		await axios.post("/api/users/experience", { userExp });
-		history.push("/");
+
+		//////// TEST ///////////
+		// const testExp = new Map();
+		// testExp.set("JavaScript", 1);
+		// testExp.set("Ruby", 2);
+		const testExp = {
+			Java: 1,
+			Ruby: 2,
+			Python: 3,
+		};
+		console.log(testExp);
+		await axios.post("/api/users/experience", testExp);
+		// history.push("/");
 	};
 
 	const getLang = (lang) => {

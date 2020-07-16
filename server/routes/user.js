@@ -121,10 +121,14 @@ router.get("/review", auth, async (req, res) => {
 /////// Update user experience route handler ///////
 router.post("/experience", auth, async (req, res) => {
 	const user = await User.findById(req.user._id);
-	user.experience = req.body.userExp;
-	user.profileCompleted = true;
-	await user.save();
-	res.send(user);
+	console.log(req.body);
+	for (let [key, value] of Object.entries(req.body)) {
+		user.experience.set(key, value);
+	}
+
+	// user.profileCompleted = true;
+	// await user.save();
+	// res.send(user);
 });
 
 module.exports = router;
