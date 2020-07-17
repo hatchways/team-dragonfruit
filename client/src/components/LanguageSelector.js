@@ -32,6 +32,7 @@ const LanguageSelector = (props) => {
 	const classes = useStyles();
 	const [language, setLanguage] = React.useState("");
 	const [level, setLevel] = React.useState("");
+	const [userExp, setUserExp] = React.useState([]);
 
 	const handleChangeLang = (e) => {
 		const lang = e.target.value;
@@ -41,6 +42,14 @@ const LanguageSelector = (props) => {
 	const handleChangeLevel = (e) => {
 		const lev = e.target.value;
 		setLevel(lev);
+	};
+
+	const handleAdd = () => {
+		if (language !== "" && level !== "") {
+			let newExp = { [language]: level };
+			props.sendExp(newExp);
+			setUserExp(userExp.concat(newExp));
+		}
 	};
 
 	return (
@@ -75,7 +84,7 @@ const LanguageSelector = (props) => {
 			<IconButton
 				className={classes.iconDone}
 				onClick={() => {
-					props.sendExp(language, level);
+					handleAdd();
 					setLevel("");
 					setLanguage("");
 				}}>

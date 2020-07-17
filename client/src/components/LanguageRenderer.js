@@ -1,50 +1,37 @@
 import React from "react";
-import { TextField } from "@material-ui/core";
+import { TextField, IconButton, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
-import InputAdornment from "@material-ui/core/InputAdornment";
 
 const useStyles = makeStyles((theme) => ({
-	inputIcon: {
+	container: {
+		margin: "1rem auto",
+	},
+	iconBtn: {
 		color: "red",
+		marginRight: ".5rem",
+		borderRadius: "2rem",
 	},
 }));
 
-let value;
 const LanguageRenderer = (props) => {
 	const classes = useStyles();
 
-	const exps = props.experience.map((el) => {
-		if (el !== {}) {
-			if (Object.values(el)[0] === 1) {
-				value = "Beginner";
-			} else if (Object.values(el)[0] === 2) {
-				value = "Intermediate";
-			} else {
-				value = "Advanced";
-			}
-			return (
-				<div key={Object.keys(el)[0]}>
-					<TextField
-						disabled={true}
-						variant="outlined"
-						value={`${Object.keys(el)[0]}: ${value}`}
-						onClick={(e) => props.remove(e.target.value)}
-						InputProps={{
-							startAdornment: (
-								<InputAdornment position="start" className={classes.inputIcon}>
-									<RemoveCircleOutlineIcon style={{ color: "red" }} /> Remove
-								</InputAdornment>
-							),
-						}}
-					/>
-				</div>
-			);
-		} else {
-			return <div></div>;
-		}
-	});
-	return <div>{exps}</div>;
+	return (
+		<div key={props.language} className={classes.container}>
+			<IconButton
+				onClick={(e) => props.removeLanguage(props.language)}
+				className={classes.iconBtn}>
+				<RemoveCircleOutlineIcon />
+				<Typography variant="subtitle2">Remove</Typography>
+			</IconButton>
+			<TextField
+				readOnly={true}
+				variant="outlined"
+				value={`${props.language}:  ${props.level}`}
+			/>
+		</div>
+	);
 };
 
 export default LanguageRenderer;
