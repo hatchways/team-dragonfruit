@@ -15,6 +15,8 @@ import AuthProvider from "./context/AuthContext";
 import OnboardingPage from "./pages/OnboardingPage";
 import "./App.css";
 
+
+
 function App() {
 	return (
 		<MuiThemeProvider theme={theme}>

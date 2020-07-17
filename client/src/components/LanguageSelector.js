@@ -34,30 +34,27 @@ const LanguageSelector = (props) => {
 	const [language, setLanguage] = React.useState("");
 	const [level, setLevel] = React.useState("");
 
-	
 	const handleChangeLang = (e) => {
 		const lang = e.target.value;
 		setLanguage(lang);
-		console.log(language);
 		
-		// props.getLang(lang);
+
+		
 	};
 
 	const handleChangeLevel = (e) => {
 		const lev = e.target.value;
 		setLevel(lev);
-		console.log(level);
 		
-		// props.getLevel(lev);
 	};
 
 	return (
 		<Box className={classes.formControl}>
-			<IconButton
+			{/* <IconButton
 				className={classes.iconRemove}
 				onClick={() => props.remove(language)}>
 				<RemoveCircleOutlineIcon fontSize="large" />
-			</IconButton>
+			</IconButton> */}
 
 			<Typography className={classes.text}>Language:</Typography>
 
@@ -89,7 +86,7 @@ const LanguageSelector = (props) => {
 			<IconButton
 				className={classes.iconDone}
 				onClick={() => {
-					props.sendState(language, level);
+					props.sendExp(language, level);
 					setLevel("");
 					setLanguage("");
 				}}>
