@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	title: {
 		marginBottom: "3rem",
+		color: theme.palette.primary.main,
 	},
 	registerBtn: {
 		padding: "0.7rem 4rem",
@@ -58,9 +59,9 @@ const useStyles = makeStyles((theme) => ({
 		background: "turquoise",
 		margin: "20px",
 	},
-	iconRemove: {
-		color: "red !important",
-		marginRight: "-25px",
+	closeBtn: {
+		border: "1px solid #43dd9a",
+		borderRadius: "2rem",
 	},
 }));
 
@@ -94,17 +95,17 @@ const NewOnboard = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		console.log(userExp);
-		// await axios.post("/api/users/experience", { userExp });
-		// setOpen(false);
-		// history.push("/");
+		await axios.post("/api/users/experience", userExp);
+		setOpen(false);
+		history.push("/");
 	};
 
 	return (
 		<Dialog open={open} fullWidth maxWidth="md">
 			<form>
 				<Paper className={classes.registerContainer}>
-					<Typography variant="h3" className={classes.title}>
-						Add your experience here:
+					<Typography variant="h5" className={classes.title}>
+						Add your experience
 					</Typography>
 
 					<LanguageSelector sendExp={getExp} />
@@ -120,7 +121,10 @@ const NewOnboard = () => {
 						className={classes.registerBtn}>
 						Submit
 					</Button>
-					<Button onClick={handleClose} color="primary">
+					<Button
+						onClick={handleClose}
+						color="primary"
+						className={classes.closeBtn}>
 						Close
 					</Button>
 				</Paper>

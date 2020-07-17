@@ -121,7 +121,11 @@ router.get("/review", auth, async (req, res) => {
 /////// Update user experience route handler ///////
 router.post("/experience", auth, async (req, res) => {
 	const user = await User.findById(req.user._id);
-	user.experience = req.body.userExp;
+	console.log(req.body);
+	req.body.forEach((exp) => {
+		user.experience.set(Object.keys(exp)[0], Object.values(exp)[0]);
+	});
+	// user.experience = req.body.userExp;
 	user.profileCompleted = true;
 	await user.save();
 	res.send(user);

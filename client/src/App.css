@@ -41,3 +41,6 @@ body {
 }
 
 
+.MuiOutlinedInput-inputAdornedStart {
+	cursor: pointer;
+}

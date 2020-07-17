@@ -2,7 +2,6 @@ import React from "react";
 import { Typography, Box, Select } from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/styles";
-import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import { IconButton } from "@material-ui/core";
 
@@ -37,25 +36,15 @@ const LanguageSelector = (props) => {
 	const handleChangeLang = (e) => {
 		const lang = e.target.value;
 		setLanguage(lang);
-		
-
-		
 	};
 
 	const handleChangeLevel = (e) => {
 		const lev = e.target.value;
 		setLevel(lev);
-		
 	};
 
 	return (
 		<Box className={classes.formControl}>
-			{/* <IconButton
-				className={classes.iconRemove}
-				onClick={() => props.remove(language)}>
-				<RemoveCircleOutlineIcon fontSize="large" />
-			</IconButton> */}
-
 			<Typography className={classes.text}>Language:</Typography>
 
 			<Select
@@ -91,7 +80,6 @@ const LanguageSelector = (props) => {
 					setLanguage("");
 				}}>
 				<CheckCircleOutlineIcon fontSize="large" />
-				Add
 			</IconButton>
 		</Box>
 	);
