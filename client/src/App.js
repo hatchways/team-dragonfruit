@@ -1,8 +1,6 @@
-
 import React from "react";
 import { MuiThemeProvider } from "@material-ui/core";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-
 
 import { theme } from "./themes/theme";
 import Profile from "./pages/Profile";
@@ -18,7 +16,6 @@ import OnboardingPage from "./pages/OnboardingPage";
 import "./App.css";
 
 function App() {
-
   return (
     <MuiThemeProvider theme={theme}>
       <AuthProvider>
@@ -29,14 +26,13 @@ function App() {
             <PrivateRoute path='/' exact component={Profile} />
             <PrivateRoute path='/balance' component={Balance} />
             <PrivateRoute path='/checkout' component={Checkout} />
-            <PrivateRoute path='/reviews' exact component={Reviews} />
+            <Route path='/reviews' exact component={Reviews} />
             <PrivateRoute path='/onboarding' exact component={OnboardingPage} />
           </Switch>
         </BrowserRouter>
       </AuthProvider>
     </MuiThemeProvider>
   );
-
 }
 
 export default App;

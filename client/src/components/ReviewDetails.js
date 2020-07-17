@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext } from "react";
 import {
   Paper,
   Container,
@@ -8,119 +8,120 @@ import {
   Avatar,
   TextareaAutosize,
   Button,
-} from '@material-ui/core';
-import Rating from '@material-ui/lab/Rating';
-import { makeStyles } from '@material-ui/core/styles';
+} from "@material-ui/core";
+import Rating from "@material-ui/lab/Rating";
+import { makeStyles } from "@material-ui/core/styles";
+import moment from "moment";
 
-import img1 from '../images/avatar1.png';
-import img2 from '../images/avatar2.png';
+import img1 from "../images/avatar1.png";
+import img2 from "../images/avatar2.png";
 
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from "../context/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '90%',
-    maxWidth: '95%',
-    margin: '2rem auto',
+    width: "90%",
+    maxWidth: "95%",
+    margin: "2rem auto",
   },
   header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    margin: '1.5rem auto',
-    paddingTop: '1.5rem',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    margin: "1.5rem auto",
+    paddingTop: "1.5rem",
   },
   date: {
-    color: '#bababa',
-    fontSize: '0.9rem',
-    fontWeight: '500',
+    color: "#bababa",
+    fontSize: "0.9rem",
+    fontWeight: "500",
   },
   avatarHeader: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
   },
   avatarImg: {
-    margin: '0.5rem',
+    margin: "0.5rem",
   },
   position: {
-    color: '#bababa',
-    fontSize: '0.8rem',
-    fontWeight: '500',
+    color: "#bababa",
+    fontSize: "0.8rem",
+    fontWeight: "500",
   },
   authorName: {
-    fontSize: '0.8rem',
-    fontWeight: 'bold',
-    marginTop: '0',
+    fontSize: "0.8rem",
+    fontWeight: "bold",
+    marginTop: "0",
   },
   ratingBtn: {
-    padding: '0.3rem 0.8rem',
-    borderRadius: '2rem',
-    background: 'turquoise',
-    textTransform: 'capitalize',
-    fontSize: '0.8rem',
-    boxShadow: 'transparent',
-    outline: 'transparent',
-    border: 'transparent',
+    padding: "0.3rem 0.8rem",
+    borderRadius: "2rem",
+    background: "turquoise",
+    textTransform: "capitalize",
+    fontSize: "0.8rem",
+    boxShadow: "transparent",
+    outline: "transparent",
+    border: "transparent",
 
-    '&:hover': {
-      backgroundColor: '#43dd9a',
-      color: '#6E3ADB',
+    "&:hover": {
+      backgroundColor: "#43dd9a",
+      color: "#6E3ADB",
     },
   },
   ratingForm: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '23rem',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "23rem",
   },
   ratingTitle: {
-    fontWeight: 'bold',
-    fontSize: '0.8rem',
+    fontWeight: "bold",
+    fontSize: "0.8rem",
   },
   code: {
-    margin: '1.5rem auto',
-    width: '95%',
-    padding: '1rem',
-    border: 'none',
-    outline: 'none',
-    background: '#dee2e6',
+    margin: "1.5rem auto",
+    width: "95%",
+    padding: "1rem",
+    border: "none",
+    outline: "none",
+    background: "#dee2e6",
   },
   reviewContent: {
-    margin: '1rem 0 1rem 3.5rem',
+    margin: "1rem 0 1rem 3.5rem",
   },
   review: {
-    margin: '0 auto',
-    width: '95%',
-    padding: '1rem',
-    outline: 'none',
-    border: '1px solid #dee2e6',
+    margin: "0 auto",
+    width: "95%",
+    padding: "1rem",
+    outline: "none",
+    border: "1px solid #dee2e6",
   },
   reviewFooter: {
-    margin: '1rem 0',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingBottom: '1.5rem',
+    margin: "1rem 0",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingBottom: "1.5rem",
   },
   sendBtn: {
-    padding: '0.3rem 0.8rem',
-    borderRadius: '2rem',
-    background: 'turquoise',
-    textTransform: 'capitalize',
-    fontSize: '0.8rem',
-    boxShadow: 'transparent',
-    outline: 'transparent',
-    border: 'transparent',
+    padding: "0.3rem 0.8rem",
+    borderRadius: "2rem",
+    background: "turquoise",
+    textTransform: "capitalize",
+    fontSize: "0.8rem",
+    boxShadow: "transparent",
+    outline: "transparent",
+    border: "transparent",
 
-    '&:hover': {
-      backgroundColor: '#43dd9a',
-      color: '#6E3ADB',
+    "&:hover": {
+      backgroundColor: "#43dd9a",
+      color: "#6E3ADB",
     },
   },
   posted: {
-    color: '#bababa',
-    fontSize: '0.8rem',
-    fontWeight: '500',
+    color: "#bababa",
+    fontSize: "0.8rem",
+    fontWeight: "500",
   },
 }));
 
@@ -137,21 +138,23 @@ const ReviewDetails = () => {
         variant='h2'
         color='primary'
         align='center'
-        style={{ marginTop: '2rem' }}
+        style={{ marginTop: "2rem" }}
       >
         Please select your review
       </Typography>
     );
 
+  console.log(selectedReview);
+
   // for requested
-  if (selectedReview.author === user._id) {
+  if (selectedReview.author._id === user._id) {
     return (
       <Paper className={classes.root}>
         <Container className={classes.header}>
           <Box>
             <Typography variant='h6'>{selectedReview.title}</Typography>
             <Typography className={classes.date}>
-              {selectedReview.date}
+              {`${moment(selectedReview.date_requested).format("MMM Do YYYY")}`}
             </Typography>
           </Box>
           <Box>
@@ -216,14 +219,14 @@ const ReviewDetails = () => {
     );
   }
   // for received
-  else {
+  else if (selectedReview.reviewer._id === user._id) {
     return (
       <Paper className={classes.root}>
         <Container className={classes.header}>
           <Box>
             <Typography variant='h6'>{selectedReview.title}</Typography>
             <Typography className={classes.date}>
-              {selectedReview.date}
+              {`${moment(selectedReview.date_requested).format("MMM Do YYYY")}`}
             </Typography>
           </Box>
           <Box className={classes.avatarHeader}>
@@ -231,7 +234,7 @@ const ReviewDetails = () => {
             <Box>
               <Typography className={classes.posted}>Posted by</Typography>
               <Typography className={classes.authorName}>
-                Robert Clark
+                {selectedReview.author.name}
               </Typography>
             </Box>
           </Box>
@@ -244,6 +247,7 @@ const ReviewDetails = () => {
             rowsMin={6}
             placeholder='Code To Review'
             className={classes.code}
+            value={selectedReview.code}
           />
         </Container>
 
