@@ -12,7 +12,8 @@ const router = express.Router();
 
 /////// User sign up route handler ///////
 router.post("/signup", async (req, res) => {
-	const user = new User(req.body);
+	const { name, email, password } = req.body;
+	const user = new User({ name, email, password });
 
 	try {
 		await user.save();
@@ -121,11 +122,11 @@ router.get("/review", auth, async (req, res) => {
 /////// Update user experience route handler ///////
 router.post("/experience", auth, async (req, res) => {
 	const user = await User.findById(req.user._id);
-	console.log(req.body);
+
 	req.body.forEach((exp) => {
 		user.experience.set(Object.keys(exp)[0], Object.values(exp)[0]);
 	});
-	// user.experience = req.body.userExp;
+
 	user.profileCompleted = true;
 	await user.save();
 	res.send(user);
