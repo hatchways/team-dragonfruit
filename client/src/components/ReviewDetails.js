@@ -18,6 +18,9 @@ import img2 from "../images/avatar2.png";
 
 import { AuthContext } from "../context/AuthContext";
 
+import CodeReader from "../utils/CodeReader";
+import UserService from "../services/UserService";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "90%",
@@ -128,9 +131,17 @@ const useStyles = makeStyles((theme) => ({
 const ReviewDetails = () => {
   const classes = useStyles();
 
-  const [rating, setRating] = React.useState(2);
+  const [rating, setRating] = React.useState(0);
 
-  const { selectedReview, user } = useContext(AuthContext);
+  const { selectedReview, user, setUser } = useContext(AuthContext);
+
+  const handleRating = (e) => {
+    e.preventDefault();
+    // console.log(selectedReview._id);
+    // console.log(typeof rating);
+    UserService.rating(selectedReview._id, rating);
+    setRating(0);
+  };
 
   if (!selectedReview)
     return (
@@ -158,7 +169,7 @@ const ReviewDetails = () => {
             </Typography>
           </Box>
           <Box>
-            <form className={classes.ratingForm}>
+            <form className={classes.ratingForm} onSubmit={handleRating}>
               <Box className={classes.ratingTitle}>
                 Tap a star to rate review
               </Box>
@@ -170,7 +181,7 @@ const ReviewDetails = () => {
                 }}
               />
               <Button
-                type='button'
+                type='submit'
                 variant='contained'
                 disableElevation
                 color='primary'
@@ -184,37 +195,35 @@ const ReviewDetails = () => {
         <Divider />
 
         <Container>
-          <TextareaAutosize
-            rowsMax={10}
-            rowsMin={6}
-            placeholder='Your review'
-            className={classes.code}
-          />
+          <CodeReader code={selectedReview.code} className={classes.code} />
         </Container>
-        <Container>
-          <Box className={classes.avatarHeader}>
-            <Avatar src={img2} className={classes.avatarImg} />
-            <Box>
-              <Typography className={classes.authorName}>
-                Robert Clark
-              </Typography>
-              <Typography className={classes.position}>
-                Senior Developer
-              </Typography>
+
+        {selectedReview.comments && (
+          <Container>
+            <Box className={classes.avatarHeader}>
+              <Avatar src={img2} className={classes.avatarImg} />
+              <Box>
+                <Typography className={classes.authorName}>
+                  {selectedReview.reviewer.name}
+                </Typography>
+                <Typography className={classes.position}>
+                  Senior Developer
+                </Typography>
+              </Box>
             </Box>
-          </Box>
-          <Box className={classes.reviewContent}>
-            <Typography>
-              It would be great if you add the component like:
-            </Typography>
-            <TextareaAutosize
-              rowsMax={10}
-              rowsMin={6}
-              placeholder='Your review'
-              className={classes.code}
-            />
-          </Box>
-        </Container>
+            <Box className={classes.reviewContent}>
+              <Typography>
+                It would be great if you add the component like:
+              </Typography>
+              <TextareaAutosize
+                rowsMax={10}
+                rowsMin={6}
+                placeholder='Your review'
+                className={classes.code}
+              />
+            </Box>
+          </Container>
+        )}
       </Paper>
     );
   }
@@ -242,13 +251,7 @@ const ReviewDetails = () => {
         <Divider />
 
         <Container>
-          <TextareaAutosize
-            rowsMax={10}
-            rowsMin={6}
-            placeholder='Code To Review'
-            className={classes.code}
-            value={selectedReview.code}
-          />
+          <CodeReader code={selectedReview.code} className={classes.code} />
         </Container>
 
         <Container>
@@ -263,7 +266,9 @@ const ReviewDetails = () => {
           <Box className={classes.avatarHeader}>
             <Avatar src={img2} className={classes.avatarImg} />
             <Box>
-              <Typography className={classes.authorName}>John Doe</Typography>
+              <Typography className={classes.authorName}>
+                {selectedReview.reviewer.name}
+              </Typography>
               <Typography className={classes.position}>
                 Senior Developer
               </Typography>

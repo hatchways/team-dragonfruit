@@ -8,7 +8,15 @@ const router = express.Router();
 
 /////// Upload code route handler ///////
 router.post("/upload", auth, balance, async (req, res) => {
-  const snippet = new Snippet({ ...req.body, author: req.user._id });
+  const snippet = new Snippet({
+    ...req.body,
+    author: req.user._id,
+    reviewer: null,
+    comments: null,
+    rating: 0,
+    date_accepted: null,
+    date_submitted: null,
+  });
   try {
     await snippet.save();
     req.user.balance -= 1;
@@ -124,6 +132,32 @@ router.post("/comment/:review_id", auth, async (req, res) => {
     await receivedReviews[objIndex].save();
 
     return res.status(200).json(receivedReviews);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// rating feedback
+router.patch("/rating/:review_id", auth, async (req, res) => {
+  const { rating } = req.body;
+
+  try {
+    const requestedReviews = await Snippet.find({ author: req.user._id })
+      .populate("author", ["name"])
+      .populate("reviewer", ["name"]);
+    if (!requestedReviews) return res.status(400).send("Not Found");
+
+    // find index of a specific review
+    const objIndex = requestedReviews.findIndex(
+      (review) => review._id.toString() === req.params.review_id
+    );
+    // change status and reviewer and date_accepted
+    requestedReviews[objIndex].rating = rating;
+
+    await requestedReviews[objIndex].save();
+
+    return res.status(200).json(requestedReviews);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message });

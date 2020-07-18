@@ -40,9 +40,24 @@ export default {
       .then((res) => res.json())
       .then((data) => data);
   },
+  // receivedReviews
   receivedReviews: () => {
     return fetch("/api/users/received")
       .then((res) => res.json())
       .then((data) => data);
+  },
+  // rating
+  rating: (review_id, rating) => {
+    return fetch(`/api/users/rating/${review_id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ rating: rating }),
+      headers: { "Content-Type": "application/json" },
+    }).then((res) => {
+      if (res.status !== 200) {
+        return { errorMsg: { msg: "Error occured" } };
+      } else {
+        return res.json().then((data) => data);
+      }
+    });
   },
 };
