@@ -21,6 +21,8 @@ import { AuthContext } from "../context/AuthContext";
 import CodeReader from "../utils/CodeReader";
 import UserService from "../services/UserService";
 
+import PrismDraft from "../utils/PrismDraft";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "90%",
@@ -133,7 +135,7 @@ const ReviewDetails = () => {
 
   const [rating, setRating] = React.useState(0);
 
-  const { selectedReview, user, setUser } = useContext(AuthContext);
+  const { selectedReview, user } = useContext(AuthContext);
 
   const handleRating = (e) => {
     e.preventDefault();
@@ -217,12 +219,7 @@ const ReviewDetails = () => {
               <Typography>
                 It would be great if you add the component like:
               </Typography>
-              <TextareaAutosize
-                rowsMax={10}
-                rowsMin={6}
-                placeholder='Your review'
-                className={classes.code}
-              />
+              <PrismDraft />
             </Box>
           </Container>
         )}
