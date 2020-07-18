@@ -1,28 +1,27 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const snippetSchema = new mongoose.Schema({
   code: {
-    type: String,
+    type: Array,
     required: true,
   },
   status: {
     type: String,
-    enum: ['pending', 'in-review', 'completed'],
-    default: 'pending',
+    enum: ["pending", "in-review", "completed"],
+    default: "pending",
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'User',
+    ref: "User",
   },
   reviewer: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: "User",
   },
   title: {
     type: String,
-    required: true,
-    default: 'Unknown',
+    default: "Unknown",
   },
   language: {
     type: String,
@@ -49,5 +48,5 @@ const snippetSchema = new mongoose.Schema({
   },
 });
 
-const Snippet = mongoose.model('Snippet', snippetSchema);
+const Snippet = mongoose.model("Snippet", snippetSchema);
 module.exports = Snippet;

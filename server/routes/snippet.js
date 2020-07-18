@@ -8,15 +8,140 @@ const router = express.Router();
 
 /////// Upload code route handler ///////
 router.post("/upload", auth, balance, async (req, res) => {
-	const snippet = new Snippet({ ...req.body, author: req.user._id });
-	try {
-		await snippet.save();
-		req.user.balance -= 1;
-		await req.user.save();
-		res.status(201).send(snippet);
-	} catch (e) {
-		res.status(400).send(e);
-	}
+  const snippet = new Snippet({ ...req.body, author: req.user._id });
+  try {
+    await snippet.save();
+    req.user.balance -= 1;
+    await req.user.save();
+    res.status(201).send(snippet);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
+
+/////// Retrieve code route handler ///////
+router.get("/snippet", auth, async (req, res) => {
+  const snippets = await Snippet.find({ author: req.user._id });
+  res.send(snippets);
+});
+
+// fetch requested reviews
+router.get("/requested", auth, async (req, res) => {
+  try {
+    const requestedReviews = await Snippet.find({ author: req.user._id })
+      .populate("author", ["name"])
+      .populate("reviewer", ["name"]);
+    return res.status(200).json(requestedReviews);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// fetch received reviews
+router.get("/received", auth, async (req, res) => {
+  try {
+    const receivedReviews = await Snippet.find({
+      reviewer: req.user._id,
+    })
+      .populate("author", ["name"])
+      .populate("reviewer", ["name"]);
+
+    return res.status(200).json(receivedReviews);
+  } catch (error) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// accept a review
+router.patch("/accept/:review_id", auth, async (req, res) => {
+  try {
+    const receivedReviews = await Snippet.find({ reviewer: req.user._id });
+
+    if (!receivedReviews) return res.status(400).send("Not Found");
+
+    // find index of a specific review
+    const objIndex = receivedReviews.findIndex(
+      (obj) => obj._id.toString() === req.params.review_id
+    );
+    // change status and date_accepted
+    receivedReviews[objIndex].status = "in-review";
+    receivedReviews[objIndex].date_accepted = Date.now();
+
+    await receivedReviews[objIndex].save();
+
+    return res.status(200).json(receivedReviews);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// decline a review
+router.patch("/decline/:review_id", auth, async (req, res) => {
+  try {
+    const receivedReviews = await Snippet.find({ reviewer: req.user._id });
+
+    if (!receivedReviews) return res.status(400).send("Not Found");
+
+    // find index of a specific review
+    const objIndex = receivedReviews.findIndex(
+      (review) => review._id.toString() === req.params.review_id
+    );
+    // change status and reviewer and date_accepted
+    receivedReviews[objIndex].status = "pending";
+    receivedReviews[objIndex].reviewer = null;
+    receivedReviews[objIndex].date_accepted = null;
+
+    await receivedReviews[objIndex].save();
+
+    return res.status(200).json(receivedReviews);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// submit a comment
+router.post("/comment/:review_id", auth, async (req, res) => {
+  const { comment } = req.body;
+
+  try {
+    const receivedReviews = await Snippet.find({ reviewer: req.user._id });
+
+    if (!receivedReviews) return res.status(400).send("Not Found");
+
+    // find index of a specific review
+    const objIndex = receivedReviews.findIndex(
+      (review) => review._id.toString() === req.params.review_id
+    );
+    // change status and comments and date_submitted
+    receivedReviews[objIndex].comments = comment;
+    receivedReviews[objIndex].status = "completed";
+    receivedReviews[objIndex].date_submitted = Date.now();
+
+    await receivedReviews[objIndex].save();
+
+    return res.status(200).json(receivedReviews);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Get one review by review ID
+// router.get("/review/:review_id", auth, async (req, res) => {
+//   try {
+//     const oneReview = await Snippet.findOne({
+//       _id: req.params.review_id,
+//     }).populate("author", ["name"]);
+
+//     return res.json(oneReview);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: err.message });
+//   }
+// });
 
 module.exports = router;

@@ -1,5 +1,87 @@
-/* PrismJS 1.20.0
-https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clike+javascript+aspnet+basic+csharp+django+docker+go+graphql+http+java+javadoc+javadoclike+javastacktrace+json+json5+kotlin+latex+markup-templating+perl+php+phpdoc+powershell+python+jsx+tsx+regex+ruby+sass+scss+scala+sql+typescript+vbnet+yaml */
+.RichEditor-root {
+  background: #fff;
+  border: 1px solid #ddd;
+  font-family: "Georgia", serif;
+  font-size: 14px;
+	padding: 15px;
+	border-radius: 5px;
+	margin: 0 auto;
+	width: 85%;
+	margin-bottom: 50px;
+	padding-left: 50px;
+	padding-right: 50px;
+	height: 80%;
+	
+}
+
+.RichEditor-editor {
+  cursor: text;
+  font-size: 16px;
+	margin-top: 10px;
+	width: 100%;
+	border-top: 1px solid #cccccc;
+	min-height: 350px;
+	overflow: scroll;
+	font-family: Arial, Helvetica, sans-serif;
+	
+}
+
+.RichEditor-editor .public-DraftEditorPlaceholder-root,
+.RichEditor-editor .public-DraftEditor-content {
+  margin: 0 -15px -15px;
+  padding: 15px;
+}
+
+.RichEditor-editor .public-DraftEditor-content {
+  min-height: 100px;
+}
+
+.RichEditor-hidePlaceholder .public-DraftEditorPlaceholder-root {
+  display: none;
+}
+
+.RichEditor-editor .RichEditor-blockquote {
+  border-left: 5px solid #43DDC1;
+  color: #666;
+  font-family: "Hoefler Text", "Georgia", serif;
+  font-style: italic;
+  margin: 16px 0;
+  padding: 10px 20px;
+}
+
+.RichEditor-editor .public-DraftStyleDefault-pre {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-family: "Inconsolata", "Menlo", "Consolas", monospace;
+  font-size: 16px;
+	padding: 20px;
+	border-radius: 5px;
+	
+}
+
+.RichEditor-controls {
+  /* font-family: "Helvetica", sans-serif; */
+  font-size: 14px;
+  margin-bottom: 5px;
+	user-select: none;
+	display: inline-flex;
+}
+
+.RichEditor-styleButton {
+  color: #e6e6e6;
+  cursor: pointer;
+  margin-right: 5px;
+	padding: 2px 0;
+	font-size: 1rem;
+  display: inline-block;
+}
+
+.RichEditor-activeButton {
+  color: #e2e0e0;
+}
+
+
+
+
 /**
  * okaidia theme for JavaScript, CSS and HTML
  * Loosely based on Monokai textmate theme by http://www.monokai.nl/

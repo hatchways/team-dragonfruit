@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -12,10 +12,11 @@ import {
 	MenuItem,
 	InputLabel,
 	FormControl,
+	Typography,
 } from "@material-ui/core";
 
-import Editor from "./Editor";
-import PrismEditor from "./PrismEditorExample";
+import PrismDraft from "./PrismDraft";
+import validate from "./validateUpload";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -63,10 +64,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UploadDialog() {
 	const [open, setOpen] = React.useState(false);
-	const [language, setLanguage] = React.useState("");
-	const [title, setTitle] = React.useState("");
 	const [code, setCode] = React.useState("");
 	const classes = useStyles();
+
+	const [data, setData] = useState({
+		title: "",
+		language: "",
+		code: "",
+	});
+
+	const [errorData, setErrorData] = useState({});
+	const [isSubmitting, setIsSubmitting] = useState(false);
+
+	const handleChange = (e) => {
+		setData({ ...data, [e.target.name]: e.target.value });
+	};
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -76,23 +88,34 @@ export default function UploadDialog() {
 		setOpen(false);
 	};
 
-	const handleSubmit = async () => {
-		setOpen(false);
-		const snippet = { language, title, code };
-		console.log(snippet);
-		await axios.post("/api/users/upload", snippet);
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		setErrorData(validate(data));
+		setIsSubmitting(true);
 	};
 
-	const handleChangeLang = (event) => {
-		setLanguage(event.target.value);
-	};
+	useEffect(() => {
+		if (Object.keys(errorData).length === 0 && isSubmitting) {
+			const snippet = {
+				language: data.language,
+				title: data.title,
+				code: data.code,
+			};
+			console.log("snippet: ", snippet);
+			async function postCode(snippet) {
+				await axios.post("/api/users/upload", snippet);
+			}
+			postCode(snippet);
+			setData({ language: "", title: "", code: "" });
+			setCode("");
+			setOpen(false);
+		}
+		setIsSubmitting(false);
+	}, [errorData, isSubmitting, data]);
 
-	const handleChangeTitle = (event) => {
-		setTitle(event.target.value);
-	};
-
-	const handleChangeCode = (text) => {
-		setCode(text);
+	const handleChangeCode = (content) => {
+		setCode(content);
+		setData({ ...data, code: content });
 	};
 
 	return (
@@ -111,20 +134,23 @@ export default function UploadDialog() {
 
 				<DialogContent className={classes.content}>
 					<TextField
-						id="code-title"
+						name="title"
 						label="Title"
 						type="text"
 						variant="outlined"
-						onChange={handleChangeTitle}
-						style={{ width: "70%", margin: "0 auto" }}
+						onChange={handleChange}
+						style={{ width: "30vw", margin: "0 auto" }}
 					/>
 
 					<FormControl variant="outlined">
-						<InputLabel id="select-language">Language</InputLabel>
+						<InputLabel required id="select-language">
+							Language
+						</InputLabel>
+
 						<Select
-							id="select-language"
-							value={language}
-							onChange={handleChangeLang}
+							name="language"
+							value={data.language}
+							onChange={handleChange}
 							label="Language"
 							style={{ width: "20vw", margin: "0 auto" }}>
 							<MenuItem value={"javascript"}>JavaScript</MenuItem>
@@ -132,13 +158,36 @@ export default function UploadDialog() {
 							<MenuItem value={"c++"}>C++</MenuItem>
 							<MenuItem value={"python"}>Python</MenuItem>
 						</Select>
+
+						{errorData.language !== "" ? (
+							<Typography
+								variant="subtitle1"
+								style={{
+									color: "red",
+									textAlign: "center",
+								}}>
+								{errorData.language}
+							</Typography>
+						) : null}
 					</FormControl>
 				</DialogContent>
 
-				<Editor sendCode={handleChangeCode} language={language} />
-				{/* <PrismEditor /> */}
+				{errorData.code !== "" ? (
+					<Typography
+						variant="subtitle1"
+						style={{
+							color: "red",
+							textAlign: "center",
+						}}>
+						{errorData.code}
+					</Typography>
+				) : null}
+				<PrismDraft language={data.language} sendCode={handleChangeCode} />
+
 				<DialogActions>
-					<Button onClick={handleSubmit} className={classes.submitBtn}>
+					<Button
+						onClick={(e) => handleSubmit(e)}
+						className={classes.submitBtn}>
 						Submit
 					</Button>
 				</DialogActions>
