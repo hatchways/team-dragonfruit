@@ -61,7 +61,7 @@
 }
 
 .RichEditor-controls {
-  /* font-family: "Helvetica", sans-serif; */
+  font-family: "Helvetica", sans-serif;
   font-size: 14px;
   margin-bottom: 5px;
 	user-select: none;
@@ -80,9 +80,6 @@
 .RichEditor-activeButton {
   color: #e2e0e0;
 }
-
-
-
 
 /**
  * okaidia theme for JavaScript, CSS and HTML
