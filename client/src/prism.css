@@ -12,6 +12,7 @@
 	padding-right: 50px;
 	height: 80%;
 	
+	
 }
 
 .RichEditor-editor {
@@ -50,16 +51,17 @@
 }
 
 .RichEditor-editor .public-DraftStyleDefault-pre {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(0, 0, 0, 0.85);
   font-family: "Inconsolata", "Menlo", "Consolas", monospace;
   font-size: 16px;
 	padding: 20px;
 	border-radius: 5px;
+	color: #aaf8f8;
 	
 }
 
 .RichEditor-controls {
-  /* font-family: "Helvetica", sans-serif; */
+  font-family: "Helvetica", sans-serif;
   font-size: 14px;
   margin-bottom: 5px;
 	user-select: none;
@@ -79,9 +81,6 @@
   color: #e2e0e0;
 }
 
-
-
-
 /**
  * okaidia theme for JavaScript, CSS and HTML
  * Loosely based on Monokai textmate theme by http://www.monokai.nl/
@@ -90,7 +89,7 @@
 
 code[class*="language-"],
 pre[class*="language-"] {
-	color: #f8f8f2;
+	color: #f2f8f8;
 	background: none;
 	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
 	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
@@ -139,7 +138,8 @@ pre[class*="language-"] {
 }
 
 .token.punctuation {
-	color: #f8f8f2;
+	color: #00b688;
+	
 }
 
 .namespace {
@@ -174,18 +174,18 @@ pre[class*="language-"] {
 .language-css .token.string,
 .style .token.string,
 .token.variable {
-	color: #f8f8f2;
+	color: #01b81f;
 }
 
 .token.atrule,
 .token.attr-value,
 .token.function,
 .token.class-name {
-	color: #e6db74;
+	color: #e6d545;
 }
 
 .token.keyword {
-	color: #66d9ef;
+	color: #fa249a;
 }
 
 .token.regex,

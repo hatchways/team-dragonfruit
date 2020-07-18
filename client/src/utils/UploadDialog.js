@@ -153,10 +153,10 @@ export default function UploadDialog() {
 							onChange={handleChange}
 							label="Language"
 							style={{ width: "20vw", margin: "0 auto" }}>
-							<MenuItem value={"javascript"}>JavaScript</MenuItem>
-							<MenuItem value={"java"}>Java</MenuItem>
-							<MenuItem value={"c++"}>C++</MenuItem>
-							<MenuItem value={"python"}>Python</MenuItem>
+							<MenuItem value={"JavaScript"}>JavaScript</MenuItem>
+							<MenuItem value={"Java"}>Java</MenuItem>
+							<MenuItem value={"C++"}>C++</MenuItem>
+							<MenuItem value={"Python"}>Python</MenuItem>
 						</Select>
 
 						{errorData.language !== "" ? (

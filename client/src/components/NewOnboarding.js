@@ -1,6 +1,12 @@
 import axios from "axios";
 import React from "react";
-import { Typography, Paper, Button, Dialog } from "@material-ui/core";
+import {
+	Typography,
+	Paper,
+	Button,
+	Dialog,
+	TextField,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useHistory } from "react-router-dom";
 
@@ -59,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Onboarding = () => {
+const NewOnboard = () => {
 	const classes = useStyles();
 	const history = useHistory();
 	const [open, setOpen] = React.useState(true);
@@ -70,13 +76,20 @@ const Onboarding = () => {
 		history.push("/");
 	};
 
-	const getExp = (exp) => {
-		setUserExp(userExp.concat(exp));
+	const getExp = (language, level) => {
+		if (language !== "" && level !== "") {
+			let newExp = { [language]: level };
+			setUserExp(userExp.concat(newExp));
+		}
 	};
 
-	const removeLanguage = (language) => {
-		let newUserExp = userExp.filter((el) => Object.keys(el)[0] !== language);
-		setUserExp(newUserExp);
+	const removeLanguage = (text) => {
+		if (text) {
+			let language = text.split(":")[0];
+			console.log("language from onboarding: ", language);
+			let newUserExp = userExp.filter((el) => Object.keys(el)[0] !== language);
+			setUserExp(newUserExp);
+		}
 	};
 
 	const handleSubmit = async (e) => {
@@ -85,33 +98,6 @@ const Onboarding = () => {
 		await axios.post("/api/users/experience", userExp);
 		setOpen(false);
 		history.push("/");
-	};
-
-	const renderLanguages = (userExp) => {
-		let value;
-		const exps = userExp.map((el) => {
-			if (el !== {}) {
-				if (Object.values(el)[0] === 1) {
-					value = "Beginner";
-				} else if (Object.values(el)[0] === 2) {
-					value = "Intermediate";
-				} else {
-					value = "Advanced";
-				}
-				return (
-					<div key={Object.keys(el)[0]}>
-						<LanguageRenderer
-							removeLanguage={removeLanguage}
-							language={Object.keys(el)[0]}
-							level={value}
-						/>
-					</div>
-				);
-			} else {
-				return <div></div>;
-			}
-		});
-		return <div>{exps}</div>;
 	};
 
 	return (
@@ -124,7 +110,7 @@ const Onboarding = () => {
 
 					<LanguageSelector sendExp={getExp} />
 
-					{renderLanguages(userExp)}
+					<LanguageRenderer experience={userExp} remove={removeLanguage} />
 
 					<Button
 						type="submit"
@@ -147,4 +133,4 @@ const Onboarding = () => {
 	);
 };
 
-export default Onboarding;
+export default NewOnboard;

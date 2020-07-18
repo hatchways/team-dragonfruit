@@ -6,7 +6,6 @@ const validator = require("validator");
 const userSchema = new mongoose.Schema({
 	name: {
 		type: String,
-		required: true,
 		trim: true,
 	},
 	email: {
@@ -27,18 +26,12 @@ const userSchema = new mongoose.Schema({
 		trim: true,
 		minlength: 7,
 	},
-	experience: [
-		{
-			language: {
-				type: String,
-				required: true,
-			},
-			level: {
-				type: Number,
-				required: true,
-			},
-		},
-	],
+	experience: {
+		type: Map,
+		of: Number,
+		index: true,
+		default: {},
+	},
 	profileCompleted: {
 		type: Boolean,
 		default: false,
@@ -46,6 +39,9 @@ const userSchema = new mongoose.Schema({
 	balance: {
 		type: Number,
 		default: 3,
+	},
+	declined: {
+		type: [mongoose.Schema.Types.ObjectId],
 	},
 });
 
