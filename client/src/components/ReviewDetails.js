@@ -168,29 +168,31 @@ const ReviewDetails = () => {
               {`${moment(selectedReview.date_requested).format("MMM Do YYYY")}`}
             </Typography>
           </Box>
-          <Box>
-            <form className={classes.ratingForm} onSubmit={handleRating}>
-              <Box className={classes.ratingTitle}>
-                Tap a star to rate review
-              </Box>
-              <Rating
-                name='rating'
-                value={rating}
-                onChange={(event, newValue) => {
-                  setRating(newValue);
-                }}
-              />
-              <Button
-                type='submit'
-                variant='contained'
-                disableElevation
-                color='primary'
-                className={classes.ratingBtn}
-              >
-                Submit
-              </Button>
-            </form>
-          </Box>
+          {selectedReview.comments && (
+            <Box>
+              <form className={classes.ratingForm} onSubmit={handleRating}>
+                <Box className={classes.ratingTitle}>
+                  Tap a star to rate review
+                </Box>
+                <Rating
+                  name='rating'
+                  value={rating}
+                  onChange={(event, newValue) => {
+                    setRating(newValue);
+                  }}
+                />
+                <Button
+                  type='submit'
+                  variant='contained'
+                  disableElevation
+                  color='primary'
+                  className={classes.ratingBtn}
+                >
+                  Submit
+                </Button>
+              </form>
+            </Box>
+          )}
         </Container>
         <Divider />
 

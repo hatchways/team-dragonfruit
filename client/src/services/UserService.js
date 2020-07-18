@@ -60,4 +60,28 @@ export default {
       }
     });
   },
+  // accept a review
+  acceptReview: (review_id) => {
+    return fetch(`/api/users/accept/${review_id}`, {
+      method: "PATCH",
+    }).then((res) => {
+      if (res.status !== 200) {
+        return { errorMsg: { msg: "Error occured" } };
+      } else {
+        return res.json().then((data) => data);
+      }
+    });
+  },
+  // decline a review
+  declineReview: (review_id) => {
+    return fetch(`/api/users/decline/${review_id}`, {
+      method: "PATCH",
+    }).then((res) => {
+      if (res.status !== 200) {
+        return { errorMsg: { msg: "Error occured" } };
+      } else {
+        return res.json().then((data) => data);
+      }
+    });
+  },
 };
