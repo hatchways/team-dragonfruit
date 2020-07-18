@@ -40,9 +40,7 @@ const userSchema = new mongoose.Schema({
 		type: Number,
 		default: 3,
 	},
-	declined: {
-		type: [mongoose.Schema.Types.ObjectId],
-	},
+	declined: [{ type: mongoose.Schema.Types.ObjectId, ref: "Snippet" }],
 });
 
 userSchema.virtual("snippets", {
