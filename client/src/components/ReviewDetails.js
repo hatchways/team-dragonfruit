@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   Paper,
   Container,
@@ -6,7 +6,6 @@ import {
   Divider,
   Typography,
   Avatar,
-  TextareaAutosize,
   Button,
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
@@ -133,7 +132,10 @@ const useStyles = makeStyles((theme) => ({
 const ReviewDetails = () => {
   const classes = useStyles();
 
-  const [rating, setRating] = React.useState(0);
+  const [rating, setRating] = useState(0);
+  const [code, setCode] = useState("");
+
+  console.log(code);
 
   const { selectedReview, user } = useContext(AuthContext);
 
@@ -143,6 +145,14 @@ const ReviewDetails = () => {
     // console.log(typeof rating);
     UserService.rating(selectedReview._id, rating);
     setRating(0);
+  };
+  // Send Comments
+  const handleCode = (comments) => {
+    setCode(comments);
+  };
+
+  const handleSendCode = () => {
+    UserService.sendComments(selectedReview._id, code);
   };
 
   if (!selectedReview)
@@ -216,10 +226,10 @@ const ReviewDetails = () => {
               </Box>
             </Box>
             <Box className={classes.reviewContent}>
-              <Typography>
-                It would be great if you add the component like:
-              </Typography>
-              <PrismDraft />
+              <CodeReader
+                code={selectedReview.comments || ""}
+                className={classes.code}
+              />
             </Box>
           </Container>
         )}
@@ -254,12 +264,7 @@ const ReviewDetails = () => {
         </Container>
 
         <Container>
-          <TextareaAutosize
-            rowsMax={10}
-            rowsMin={6}
-            placeholder='Your Review'
-            className={classes.review}
-          />
+          <PrismDraft sendCode={handleCode} />
         </Container>
         <Container className={classes.reviewFooter}>
           <Box className={classes.avatarHeader}>
@@ -279,6 +284,7 @@ const ReviewDetails = () => {
             disableElevation
             color='primary'
             className={classes.sendBtn}
+            onClick={handleSendCode}
           >
             Submit review
           </Button>

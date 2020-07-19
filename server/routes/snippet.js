@@ -91,7 +91,7 @@ router.patch("/decline/:review_id", auth, async (req, res) => {
   try {
     const receivedReviews = await Snippet.find({ reviewer: req.user._id });
 
-    if (!receivedReviews) return res.status(400).send("Not Found");
+    if (!receivedReviews) return res.status(404).send("Not Found");
 
     // find index of a specific review
     const objIndex = receivedReviews.findIndex(

@@ -84,4 +84,18 @@ export default {
       }
     });
   },
+  // give a comment, review
+  sendComments: (review_id, comment) => {
+    return fetch(`/api/users/comment/${review_id}`, {
+      method: "POST",
+      body: JSON.stringify({ comment: comment }),
+      headers: { "Content-Type": "application/json" },
+    }).then((res) => {
+      if (res.status !== 200) {
+        return { errorMsg: { msg: "Error occured" } };
+      } else {
+        return res.json().then((data) => data);
+      }
+    });
+  },
 };
