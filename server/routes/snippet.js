@@ -163,7 +163,4 @@ router.patch("/rating/:review_id", auth, async (req, res) => {
   }
 });
 
-// fetch rating
-// router.get("/rating/:review_id", auth, async());
-
 module.exports = router;

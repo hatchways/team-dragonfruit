@@ -173,8 +173,6 @@ const ReviewDetails = () => {
       </Typography>
     );
 
-  console.log(selectedReview);
-
   // for requested
   if (selectedReview.author._id === user._id) {
     return (
@@ -196,7 +194,7 @@ const ReviewDetails = () => {
                 </Box>
                 <Rating
                   name='rating'
-                  value={rating}
+                  value={rating || selectedReview.rating}
                   onChange={(event, newValue) => {
                     setRating(newValue);
                   }}

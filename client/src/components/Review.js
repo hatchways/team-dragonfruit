@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
   status: {
     padding: "0.1rem 0.3rem",
     color: theme.palette.turquoise.main,
+    textTransform: "capitalize",
   },
   selectContainer: {
     padding: "0.1rem",
