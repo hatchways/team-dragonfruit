@@ -29,8 +29,8 @@ const userSchema = new mongoose.Schema({
 	experience: {
 		type: Map,
 		of: Number,
-		default: {},
 		index: true,
+		default: {},
 	},
 	profileCompleted: {
 		type: Boolean,
@@ -40,7 +40,12 @@ const userSchema = new mongoose.Schema({
 		type: Number,
 		default: 3,
 	},
-	declined: [{ type: mongoose.Schema.Types.ObjectId, ref: "Snippet" }],
+	declined: {
+		type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Snippet" }],
+	},
+	avatar: {
+		type: Buffer,
+	},
 });
 
 userSchema.virtual("snippets", {
@@ -77,10 +82,11 @@ userSchema.statics.findUserByCredentials = async (email, password) => {
 	return user;
 };
 
-/////// A method for hiding private data /////////
+/////// A method for preventing uneccessary data to be sent back to client /////////
 userSchema.methods.toJSON = function () {
 	const userObject = this.toObject();
 	delete userObject.password;
+	delete userObject.avatar;
 	return userObject;
 };
 

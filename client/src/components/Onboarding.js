@@ -1,12 +1,12 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
 import { Typography, Paper, Button, Dialog } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import { IconButton } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 
 import LanguageSelector from "./LanguageSelector";
+import LanguageRenderer from "./LanguageRenderer";
+
 
 const useStyles = makeStyles((theme) => ({
 	registerContainer: {
@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	title: {
 		marginBottom: "3rem",
+		color: theme.palette.primary.main,
 	},
 	registerBtn: {
 		padding: "0.7rem 4rem",
@@ -53,108 +54,83 @@ const useStyles = makeStyles((theme) => ({
 		background: "turquoise",
 		margin: "20px",
 	},
+	closeBtn: {
+		border: "1px solid #43dd9a",
+		borderRadius: "2rem",
+	},
 }));
-
-let userExp = [];
-let Langs = [];
-let Levels = [];
 
 const Onboarding = () => {
 	const classes = useStyles();
 	const history = useHistory();
-
 	const [open, setOpen] = React.useState(true);
-	const [selectLanguages, setSelectLanguages] = React.useState([]);
-	const [exp, setExp] = React.useState({});
+	const [userExp, setUserExp] = React.useState([]);
 
 	const handleClose = () => {
 		setOpen(false);
 		history.push("/");
 	};
 
-	const removeLanguage = (name) => {
-		let selectedLangs = [...selectLanguages];
-		console.log(selectLanguages);
-		console.log(selectedLangs);
-		console.log(name);
-		Langs = Langs.filter((lang) => lang !== name);
-		console.log("Langs: ", Langs);
+	// Get experience object from LanguageSelector
+	const getExp = (exp) => {
+		setUserExp(userExp.concat(exp));
 	};
 
-	const getState = (lang, lev) => {
-		setExp({ language: lang, level: lev });
-		console.log(exp);
-		userExp.push(exp);
+	// Get the language to be removed from LanguageRenderer
+	const removeLanguage = (language) => {
+		let newUserExp = userExp.filter((el) => Object.keys(el)[0] !== language);
+		setUserExp(newUserExp);
 	};
 
-	const addLanguage = () => {
-		const id = Math.random();
-		const selectedLangs = [...selectLanguages];
-		selectedLangs.push({
-			item: (
-				<LanguageSelector
-					getLang={getLang}
-					getLevel={getLevel}
-					key={id}
-					remove={removeLanguage}
-					sendState={getState}
-				/>
-			),
-		});
-		setSelectLanguages(selectedLangs);
-	};
-
+	// API call to send userExp that is an array of objects
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-
-		// Langs.forEach((lang, i) => {
-		// 	const newObj = { language: lang, level: Levels[i] };
-		// 	userExp.push(newObj);
-		// });
-
-		//////// TEST ///////////
-		// const testExp = new Map();
-		// testExp.set("JavaScript", 1);
-		// testExp.set("Ruby", 2);
-		const testExp = {
-			Java: 1,
-			Ruby: 3,
-			Python: 2,
-		};
-
-		console.log(testExp);
-		await axios.post("/api/users/experience", testExp);
-		// history.push("/");
+		console.log(userExp);
+		await axios.post("/api/users/experience", userExp);
+		setOpen(false);
+		history.push("/");
 	};
 
-	const getLang = (lang) => {
-		// Langs.push(lang);
-		setExp({ language: lang });
-	};
-
-	const getLevel = (level) => {
-		Levels.push(level);
+	// A function for rendering selected languages
+	const renderLanguages = (userExp) => {
+		let value;
+		const exps = userExp.map((el) => {
+			if (el !== {}) {
+				if (Object.values(el)[0] === 1) {
+					value = "Beginner";
+				} else if (Object.values(el)[0] === 2) {
+					value = "Intermediate";
+				} else {
+					value = "Advanced";
+				}
+				return (
+					<div key={Object.keys(el)[0]}>
+						<LanguageRenderer
+							removeLanguage={removeLanguage}
+							language={Object.keys(el)[0]}
+							level={value}
+						/>
+					</div>
+				);
+			} else {
+				return <div></div>;
+			}
+		});
+		return <div>{exps}</div>;
 	};
 
 	return (
 		<Dialog open={open} fullWidth maxWidth="md">
 			<form>
+				
 				<Paper className={classes.registerContainer}>
-					<Typography variant="h3" className={classes.title}>
-						Add your experience here:
+					<Typography variant="h5" className={classes.title}>
+						Add your experience
 					</Typography>
 
-					{selectLanguages.map((language) => language.item)}
+					<LanguageSelector sendExp={getExp} />
 
-					<div style={{ display: "flex" }}>
-						<IconButton
-							className={classes.iconBtn}
-							label="Add"
-							onClick={addLanguage}>
-							<AddCircleOutlineIcon color="primary" />
-							<Typography color="primary">Add one language</Typography>
-						</IconButton>
-					</div>
+					{renderLanguages(userExp)}
 
 					<Button
 						type="submit"
@@ -165,7 +141,10 @@ const Onboarding = () => {
 						className={classes.registerBtn}>
 						Submit
 					</Button>
-					<Button onClick={handleClose} color="primary">
+					<Button
+						onClick={handleClose}
+						color="primary"
+						className={classes.closeBtn}>
 						Close
 					</Button>
 				</Paper>

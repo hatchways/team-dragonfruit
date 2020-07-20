@@ -2,7 +2,6 @@ import React from "react";
 import { Typography, Box, Select } from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/styles";
-import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import { IconButton } from "@material-ui/core";
 
@@ -33,32 +32,28 @@ const LanguageSelector = (props) => {
 	const classes = useStyles();
 	const [language, setLanguage] = React.useState("");
 	const [level, setLevel] = React.useState("");
+	const [userExp, setUserExp] = React.useState([]);
 
-	
 	const handleChangeLang = (e) => {
 		const lang = e.target.value;
 		setLanguage(lang);
-		console.log(language);
-		
-		// props.getLang(lang);
 	};
 
 	const handleChangeLevel = (e) => {
 		const lev = e.target.value;
 		setLevel(lev);
-		console.log(level);
-		
-		// props.getLevel(lev);
+	};
+
+	const handleAdd = () => {
+		if (language !== "" && level !== "") {
+			let newExp = { [language]: level };
+			props.sendExp(newExp);
+			setUserExp(userExp.concat(newExp));
+		}
 	};
 
 	return (
 		<Box className={classes.formControl}>
-			<IconButton
-				className={classes.iconRemove}
-				onClick={() => props.remove(language)}>
-				<RemoveCircleOutlineIcon fontSize="large" />
-			</IconButton>
-
 			<Typography className={classes.text}>Language:</Typography>
 
 			<Select
@@ -89,12 +84,11 @@ const LanguageSelector = (props) => {
 			<IconButton
 				className={classes.iconDone}
 				onClick={() => {
-					props.sendState(language, level);
+					handleAdd();
 					setLevel("");
 					setLanguage("");
 				}}>
 				<CheckCircleOutlineIcon fontSize="large" />
-				Add
 			</IconButton>
 		</Box>
 	);

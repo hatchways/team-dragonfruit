@@ -1,4 +1,6 @@
 const express = require("express");
+const multer = require("multer");
+const sharp = require("sharp");
 
 const User = require("../models/user");
 const auth = require("../middleware/auth");
@@ -22,6 +24,7 @@ router.post("/signup", async (req, res) => {
 			httpOnly: true,
 			maxAge: 30 * 24 * 60 * 60 * 1000,
 		});
+
 		res.status(201).send(user);
 	} catch (e) {
 		res.status(400).send(e);
@@ -122,14 +125,68 @@ router.get("/review", auth, async (req, res) => {
 /////// Update user experience route handler ///////
 router.post("/experience", auth, async (req, res) => {
 	const user = await User.findById(req.user._id);
-	console.log(req.body);
-	for (let [key, value] of Object.entries(req.body)) {
-		user.experience.set(key, value);
-	}
+
+	req.body.forEach((exp) => {
+		user.experience.set(Object.keys(exp)[0], Object.values(exp)[0]);
+	});
 
 	user.profileCompleted = true;
 	await user.save();
 	res.send(user);
+});
+
+/////// Upload user profile picture route handler ///////
+const upload = multer({
+	limits: {
+		fileSize: 1000000,
+	},
+	fileFilter(req, file, cb) {
+		if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+			return cb(new Error("Please upload an image file"));
+		}
+		cb(undefined, true);
+	},
+});
+
+router.post(
+	"/avatar",
+	auth,
+	upload.single("avatar"),
+	async (req, res) => {
+		console.log("req: ", req.file);
+		const buffer = await sharp(req.file.buffer)
+			.resize({ width: 300, height: 300 })
+			.png()
+			.toBuffer();
+		req.user.avatar = buffer;
+		await req.user.save();
+		res.send({ message: "Avatar uploaded successfully!" });
+	},
+	(error, req, res, next) => {
+		res.status(400).send({ error: error.message });
+	},
+);
+
+/////// Retrieve user profile picture route handler ///////
+router.get("/avatar/:id", async (req, res) => {
+	try {
+		const user = await User.findById(req.params.id);
+
+		if (!user || !user.avatar) {
+			throw new Error();
+		}
+		res.set("Content-Type", "image/png");
+		res.send(user.avatar);
+	} catch (e) {
+		res.status(404).send();
+	}
+});
+
+/////// Delete user profile picture route handler ///////
+router.delete("/avatar", auth, async (req, res) => {
+	req.user.avatar = undefined;
+	await req.user.save();
+	res.send();
 });
 
 module.exports = router;

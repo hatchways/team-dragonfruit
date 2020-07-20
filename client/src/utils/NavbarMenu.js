@@ -83,6 +83,11 @@ export default function SimpleMenu(props) {
 						My experience
 					</Link>
 				</MenuItem>
+				<MenuItem onClick={handleClose}>
+					<Link to="/edit" className={classes.link}>
+						Edit my profile
+					</Link>
+				</MenuItem>
 				<MenuItem>
 					<Button onClick={handleLogout} className={classes.logoutBtn}>
 						Logout

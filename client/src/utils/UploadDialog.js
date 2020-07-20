@@ -64,8 +64,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UploadDialog() {
 	const [open, setOpen] = React.useState(false);
-	// const [language, setLanguage] = React.useState("");
-	// const [title, setTitle] = React.useState("");
 	const [code, setCode] = React.useState("");
 	const classes = useStyles();
 
@@ -91,9 +89,12 @@ export default function UploadDialog() {
 	};
 
 	const handleSubmit = async (e) => {
+		const user = JSON.parse(localStorage.getItem("user"));
+		const experience = user.experience;
+		console.log(experience);
 		e.preventDefault();
 		setErrorData(validate(data));
-		setIsSubmitting(true);
+		// setIsSubmitting(true);
 	};
 
 	useEffect(() => {

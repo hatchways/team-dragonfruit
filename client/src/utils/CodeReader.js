@@ -7,13 +7,7 @@
 // });
 
 import React from "react";
-import {
-	Editor,
-	EditorState,
-	RichUtils,
-	convertFromRaw,
-	convertToRaw,
-} from "draft-js";
+import { Editor, EditorState, RichUtils, convertFromRaw } from "draft-js";
 import PrismDecorator from "draft-js-prism";
 import Prism from "prismjs";
 import "../../src/prism.css";
@@ -55,9 +49,6 @@ class CodeReader extends React.Component {
 		this.focus = () => this.refs.editor.focus();
 		this.onChange = (editorState) => {
 			this.setState({ editorState });
-			const contentState = editorState.getCurrentContent();
-			const converted = convertToRaw(contentState);
-			this.props.sendCode(converted.blocks);
 		};
 
 		this.handleKeyCommand = (command) => this._handleKeyCommand(command);
@@ -67,6 +58,21 @@ class CodeReader extends React.Component {
 
 	componentDidMount() {
 		Prism.highlightAll();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.code !== this.props.code) {
+			var decorator = new PrismDecorator({
+				defaultSyntax: "javascript",
+			});
+			var contentState = convertFromRaw({
+				entityMap: {},
+				blocks: this.props.code,
+			});
+			this.setState({
+				editorState: EditorState.createWithContent(contentState, decorator),
+			});
+		}
 	}
 
 	_handleKeyCommand(command) {
