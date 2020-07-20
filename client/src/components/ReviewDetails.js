@@ -159,6 +159,7 @@ const ReviewDetails = () => {
   };
   const handleSendCode = () => {
     UserService.sendComments(selectedReview._id, code);
+    window.location.reload();
   };
 
   if (!selectedReview)
