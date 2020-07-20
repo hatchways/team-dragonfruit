@@ -8,7 +8,7 @@ const randomIndexGenerator = (length) => {
 
 const matchReviewer = async (language, level, id) => {
 	let reviewers = await User.find({
-		["experience." + language]: { $gt: level },
+		["experience." + language]: { $gte: level },
 	});
 
 	console.log("Potential reviewers: ", reviewers);
@@ -25,7 +25,6 @@ const matchReviewer = async (language, level, id) => {
 
 			// do another match
 			reviewer = reviewers[randomIndexGenerator(reviewers.length)];
-			
 		} else {
 			// send request for the reviewer
 			console.log("Send request to: ", reviewer);
