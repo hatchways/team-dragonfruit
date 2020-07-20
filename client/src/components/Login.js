@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
 
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from "../context/AuthContext";
 
-import AuthService from '../services/AuthService';
+import AuthService from "../services/AuthService";
 
-import validate from '../utils/validateForm';
+import validate from "../utils/validateForm";
 
 import {
   Typography,
@@ -17,58 +17,58 @@ import {
   OutlinedInput,
   Paper,
   Button,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from "@material-ui/styles";
 
-import Message from './Message';
+import Message from "./Message";
 
 const useStyles = makeStyles((theme) => ({
   loginContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '500px',
-    maxWidth: '600px',
-    margin: '2rem auto',
-    padding: '3rem 0',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    width: "500px",
+    maxWidth: "600px",
+    margin: "2rem auto",
+    padding: "3rem 0",
+    alignItems: "center",
   },
   title: {
-    marginBottom: '3rem',
+    marginBottom: "3rem",
   },
   input: {
-    width: '300px',
-    marginBottom: '0.5rem',
+    width: "300px",
+    marginBottom: "0.5rem",
   },
   loginBtn: {
-    padding: '0.7rem 4rem',
-    borderRadius: '2rem',
-    background: 'turquoise',
-    textTransform: 'capitalize',
-    fontSize: '1rem',
-    margin: '3rem 0',
-    boxShadow: 'transparent',
-    outline: 'transparent',
-    border: 'transparent',
-    '&:hover': {
-      backgroundColor: '#43dd9a',
-      color: '#6E3ADB',
+    padding: "0.7rem 4rem",
+    borderRadius: "2rem",
+    background: "turquoise",
+    textTransform: "capitalize",
+    fontSize: "1rem",
+    margin: "3rem 0",
+    boxShadow: "transparent",
+    outline: "transparent",
+    border: "transparent",
+    "&:hover": {
+      backgroundColor: "#43dd9a",
+      color: "#6E3ADB",
     },
   },
   text: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   link: {
-    color: 'primary',
-    fontWeight: 'bold',
-    marginLeft: '0.7rem',
-    textDecoration: 'none',
+    color: "primary",
+    fontWeight: "bold",
+    marginLeft: "0.7rem",
+    textDecoration: "none",
   },
   error: {
-    color: 'red',
-    textAlign: 'center',
-    marginBottom: '0.5rem',
-    marginTop: '0.5rem',
+    color: "red",
+    textAlign: "center",
+    marginBottom: "0.5rem",
+    marginTop: "0.5rem",
   },
 }));
 
@@ -79,9 +79,9 @@ const Login = () => {
   // console.log(authContext);
 
   const [userData, setUserData] = useState({
-    name: 'default',
-    email: '',
-    password: '',
+    name: "default",
+    email: "",
+    password: "",
   });
   const [errorData, setErrorData] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -100,7 +100,7 @@ const Login = () => {
 
   useEffect(() => {
     // if localStorage stores user obj -> isAuth: true
-    if (localStorage.getItem('user')) {
+    if (localStorage.getItem("user")) {
       authContext.setIsAuthenticated(true);
     }
 
@@ -113,8 +113,8 @@ const Login = () => {
         } else {
           authContext.setUser(data);
           authContext.setIsAuthenticated(true);
-          localStorage.setItem('user', JSON.stringify(data));
-          console.log({ msg: 'Login OK' });
+          localStorage.setItem("user", JSON.stringify(data));
+          console.log({ msg: "Login OK" });
         }
       });
     }
@@ -137,7 +137,7 @@ const Login = () => {
             required
             inputProps={{
               min: 0,
-              style: { textAlign: 'center', fontWeight: 'bold' },
+              style: { textAlign: "center", fontWeight: "bold" },
             }}
             name='email'
             value={userData.email}
@@ -160,7 +160,7 @@ const Login = () => {
               name='password'
               inputProps={{
                 min: 0,
-                style: { textAlign: 'center', fontWeight: 'bold' },
+                style: { textAlign: "center", fontWeight: "bold" },
               }}
               value={userData.password}
               onChange={handleChange}
