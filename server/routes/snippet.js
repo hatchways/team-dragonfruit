@@ -67,7 +67,7 @@ router.patch("/accept/:review_id", auth, async (req, res) => {
   try {
     const receivedReviews = await Snippet.find({ reviewer: req.user._id });
 
-    if (!receivedReviews) return res.status(400).send("Not Found");
+    if (!receivedReviews) return res.status(404).send("Not Found");
 
     // find index of a specific review
     const objIndex = receivedReviews.findIndex(
@@ -143,10 +143,9 @@ router.patch("/rating/:review_id", auth, async (req, res) => {
   const { rating } = req.body;
 
   try {
-    const requestedReviews = await Snippet.find({ author: req.user._id })
-      .populate("author", ["name"])
-      .populate("reviewer", ["name"]);
-    if (!requestedReviews) return res.status(400).send("Not Found");
+    const requestedReviews = await Snippet.find({ author: req.user._id });
+
+    if (!requestedReviews) return res.status(404).send("Not Found");
 
     // find index of a specific review
     const objIndex = requestedReviews.findIndex(
@@ -164,18 +163,7 @@ router.patch("/rating/:review_id", auth, async (req, res) => {
   }
 });
 
-// Get one review by review ID
-// router.get("/review/:review_id", auth, async (req, res) => {
-//   try {
-//     const oneReview = await Snippet.findOne({
-//       _id: req.params.review_id,
-//     }).populate("author", ["name"]);
-
-//     return res.json(oneReview);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: err.message });
-//   }
-// });
+// fetch rating
+// router.get("/rating/:review_id", auth, async());
 
 module.exports = router;

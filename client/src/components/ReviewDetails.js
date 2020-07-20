@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
     width: "90%",
     maxWidth: "95%",
     margin: "2rem auto",
+    paddingBottom: "1rem",
   },
   header: {
     display: "flex",
@@ -90,9 +91,7 @@ const useStyles = makeStyles((theme) => ({
     outline: "none",
     background: "#dee2e6",
   },
-  reviewContent: {
-    margin: "1rem 0 1rem 3.5rem",
-  },
+
   review: {
     margin: "0 auto",
     width: "95%",
@@ -127,30 +126,37 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "0.8rem",
     fontWeight: "500",
   },
+  codeContainer: {
+    margin: "1.5rem auto",
+  },
+  title: {
+    color: theme.palette.primary.main,
+    textTransform: "uppercase",
+  },
+  commentComplete: {
+    margin: "1.5rem auto",
+    color: theme.palette.primary.main,
+    textAlign: "center",
+  },
 }));
 
 const ReviewDetails = () => {
   const classes = useStyles();
 
+  const { selectedReview, user } = useContext(AuthContext);
+
   const [rating, setRating] = useState(0);
   const [code, setCode] = useState("");
 
-  console.log(code);
-
-  const { selectedReview, user } = useContext(AuthContext);
-
   const handleRating = (e) => {
     e.preventDefault();
-    // console.log(selectedReview._id);
-    // console.log(typeof rating);
     UserService.rating(selectedReview._id, rating);
-    setRating(0);
+    setRating(rating);
   };
   // Send Comments
   const handleCode = (comments) => {
     setCode(comments);
   };
-
   const handleSendCode = () => {
     UserService.sendComments(selectedReview._id, code);
   };
@@ -175,7 +181,9 @@ const ReviewDetails = () => {
       <Paper className={classes.root}>
         <Container className={classes.header}>
           <Box>
-            <Typography variant='h6'>{selectedReview.title}</Typography>
+            <Typography variant='h6' className={classes.title}>
+              {selectedReview.title}
+            </Typography>
             <Typography className={classes.date}>
               {`${moment(selectedReview.date_requested).format("MMM Do YYYY")}`}
             </Typography>
@@ -208,12 +216,12 @@ const ReviewDetails = () => {
         </Container>
         <Divider />
 
-        <Container>
+        <Container className={classes.codeContainer}>
           <CodeReader code={selectedReview.code} className={classes.code} />
         </Container>
 
-        {selectedReview.comments && (
-          <Container>
+        <Container>
+          {selectedReview.reviewer && (
             <Box className={classes.avatarHeader}>
               <Avatar src={img2} className={classes.avatarImg} />
               <Box>
@@ -221,18 +229,20 @@ const ReviewDetails = () => {
                   {selectedReview.reviewer.name}
                 </Typography>
                 <Typography className={classes.position}>
-                  Senior Developer
+                  review your request
                 </Typography>
               </Box>
             </Box>
-            <Box className={classes.reviewContent}>
+          )}
+          {selectedReview.comments && (
+            <Container className={classes.codeContainer}>
               <CodeReader
-                code={selectedReview.comments || ""}
+                code={selectedReview.comments}
                 className={classes.code}
               />
-            </Box>
-          </Container>
-        )}
+            </Container>
+          )}
+        </Container>
       </Paper>
     );
   }
@@ -242,7 +252,9 @@ const ReviewDetails = () => {
       <Paper className={classes.root}>
         <Container className={classes.header}>
           <Box>
-            <Typography variant='h6'>{selectedReview.title}</Typography>
+            <Typography variant='h6' className={classes.title}>
+              {selectedReview.title}
+            </Typography>
             <Typography className={classes.date}>
               {`${moment(selectedReview.date_requested).format("MMM Do YYYY")}`}
             </Typography>
@@ -257,38 +269,57 @@ const ReviewDetails = () => {
             </Box>
           </Box>
         </Container>
+
         <Divider />
 
-        <Container>
+        <Container className={classes.codeContainer}>
           <CodeReader code={selectedReview.code} className={classes.code} />
         </Container>
 
-        <Container>
-          <PrismDraft sendCode={handleCode} />
-        </Container>
-        <Container className={classes.reviewFooter}>
-          <Box className={classes.avatarHeader}>
-            <Avatar src={img2} className={classes.avatarImg} />
-            <Box>
-              <Typography className={classes.authorName}>
-                {selectedReview.reviewer.name}
-              </Typography>
-              <Typography className={classes.position}>
-                Senior Developer
-              </Typography>
-            </Box>
+        <Divider />
+        {selectedReview.comments ? (
+          <Box component='div'>
+            <Typography variant='h4' className={classes.commentComplete}>
+              You're done with your comments on this request.
+            </Typography>
+            <Container className={classes.codeContainer}>
+              <CodeReader
+                code={selectedReview.comments}
+                className={classes.code}
+              />
+            </Container>
           </Box>
-          <Button
-            type='button'
-            variant='contained'
-            disableElevation
-            color='primary'
-            className={classes.sendBtn}
-            onClick={handleSendCode}
-          >
-            Submit review
-          </Button>
-        </Container>
+        ) : selectedReview.status === "in-review" ? (
+          <Box component='div'>
+            <Container className={classes.codeContainer}>
+              <PrismDraft sendCode={handleCode} />
+            </Container>
+
+            <Container className={classes.reviewFooter}>
+              <Box className={classes.avatarHeader}>
+                <Avatar src={img2} className={classes.avatarImg} />
+                <Box>
+                  <Typography className={classes.authorName}>
+                    {selectedReview.reviewer.name}
+                  </Typography>
+                  <Typography className={classes.position}>
+                    Senior Developer
+                  </Typography>
+                </Box>
+              </Box>
+              <Button
+                type='button'
+                variant='contained'
+                disableElevation
+                color='primary'
+                className={classes.sendBtn}
+                onClick={handleSendCode}
+              >
+                Submit review
+              </Button>
+            </Container>
+          </Box>
+        ) : null}
       </Paper>
     );
   }
