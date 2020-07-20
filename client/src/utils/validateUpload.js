@@ -1,7 +1,16 @@
+import axios from "axios";
+
 const validate = (userData) => {
 	const { language, code } = userData;
 
 	let errors = {};
+	const user = JSON.parse(localStorage.getItem("user"));
+	const experience = user.experience;
+
+	// user profile is not complete
+	if (experience === {} || !Object.keys(experience).includes(language)) {
+		errors.language = "Please specify your level in this language";
+	}
 
 	// language is required
 	if (language === "") {

@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 
 import LanguageSelector from "./LanguageSelector";
 import LanguageRenderer from "./LanguageRenderer";
-import UploadAvatar from "./UploadAvatar";
+
 
 const useStyles = makeStyles((theme) => ({
 	registerContainer: {
@@ -122,7 +122,7 @@ const Onboarding = () => {
 	return (
 		<Dialog open={open} fullWidth maxWidth="md">
 			<form>
-				<UploadAvatar />
+				
 				<Paper className={classes.registerContainer}>
 					<Typography variant="h5" className={classes.title}>
 						Add your experience

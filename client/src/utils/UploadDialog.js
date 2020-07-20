@@ -89,6 +89,7 @@ export default function UploadDialog() {
 	};
 
 	const handleSubmit = async (e) => {
+		
 		e.preventDefault();
 		setErrorData(validate(data));
 		setIsSubmitting(true);
