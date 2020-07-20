@@ -21,6 +21,7 @@ import CodeReader from "../utils/CodeReader";
 import UserService from "../services/UserService";
 
 import PrismDraft from "../utils/PrismDraft";
+import Message from "./Message";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -147,19 +148,22 @@ const ReviewDetails = () => {
 
   const [rating, setRating] = useState(0);
   const [code, setCode] = useState("");
+  // const [message, setMessage] = useState("");
 
+  // handle rating
   const handleRating = (e) => {
     e.preventDefault();
     UserService.rating(selectedReview._id, rating);
     setRating(rating);
   };
+
   // Send Comments
   const handleCode = (comments) => {
     setCode(comments);
   };
   const handleSendCode = () => {
     UserService.sendComments(selectedReview._id, code);
-    window.location.reload();
+    // window.location.reload();
   };
 
   if (!selectedReview)

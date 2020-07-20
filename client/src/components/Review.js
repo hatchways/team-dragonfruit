@@ -83,10 +83,10 @@ const Review = ({ review }) => {
   useEffect(() => {
     if (pick === "accept") {
       UserService.acceptReview(review._id);
-      window.location.reload();
+      // window.location.reload();
     } else if (pick === "decline") {
       UserService.declineReview(review._id);
-      window.location.reload();
+      // window.location.reload();
     }
   }, [pick, review._id]);
 
