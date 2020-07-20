@@ -28,6 +28,7 @@ const LanguageRenderer = (props) => {
 			<TextField
 				readOnly={true}
 				variant="outlined"
+				style={{ width: "25vw" }}
 				value={`${props.language}:  ${props.level}`}
 			/>
 		</div>

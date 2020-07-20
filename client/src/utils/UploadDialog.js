@@ -89,9 +89,12 @@ export default function UploadDialog() {
 	};
 
 	const handleSubmit = async (e) => {
+		const user = JSON.parse(localStorage.getItem("user"));
+		const experience = user.experience;
+		console.log(experience);
 		e.preventDefault();
 		setErrorData(validate(data));
-		setIsSubmitting(true);
+		// setIsSubmitting(true);
 	};
 
 	useEffect(() => {

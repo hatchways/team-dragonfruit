@@ -13,6 +13,7 @@ import PrivateRoute from "./hocs/PrivateRoute";
 import PublicRoute from "./hocs/PublicRoute";
 import AuthProvider from "./context/AuthContext";
 import OnboardingPage from "./pages/OnboardingPage";
+import EditProfile from "./pages/EditProfile.js";
 import "./App.css";
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
 						<PrivateRoute path="/checkout" component={Checkout} />
 						<PrivateRoute path="/reviews" exact component={Reviews} />
 						<PrivateRoute path="/onboarding" exact component={OnboardingPage} />
+						<PrivateRoute path="/edit" exact component={EditProfile} />
 					</Switch>
 				</BrowserRouter>
 			</AuthProvider>

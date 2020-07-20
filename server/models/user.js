@@ -41,7 +41,10 @@ const userSchema = new mongoose.Schema({
 		default: 3,
 	},
 	declined: {
-		type: [mongoose.Schema.Types.ObjectId],
+		type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Snippet" }],
+	},
+	avatar: {
+		type: Buffer,
 	},
 });
 
@@ -79,10 +82,11 @@ userSchema.statics.findUserByCredentials = async (email, password) => {
 	return user;
 };
 
-/////// A method for hiding private data /////////
+/////// A method for preventing uneccessary data to be sent back to client /////////
 userSchema.methods.toJSON = function () {
 	const userObject = this.toObject();
 	delete userObject.password;
+	delete userObject.avatar;
 	return userObject;
 };
 

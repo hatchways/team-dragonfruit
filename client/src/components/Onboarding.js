@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import LanguageSelector from "./LanguageSelector";
 import LanguageRenderer from "./LanguageRenderer";
 
+
 const useStyles = makeStyles((theme) => ({
 	registerContainer: {
 		display: "flex",
@@ -70,15 +71,18 @@ const Onboarding = () => {
 		history.push("/");
 	};
 
+	// Get experience object from LanguageSelector
 	const getExp = (exp) => {
 		setUserExp(userExp.concat(exp));
 	};
 
+	// Get the language to be removed from LanguageRenderer
 	const removeLanguage = (language) => {
 		let newUserExp = userExp.filter((el) => Object.keys(el)[0] !== language);
 		setUserExp(newUserExp);
 	};
 
+	// API call to send userExp that is an array of objects
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		console.log(userExp);
@@ -87,6 +91,7 @@ const Onboarding = () => {
 		history.push("/");
 	};
 
+	// A function for rendering selected languages
 	const renderLanguages = (userExp) => {
 		let value;
 		const exps = userExp.map((el) => {
@@ -117,6 +122,7 @@ const Onboarding = () => {
 	return (
 		<Dialog open={open} fullWidth maxWidth="md">
 			<form>
+				
 				<Paper className={classes.registerContainer}>
 					<Typography variant="h5" className={classes.title}>
 						Add your experience
