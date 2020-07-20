@@ -63,19 +63,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UploadDialog() {
-	const [open, setOpen] = React.useState(false);
-	const [code, setCode] = React.useState("");
-	const classes = useStyles();
-
+	const [open, setOpen] = useState(false);
+	const [errorData, setErrorData] = useState({});
+	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [data, setData] = useState({
 		title: "",
 		language: "",
-		code: "",
+		content: [],
 	});
 
-	const [errorData, setErrorData] = useState({});
-	const [isSubmitting, setIsSubmitting] = useState(false);
-
+	const classes = useStyles();
 	const handleChange = (e) => {
 		setData({ ...data, [e.target.name]: e.target.value });
 	};
@@ -88,38 +85,35 @@ export default function UploadDialog() {
 		setOpen(false);
 	};
 
+	const handleChangeCode = (content) => {
+		setData({ ...data, content });
+	};
+
 	const handleSubmit = async (e) => {
-		const user = JSON.parse(localStorage.getItem("user"));
-		const experience = user.experience;
-		console.log(experience);
 		e.preventDefault();
-		setErrorData(validate(data));
-		// setIsSubmitting(true);
+		const errors = await validate(data);
+		setErrorData(errors);
+		setIsSubmitting(true);
 	};
 
 	useEffect(() => {
+		console.log("errorData: ", errorData);
 		if (Object.keys(errorData).length === 0 && isSubmitting) {
 			const snippet = {
 				language: data.language,
 				title: data.title,
-				code: data.code,
+				code: data.content,
 			};
-			console.log("snippet: ", snippet);
+			console.log("from useEffect snippet: ", snippet);
 			async function postCode(snippet) {
 				await axios.post("/api/users/upload", snippet);
 			}
 			postCode(snippet);
-			setData({ language: "", title: "", code: "" });
-			setCode("");
 			setOpen(false);
+			setData({ language: "", title: "", content: [] });
 		}
 		setIsSubmitting(false);
-	}, [errorData, isSubmitting, data]);
-
-	const handleChangeCode = (content) => {
-		setCode(content);
-		setData({ ...data, code: content });
-	};
+	}, [errorData, isSubmitting, data, open]);
 
 	return (
 		<div>
