@@ -8,7 +8,7 @@ const validate = async (userData) => {
 	const experience = response.data.experience;
 	const balance = response.data.balance;
 
-	console.log("experience: ", experience);
+	console.log("experience from validateUpload: ", experience);
 
 	// User must have enough balance
 	if (balance < 1) {

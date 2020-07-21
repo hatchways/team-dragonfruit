@@ -113,46 +113,48 @@ export default function UploadDialog() {
 		setData({ ...data, code: content });
 	};
 
-	const handleValidate = async () => {
+	// const handleValidate = async () => {
+	// 	const errors = await validate(data);
+	// 	console.log(errors);
+	// 	if (Object.keys(errors).length === 0) {
+	// 		setValidated(true);
+	// 	}
+	// 	setErrorData(errors);
+	// 	setIsSubmitting(true);
+	// };
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+
+		// if (Object.keys(errorData).length === 0 && isSubmitting) {
+		// 	console.log("submitting: ", data);
+		// 	await axios.post("/api/users/upload", data);
+		// 	setData({
+		// 		language: "",
+		// 		title: "",
+		// 		code: [],
+		// 	});
+		// 	setIsSubmitting(false);
+		// 	setOpen(false);
+		// }
+
 		const errors = await validate(data);
-		console.log(errors);
-		if (Object.keys(errors).length === 0) {
-			setValidated(true);
-		}
 		setErrorData(errors);
 		setIsSubmitting(true);
 	};
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		// setIsSubmitting(true);
+	useEffect(() => {
 		if (Object.keys(errorData).length === 0 && isSubmitting) {
-			console.log("submitting: ", data);
-			await axios.post("/api/users/upload", data);
+			async function postCode(snippet) {
+				await axios.post("/api/users/upload", snippet);
+				console.log("from useEffect snippet: ", snippet);
+			}
+			postCode(data);
 			setData({ language: "", title: "", code: [] });
-			setIsSubmitting(false);
 			setOpen(false);
 		}
-
-		// const errors = await validate(data);
-		// setErrorData(errors);
-	};
-
-	// useEffect(() => {
-	// 	console.log("errorData: ", Object.keys(errorData).length);
-	// if (Object.keys(errorData).length === 0 && isSubmitting) {
-	// 		async function postCode(snippet) {
-	// 			await axios.post("/api/users/upload", snippet);
-	// 			console.log("from useEffect snippet: ", snippet);
-	// 		}
-
-	// 		postCode(data);
-	// 		setData({ language: "", title: "", code: [] });
-	// 		setOpen(false);
-	// 	}
-	// 	setIsSubmitting(false);
-
-	// }, [errorData, isSubmitting, data, open]);
+		setIsSubmitting(false);
+	}, [errorData, data, isSubmitting]);
 
 	return (
 		<div>
@@ -228,7 +230,7 @@ export default function UploadDialog() {
 
 					<div className={classes.btnContainer}>
 						<Button
-							onClick={(e) => handleValidate()}
+							// onClick={(e) => handleValidate()}
 							className={classes.validateBtn}>
 							Validate
 						</Button>
