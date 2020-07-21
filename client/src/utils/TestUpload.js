@@ -14,11 +14,9 @@ import {
 	FormControl,
 	Typography,
 } from "@material-ui/core";
-import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 
 import PrismDraft from "./PrismDraft";
 import validate from "./validateUpload";
-import Message from "../components/Message";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -58,46 +56,32 @@ const useStyles = makeStyles((theme) => ({
 		color: "white",
 		border: "transparent",
 		"&:hover": {
-			backgroundColor: "#6E3ADB",
-			color: "#43dd9a",
-		},
-	},
-	validateBtn: {
-		margin: "20px auto",
-		padding: "0.7rem 4rem",
-		borderRadius: "2rem",
-		background: theme.palette.primary.main,
-		fontSize: "1rem",
-		textTransform: "none",
-		boxShadow: "transparent",
-		outline: "transparent",
-		color: "white",
-		border: "transparent",
-		"&:hover": {
 			backgroundColor: "#43dd9a",
 			color: "#6E3ADB",
 		},
 	},
-	btnContainer: {
-		display: "flex",
-		justifyContent: "space-between",
-		width: "100%",
-	},
 }));
 
-export default function UploadDialog() {
+ class TestUpload extends React.component {
 	const [open, setOpen] = useState(false);
 	const [errorData, setErrorData] = useState({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [validated, setValidated] = useState(false);
 	const [data, setData] = useState({
 		title: "",
 		language: "",
 		code: [],
 	});
 
-	const classes = useStyles();
-	const handleChange = (e) => {
+	 const classes = useStyles();
+	 
+	 state = {
+		 open: false,
+		 errorData: {},
+		 isSubmitting: false,
+		 data: {}
+	 };
+
+	handleChange = (e) => {
 		setData({ ...data, [e.target.name]: e.target.value });
 	};
 
@@ -113,46 +97,26 @@ export default function UploadDialog() {
 		setData({ ...data, code: content });
 	};
 
-	const handleValidate = async () => {
-		const errors = await validate(data);
-		console.log(errors);
-		if (Object.keys(errors).length === 0) {
-			setValidated(true);
-		}
-		setErrorData(errors);
-		setIsSubmitting(true);
-	};
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		// setIsSubmitting(true);
-		if (Object.keys(errorData).length === 0 && isSubmitting) {
-			console.log("submitting: ", data);
-			await axios.post("/api/users/upload", data);
-			setData({ language: "", title: "", code: [] });
-			setIsSubmitting(false);
-			setOpen(false);
-		}
-
-		// const errors = await validate(data);
-		// setErrorData(errors);
+		setIsSubmitting(true);
+		setErrorData(await validate(data));
 	};
 
-	// useEffect(() => {
-	// 	console.log("errorData: ", Object.keys(errorData).length);
-	// if (Object.keys(errorData).length === 0 && isSubmitting) {
-	// 		async function postCode(snippet) {
-	// 			await axios.post("/api/users/upload", snippet);
-	// 			console.log("from useEffect snippet: ", snippet);
-	// 		}
+	useEffect(() => {
+		console.log("errorData: ", errorData);
+		if (Object.keys(errorData).length === 0 && isSubmitting) {
+			async function postCode(snippet) {
+				await axios.post("/api/users/upload", snippet);
+				console.log("from useEffect snippet: ", snippet);
+			}
 
-	// 		postCode(data);
-	// 		setData({ language: "", title: "", code: [] });
-	// 		setOpen(false);
-	// 	}
-	// 	setIsSubmitting(false);
-
-	// }, [errorData, isSubmitting, data, open]);
+			postCode(data);
+			setData({ language: "", title: "", code: [] });
+			setOpen(false);
+		}
+		setIsSubmitting(false);
+	}, [errorData, isSubmitting, data, open]);
 
 	return (
 		<div>
@@ -222,27 +186,16 @@ export default function UploadDialog() {
 				<PrismDraft language={data.language} sendCode={handleChangeCode} />
 
 				<DialogActions>
-					{errorData.balance && (
-						<Message message={errorData.balance} open={true} type="error" />
-					)}
-
-					<div className={classes.btnContainer}>
-						<Button
-							onClick={(e) => handleValidate()}
-							className={classes.validateBtn}>
-							Validate
-						</Button>
-						{validated ? (
-							<CheckCircleOutlineIcon fontSize="large" color="primary" />
-						) : null}
-						<Button
-							onClick={(e) => handleSubmit(e)}
-							className={classes.submitBtn}>
-							Submit
-						</Button>
-					</div>
+					<Button
+						onClick={(e) => handleSubmit(e)}
+						className={classes.submitBtn}>
+						Submit
+					</Button>
 				</DialogActions>
 			</Dialog>
 		</div>
 	);
 }
+
+
+export default TestUpload;

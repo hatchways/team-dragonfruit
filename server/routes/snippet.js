@@ -18,7 +18,7 @@ router.post("/upload", auth, balance, async (req, res) => {
 		});
 	} else {
 		const level = req.user.experience.get(language);
-		matchReviewer(language, level, snippet._id);
+		// matchReviewer(language, level, snippet._id);
 		try {
 			await snippet.save();
 			req.user.balance -= 1;
