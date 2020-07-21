@@ -252,7 +252,7 @@ const ReviewDetails = () => {
 				<Divider />
 
 				<Container className={classes.codeContainer}>
-					<CodeReader code={selectedReview.code} className={classes.code} />
+					{/* <CodeReader code={selectedReview.code} className={classes.code} /> */}
 				</Container>
 
 				<Container>
@@ -272,10 +272,10 @@ const ReviewDetails = () => {
 					)}
 					{selectedReview.comments && (
 						<Container className={classes.codeContainer}>
-							<CodeReader
+							{/* <CodeReader
 								code={selectedReview.comments}
 								className={classes.code}
-							/>
+							/> */}
 						</Container>
 					)}
 				</Container>
@@ -311,7 +311,7 @@ const ReviewDetails = () => {
 				<Divider />
 
 				<Container className={classes.codeContainer}>
-					<CodeReader code={selectedReview.code} className={classes.code} />
+					{/* <CodeReader code={selectedReview.code} className={classes.code} /> */}
 				</Container>
 
 				<Divider />
@@ -321,10 +321,10 @@ const ReviewDetails = () => {
 							Your review is sent
 						</Typography>
 						<Container className={classes.codeContainer}>
-							<CodeReader
+							{/* <CodeReader
 								code={selectedReview.comments}
 								className={classes.code}
-							/>
+							/> */}
 						</Container>
 					</Box>
 				) : selectedReview.status === "in-review" ? (
