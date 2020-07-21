@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
 	requested: {
 		maxHeight: "40vh",
 		overflowY: "scroll",
+		marginBottom: "30px",
 
 		"&::-webkit-scrollbar": {
 			width: "7px",

@@ -47,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
 		textTransform: "capitalize",
 	},
 	selectContainer: {
-		padding: "0.1rem",
 		margin: "0",
 		fontSize: "0.5rem",
 	},
@@ -98,7 +97,6 @@ const Review = ({ review }) => {
 				review.date_requested,
 			).format("MMM Do YYYY")}`}</Typography>
 			<Box className={classes.more} onClick={handleClick} aria-describedby={id}>
-				
 				{review.author._id === user._id ? (
 					<Typography variant="subtitle1" className={classes.status}>
 						{review.status}
