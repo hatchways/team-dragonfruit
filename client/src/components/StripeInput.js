@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext } from "react";
 
 // Stripe
-import { loadStripe } from '@stripe/stripe-js';
+import { loadStripe } from "@stripe/stripe-js";
 import {
   Elements,
   CardCvcElement,
@@ -9,88 +9,90 @@ import {
   CardNumberElement,
   useStripe,
   useElements,
-} from '@stripe/react-stripe-js';
+} from "@stripe/react-stripe-js";
 
 // MUI
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Paper,
   Box,
   Typography,
   Button,
   CircularProgress,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
-import { AuthContext } from '../context/AuthContext';
-import UserService from '../services/UserService';
+import { AuthContext } from "../context/AuthContext";
+import UserService from "../services/UserService";
 
-import Message from './Message';
-require('dotenv').config();
+import Message from "./Message";
+require("dotenv").config();
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '550px',
-    maxWidth: '600px',
-    margin: '1rem auto',
-    padding: '1rem 0',
-    alignItems: 'center',
-    background: 'secondary',
-    borderRadius: '0.6rem',
+    display: "flex",
+    flexDirection: "column",
+    width: "550px",
+    maxWidth: "600px",
+    margin: "1rem auto",
+    padding: "1rem 0",
+    alignItems: "center",
+    background: "secondary",
+    borderRadius: "0.6rem",
   },
   title: {
-    marginBottom: '1rem',
-    marginTop: '1.5rem',
+    marginBottom: "1rem",
+    marginTop: "1.5rem",
   },
   formContainer: {
-    width: '400px',
+    width: "400px",
   },
   label: {
-    marginBottom: '0.5rem',
+    marginBottom: "0.5rem",
   },
   cardNumber: {
-    padding: '1.1rem',
-    border: '1px solid #dee2e6',
-    borderRadius: '10px',
+    padding: "1.1rem",
+    border: "1px solid #dee2e6",
+    borderRadius: "10px",
   },
   flexBox: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginTop: '2rem',
+    display: "flex",
+    justifyContent: "space-between",
+    marginTop: "2rem",
   },
   cardExpDate: {
-    padding: '1.1rem',
-    border: '1px solid #dee2e6',
-    borderRadius: '10px',
-    width: '200px',
+    padding: "1.1rem",
+    border: "1px solid #dee2e6",
+    borderRadius: "10px",
+    width: "200px",
   },
   cardCvc: {
-    padding: '1.1rem',
-    border: '1px solid #dee2e6',
-    borderRadius: '10px',
-    width: '100px',
+    padding: "1.1rem",
+    border: "1px solid #dee2e6",
+    borderRadius: "10px",
+    width: "100px",
   },
   btnContainer: {
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center",
   },
 
   payBtn: {
-    padding: '0.7rem 4rem',
-    borderRadius: '2rem',
-    background: 'turquoise',
-    textTransform: 'capitalize',
-    fontSize: '1rem',
-    margin: '2rem 0',
-    '&:hover': {
-      backgroundColor: '#43dd9a',
-      color: '#6E3ADB',
+    padding: "0.7rem 4rem",
+    borderRadius: "2rem",
+    background: "turquoise",
+    textTransform: "capitalize",
+    fontSize: "1rem",
+    margin: "2rem 0",
+    "&:hover": {
+      backgroundColor: "#43dd9a",
+      color: "#6E3ADB",
     },
   },
 }));
 
-const stripePromise = loadStripe('pk_test_nHCLhd2MjdARhzKdmXWuoYK900QW0kPZgl');
+const stripePromise = loadStripe(
+  "pk_test_51FvctMEpOvdYM3XDNw0N95RyCccgWE5gzWF5LAKDYj1hOYUnp5NQmDfh8AHYwRtTvqPDoo9yccDJt5CnimroHCui00ugrYFDSQ"
+);
 
 const CheckoutForm = () => {
   const classes = useStyles();
@@ -115,7 +117,7 @@ const CheckoutForm = () => {
 
     // process card element
     const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: 'card',
+      type: "card",
       card: elements.getElement(CardNumberElement),
     });
 
@@ -130,21 +132,21 @@ const CheckoutForm = () => {
 
       try {
         // send card info to backend
-        const res = await fetch('/api/users/charge', {
-          method: 'POST',
+        const res = await fetch("/api/users/charge", {
+          method: "POST",
           body: JSON.stringify(payload),
-          headers: { 'Content-Type': 'application/json' },
+          headers: { "Content-Type": "application/json" },
         });
         if (res.status !== 200) {
-          return { errorMsg: { msg: 'Some errors' } };
+          return { errorMsg: { msg: "Some errors" } };
         } else {
           // topup service
           UserService.topup(topupAmount).then((data) => {
             setUser(data);
             setLoading(false);
-            setMessage('Top Up Successfully');
+            setMessage("Top Up Successfully");
           });
-          return res.json({ msg: 'Success' });
+          return res.json({ msg: "Success" });
         }
       } catch (err) {
         console.error(err.message);
@@ -156,17 +158,17 @@ const CheckoutForm = () => {
   const options = {
     style: {
       base: {
-        color: '#6E3ADB',
+        color: "#6E3ADB",
         fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: 'antialiased',
-        fontSize: '16px',
-        '::placeholder': {
-          color: '#aab7c4',
+        fontSmoothing: "antialiased",
+        fontSize: "16px",
+        "::placeholder": {
+          color: "#aab7c4",
         },
       },
       invalid: {
-        color: '#fa755a',
-        iconColor: '#fa755a',
+        color: "#fa755a",
+        iconColor: "#fa755a",
       },
     },
   };

@@ -28,7 +28,7 @@ const snippetSchema = new mongoose.Schema({
     required: true,
   },
   comments: {
-    type: String,
+    type: Array,
   },
   rating: {
     type: Number,

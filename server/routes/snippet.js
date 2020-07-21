@@ -8,7 +8,15 @@ const router = express.Router();
 
 /////// Upload code route handler ///////
 router.post("/upload", auth, balance, async (req, res) => {
-  const snippet = new Snippet({ ...req.body, author: req.user._id });
+  const snippet = new Snippet({
+    ...req.body,
+    author: req.user._id,
+    reviewer: null,
+    comments: null,
+    rating: 0,
+    date_accepted: null,
+    date_submitted: null,
+  });
   try {
     await snippet.save();
     req.user.balance -= 1;
@@ -59,7 +67,7 @@ router.patch("/accept/:review_id", auth, async (req, res) => {
   try {
     const receivedReviews = await Snippet.find({ reviewer: req.user._id });
 
-    if (!receivedReviews) return res.status(400).send("Not Found");
+    if (!receivedReviews) return res.status(404).send("Not Found");
 
     // find index of a specific review
     const objIndex = receivedReviews.findIndex(
@@ -83,7 +91,7 @@ router.patch("/decline/:review_id", auth, async (req, res) => {
   try {
     const receivedReviews = await Snippet.find({ reviewer: req.user._id });
 
-    if (!receivedReviews) return res.status(400).send("Not Found");
+    if (!receivedReviews) return res.status(404).send("Not Found");
 
     // find index of a specific review
     const objIndex = receivedReviews.findIndex(
@@ -130,18 +138,29 @@ router.post("/comment/:review_id", auth, async (req, res) => {
   }
 });
 
-// Get one review by review ID
-// router.get("/review/:review_id", auth, async (req, res) => {
-//   try {
-//     const oneReview = await Snippet.findOne({
-//       _id: req.params.review_id,
-//     }).populate("author", ["name"]);
+// rating feedback
+router.patch("/rating/:review_id", auth, async (req, res) => {
+  const { rating } = req.body;
 
-//     return res.json(oneReview);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: err.message });
-//   }
-// });
+  try {
+    const requestedReviews = await Snippet.find({ author: req.user._id });
+
+    if (!requestedReviews) return res.status(404).send("Not Found");
+
+    // find index of a specific review
+    const objIndex = requestedReviews.findIndex(
+      (review) => review._id.toString() === req.params.review_id
+    );
+    // change status and reviewer and date_accepted
+    requestedReviews[objIndex].rating = rating;
+
+    await requestedReviews[objIndex].save();
+
+    return res.status(200).json(requestedReviews);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+});
 
 module.exports = router;

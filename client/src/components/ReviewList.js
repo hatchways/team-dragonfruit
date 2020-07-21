@@ -48,21 +48,11 @@ const ReviewList = ({ title }) => {
   const classes = useStyles();
 
   const {
-    user,
-    reviews,
     requestedReviews,
     setRequestedReviews,
     receivedReviews,
     setReceivedReviews,
   } = useContext(AuthContext);
-
-  // get the reviews needed
-  // const requestedReviews = reviews.filter(
-  //   (review) => review.author === user._id
-  // );
-  // const receivedReviews = reviews.filter(
-  //   (review) => review.author !== user._id
-  // );
 
   // total of each kind of reviews
   const requestedReviewNum =
@@ -70,13 +60,15 @@ const ReviewList = ({ title }) => {
   const receivedReviewNum =
     receivedReviews !== null ? receivedReviews.length : 0;
 
-  // const requestedReviews = UserService.requestedReviews();
-  // console.log(requestedReviews);
-
   useEffect(() => {
     UserService.requestedReviews().then((data) => setRequestedReviews(data));
     UserService.receivedReviews().then((data) => setReceivedReviews(data));
-  }, [setReceivedReviews, setRequestedReviews]);
+  }, [
+    receivedReviews,
+    requestedReviews,
+    setReceivedReviews,
+    setRequestedReviews,
+  ]);
 
   if (!requestedReviews || !receivedReviews) return <Loading />;
 

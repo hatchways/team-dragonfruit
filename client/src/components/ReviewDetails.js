@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   Paper,
   Container,
@@ -6,7 +6,6 @@ import {
   Divider,
   Typography,
   Avatar,
-  TextareaAutosize,
   Button,
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
@@ -18,11 +17,18 @@ import img2 from "../images/avatar2.png";
 
 import { AuthContext } from "../context/AuthContext";
 
+import CodeReader from "../utils/CodeReader";
+import UserService from "../services/UserService";
+
+import PrismDraft from "../utils/PrismDraft";
+import Message from "./Message";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "90%",
     maxWidth: "95%",
     margin: "2rem auto",
+    paddingBottom: "1rem",
   },
   header: {
     display: "flex",
@@ -86,9 +92,7 @@ const useStyles = makeStyles((theme) => ({
     outline: "none",
     background: "#dee2e6",
   },
-  reviewContent: {
-    margin: "1rem 0 1rem 3.5rem",
-  },
+
   review: {
     margin: "0 auto",
     width: "95%",
@@ -123,14 +127,44 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "0.8rem",
     fontWeight: "500",
   },
+  codeContainer: {
+    margin: "1.5rem auto",
+  },
+  title: {
+    color: theme.palette.primary.main,
+    textTransform: "uppercase",
+  },
+  commentComplete: {
+    margin: "1.5rem auto",
+    color: theme.palette.primary.main,
+    textAlign: "center",
+  },
 }));
 
 const ReviewDetails = () => {
   const classes = useStyles();
 
-  const [rating, setRating] = React.useState(2);
-
   const { selectedReview, user } = useContext(AuthContext);
+
+  const [rating, setRating] = useState(0);
+  const [code, setCode] = useState("");
+  // const [message, setMessage] = useState("");
+
+  // handle rating
+  const handleRating = (e) => {
+    e.preventDefault();
+    UserService.rating(selectedReview._id, rating);
+    setRating(rating);
+  };
+
+  // Send Comments
+  const handleCode = (comments) => {
+    setCode(comments);
+  };
+  const handleSendCode = () => {
+    UserService.sendComments(selectedReview._id, code);
+    // window.location.reload();
+  };
 
   if (!selectedReview)
     return (
@@ -144,76 +178,73 @@ const ReviewDetails = () => {
       </Typography>
     );
 
-  console.log(selectedReview);
-
   // for requested
   if (selectedReview.author._id === user._id) {
     return (
       <Paper className={classes.root}>
         <Container className={classes.header}>
           <Box>
-            <Typography variant='h6'>{selectedReview.title}</Typography>
+            <Typography variant='h6' className={classes.title}>
+              {selectedReview.title}
+            </Typography>
             <Typography className={classes.date}>
               {`${moment(selectedReview.date_requested).format("MMM Do YYYY")}`}
             </Typography>
           </Box>
-          <Box>
-            <form className={classes.ratingForm}>
-              <Box className={classes.ratingTitle}>
-                Tap a star to rate review
-              </Box>
-              <Rating
-                name='rating'
-                value={rating}
-                onChange={(event, newValue) => {
-                  setRating(newValue);
-                }}
-              />
-              <Button
-                type='button'
-                variant='contained'
-                disableElevation
-                color='primary'
-                className={classes.ratingBtn}
-              >
-                Submit
-              </Button>
-            </form>
-          </Box>
+          {selectedReview.comments && (
+            <Box>
+              <form className={classes.ratingForm} onSubmit={handleRating}>
+                <Box className={classes.ratingTitle}>
+                  Tap a star to rate review
+                </Box>
+                <Rating
+                  name='rating'
+                  value={rating || selectedReview.rating}
+                  onChange={(event, newValue) => {
+                    setRating(newValue);
+                  }}
+                />
+                <Button
+                  type='submit'
+                  variant='contained'
+                  disableElevation
+                  color='primary'
+                  className={classes.ratingBtn}
+                >
+                  Submit
+                </Button>
+              </form>
+            </Box>
+          )}
         </Container>
         <Divider />
 
-        <Container>
-          <TextareaAutosize
-            rowsMax={10}
-            rowsMin={6}
-            placeholder='Your review'
-            className={classes.code}
-          />
+        <Container className={classes.codeContainer}>
+          <CodeReader code={selectedReview.code} className={classes.code} />
         </Container>
+
         <Container>
-          <Box className={classes.avatarHeader}>
-            <Avatar src={img2} className={classes.avatarImg} />
-            <Box>
-              <Typography className={classes.authorName}>
-                Robert Clark
-              </Typography>
-              <Typography className={classes.position}>
-                Senior Developer
-              </Typography>
+          {selectedReview.reviewer && (
+            <Box className={classes.avatarHeader}>
+              <Avatar src={img2} className={classes.avatarImg} />
+              <Box>
+                <Typography className={classes.authorName}>
+                  {selectedReview.reviewer.name}
+                </Typography>
+                <Typography className={classes.position}>
+                  review your request
+                </Typography>
+              </Box>
             </Box>
-          </Box>
-          <Box className={classes.reviewContent}>
-            <Typography>
-              It would be great if you add the component like:
-            </Typography>
-            <TextareaAutosize
-              rowsMax={10}
-              rowsMin={6}
-              placeholder='Your review'
-              className={classes.code}
-            />
-          </Box>
+          )}
+          {selectedReview.comments && (
+            <Container className={classes.codeContainer}>
+              <CodeReader
+                code={selectedReview.comments}
+                className={classes.code}
+              />
+            </Container>
+          )}
         </Container>
       </Paper>
     );
@@ -224,7 +255,9 @@ const ReviewDetails = () => {
       <Paper className={classes.root}>
         <Container className={classes.header}>
           <Box>
-            <Typography variant='h6'>{selectedReview.title}</Typography>
+            <Typography variant='h6' className={classes.title}>
+              {selectedReview.title}
+            </Typography>
             <Typography className={classes.date}>
               {`${moment(selectedReview.date_requested).format("MMM Do YYYY")}`}
             </Typography>
@@ -239,46 +272,57 @@ const ReviewDetails = () => {
             </Box>
           </Box>
         </Container>
+
         <Divider />
 
-        <Container>
-          <TextareaAutosize
-            rowsMax={10}
-            rowsMin={6}
-            placeholder='Code To Review'
-            className={classes.code}
-            value={selectedReview.code}
-          />
+        <Container className={classes.codeContainer}>
+          <CodeReader code={selectedReview.code} className={classes.code} />
         </Container>
 
-        <Container>
-          <TextareaAutosize
-            rowsMax={10}
-            rowsMin={6}
-            placeholder='Your Review'
-            className={classes.review}
-          />
-        </Container>
-        <Container className={classes.reviewFooter}>
-          <Box className={classes.avatarHeader}>
-            <Avatar src={img2} className={classes.avatarImg} />
-            <Box>
-              <Typography className={classes.authorName}>John Doe</Typography>
-              <Typography className={classes.position}>
-                Senior Developer
-              </Typography>
-            </Box>
+        <Divider />
+        {selectedReview.comments ? (
+          <Box component='div'>
+            <Typography variant='h4' className={classes.commentComplete}>
+              You're done with your comments on this request.
+            </Typography>
+            <Container className={classes.codeContainer}>
+              <CodeReader
+                code={selectedReview.comments}
+                className={classes.code}
+              />
+            </Container>
           </Box>
-          <Button
-            type='button'
-            variant='contained'
-            disableElevation
-            color='primary'
-            className={classes.sendBtn}
-          >
-            Submit review
-          </Button>
-        </Container>
+        ) : selectedReview.status === "in-review" ? (
+          <Box component='div'>
+            <Container className={classes.codeContainer}>
+              <PrismDraft sendCode={handleCode} />
+            </Container>
+
+            <Container className={classes.reviewFooter}>
+              <Box className={classes.avatarHeader}>
+                <Avatar src={img2} className={classes.avatarImg} />
+                <Box>
+                  <Typography className={classes.authorName}>
+                    {selectedReview.reviewer.name}
+                  </Typography>
+                  <Typography className={classes.position}>
+                    Senior Developer
+                  </Typography>
+                </Box>
+              </Box>
+              <Button
+                type='button'
+                variant='contained'
+                disableElevation
+                color='primary'
+                className={classes.sendBtn}
+                onClick={handleSendCode}
+              >
+                Submit review
+              </Button>
+            </Container>
+          </Box>
+        ) : null}
       </Paper>
     );
   }
