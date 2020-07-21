@@ -3,28 +3,25 @@
   border: 1px solid #ddd;
   font-family: "Georgia", serif;
   font-size: 14px;
-	padding: 15px;
-	border-radius: 5px;
-	margin: 0 auto;
-	width: 85%;
-	margin-bottom: 50px;
-	padding-left: 50px;
-	padding-right: 50px;
-	height: 80%;
-	
-	
+  padding: 15px;
+  border-radius: 5px;
+  margin: 0 auto;
+  width: 85%;
+  margin-bottom: 50px;
+  padding-left: 50px;
+  padding-right: 50px;
+  height: 80%;
 }
 
 .RichEditor-editor {
   cursor: text;
   font-size: 16px;
-	margin-top: 10px;
-	width: 100%;
-	border-top: 1px solid #cccccc;
-	min-height: 350px;
-	overflow: scroll;
-	font-family: Arial, Helvetica, sans-serif;
-	
+  margin-top: 10px;
+  width: 100%;
+  border-top: 1px solid #cccccc;
+  min-height: 350px;
+  overflow: scroll;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .RichEditor-editor .public-DraftEditorPlaceholder-root,
@@ -42,7 +39,7 @@
 }
 
 .RichEditor-editor .RichEditor-blockquote {
-  border-left: 5px solid #43DDC1;
+  border-left: 5px solid #43ddc1;
   color: #666;
   font-family: "Hoefler Text", "Georgia", serif;
   font-style: italic;
@@ -54,26 +51,25 @@
   background-color: rgba(0, 0, 0, 0.85);
   font-family: "Inconsolata", "Menlo", "Consolas", monospace;
   font-size: 16px;
-	padding: 20px;
-	border-radius: 5px;
-	color: #aaf8f8;
-	
+  padding: 20px;
+  border-radius: 5px;
+  color: #aaf8f8;
 }
 
 .RichEditor-controls {
   font-family: "Helvetica", sans-serif;
   font-size: 14px;
   margin-bottom: 5px;
-	user-select: none;
-	display: inline-flex;
+  user-select: none;
+  display: inline-flex;
 }
 
 .RichEditor-styleButton {
   color: #e6e6e6;
   cursor: pointer;
   margin-right: 5px;
-	padding: 2px 0;
-	font-size: 1rem;
+  padding: 2px 0;
+  font-size: 1rem;
   display: inline-block;
 }
 
@@ -112,29 +108,29 @@ pre[class*="language-"] {
 
 /* Code blocks */
 pre[class*="language-"] {
-	padding: 1em;
-	margin: .5em 0;
-	overflow: auto;
-	border-radius: 0.3em;
+  padding: 1em;
+  margin: 0.5em 0;
+  overflow: auto;
+  border-radius: 0.3em;
 }
 
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
-	background: #272822;
+  background: #272822;
 }
 
 /* Inline code */
 :not(pre) > code[class*="language-"] {
-	padding: .1em;
-	border-radius: .3em;
-	white-space: normal;
+  padding: 0.1em;
+  border-radius: 0.3em;
+  white-space: normal;
 }
 
 .token.comment,
 .token.prolog,
 .token.doctype,
 .token.cdata {
-	color: slategray;
+	color: #8292a2;
 }
 
 .token.punctuation {
@@ -142,7 +138,7 @@ pre[class*="language-"] {
 	
 }
 
-.namespace {
+.token.namespace {
 	opacity: .7;
 }
 
@@ -151,12 +147,12 @@ pre[class*="language-"] {
 .token.constant,
 .token.symbol,
 .token.deleted {
-	color: #f92672;
+  color: #f92672;
 }
 
 .token.boolean,
 .token.number {
-	color: #ae81ff;
+  color: #ae81ff;
 }
 
 .token.selector,
@@ -165,7 +161,7 @@ pre[class*="language-"] {
 .token.char,
 .token.builtin,
 .token.inserted {
-	color: #a6e22e;
+  color: #a6e22e;
 }
 
 .token.operator,
@@ -190,15 +186,15 @@ pre[class*="language-"] {
 
 .token.regex,
 .token.important {
-	color: #fd971f;
+  color: #fd971f;
 }
 
 .token.important,
 .token.bold {
-	font-weight: bold;
+  font-weight: bold;
 }
 .token.italic {
-	font-style: italic;
+  font-style: italic;
 }
 
 .token.entity {

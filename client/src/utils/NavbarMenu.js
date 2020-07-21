@@ -61,6 +61,10 @@ export default function SimpleMenu(props) {
 		window.location.replace("login");
 	};
 
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+
 	return (
 		<div>
 			<Button

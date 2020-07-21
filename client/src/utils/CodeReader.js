@@ -13,21 +13,21 @@ import Prism from "prismjs";
 import "../../src/prism.css";
 
 const styleMap = {
-	CODE: {
-		backgroundColor: "rgba(0, 0, 0, 0.05)",
-		fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
-		fontSize: 16,
-		padding: 2,
-	},
+  CODE: {
+    backgroundColor: "rgba(0, 0, 0, 0.05)",
+    fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
+    fontSize: 16,
+    padding: 2,
+  },
 };
 
 function getBlockStyle(block) {
-	switch (block.getType()) {
-		case "blockquote":
-			return "RichEditor-blockquote";
-		default:
-			return null;
-	}
+  switch (block.getType()) {
+    case "blockquote":
+      return "RichEditor-blockquote";
+    default:
+      return null;
+  }
 }
 
 class CodeReader extends React.Component {
