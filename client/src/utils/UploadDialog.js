@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -14,20 +14,12 @@ import {
 	FormControl,
 	Typography,
 } from "@material-ui/core";
-import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 
 import PrismDraft from "./PrismDraft";
 import validate from "./validateUpload";
 import Message from "../components/Message";
 
 const useStyles = makeStyles((theme) => ({
-	container: {
-		margin: theme.spacing(2),
-		minWidth: 120,
-		display: "flex",
-		justifyContent: "space-between",
-		minHeight: "700px",
-	},
 	content: {
 		display: "flex",
 		justifyContent: "space-between",
@@ -62,22 +54,6 @@ const useStyles = makeStyles((theme) => ({
 			color: "#43dd9a",
 		},
 	},
-	validateBtn: {
-		margin: "20px auto",
-		padding: "0.7rem 4rem",
-		borderRadius: "2rem",
-		background: theme.palette.primary.main,
-		fontSize: "1rem",
-		textTransform: "none",
-		boxShadow: "transparent",
-		outline: "transparent",
-		color: "white",
-		border: "transparent",
-		"&:hover": {
-			backgroundColor: "#43dd9a",
-			color: "#6E3ADB",
-		},
-	},
 	btnContainer: {
 		display: "flex",
 		justifyContent: "space-between",
@@ -89,7 +65,6 @@ export default function UploadDialog() {
 	const [open, setOpen] = useState(false);
 	const [errorData, setErrorData] = useState({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [validated, setValidated] = useState(false);
 	const [data, setData] = useState({
 		title: "",
 		language: "",
@@ -113,47 +88,24 @@ export default function UploadDialog() {
 		setData({ ...data, code: content });
 	};
 
-	const handleValidate = async () => {
-		const errors = await validate(data);
-		console.log(errors);
-		if (Object.keys(errors).length === 0) {
-			setValidated(true);
-		}
-		setErrorData(errors);
-		setIsSubmitting(true);
-	};
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		// setIsSubmitting(true);
+		setIsSubmitting(true);
+
+		const errors = await validate(data);
+		setErrorData(errors);
+
 		if (Object.keys(errorData).length === 0 && isSubmitting) {
+	
 			console.log("submitting: ", data);
 			await axios.post("/api/users/upload", data);
 			setData({ language: "", title: "", code: [] });
 			setIsSubmitting(false);
 			setOpen(false);
 		}
-
-		// const errors = await validate(data);
-		// setErrorData(errors);
 	};
 
-	// useEffect(() => {
-	// 	console.log("errorData: ", Object.keys(errorData).length);
-	// if (Object.keys(errorData).length === 0 && isSubmitting) {
-	// 		async function postCode(snippet) {
-	// 			await axios.post("/api/users/upload", snippet);
-	// 			console.log("from useEffect snippet: ", snippet);
-	// 		}
-
-	// 		postCode(data);
-	// 		setData({ language: "", title: "", code: [] });
-	// 		setOpen(false);
-	// 	}
-	// 	setIsSubmitting(false);
-
-	// }, [errorData, isSubmitting, data, open]);
-
+	
 	return (
 		<div>
 			<Button
@@ -169,15 +121,27 @@ export default function UploadDialog() {
 				</DialogTitle>
 
 				<DialogContent className={classes.content}>
-					<TextField
-						name="title"
-						label="Title"
-						type="text"
-						variant="outlined"
-						onChange={handleChange}
-						style={{ width: "30vw", margin: "0 auto" }}
-					/>
-
+					<div style={{ display: "flex", flexDirection: "column" }}>
+						<TextField
+							required
+							name="title"
+							label="Title"
+							type="text"
+							variant="outlined"
+							onChange={handleChange}
+							style={{ width: "30vw", margin: "0 auto" }}
+						/>
+						{errorData.title !== "" ? (
+							<Typography
+								variant="subtitle1"
+								style={{
+									color: "red",
+									textAlign: "center",
+								}}>
+								{errorData.title}
+							</Typography>
+						) : null}
+					</div>
 					<FormControl variant="outlined">
 						<InputLabel required id="select-language">
 							Language
@@ -188,7 +152,7 @@ export default function UploadDialog() {
 							value={data.language}
 							onChange={handleChange}
 							label="Language"
-							style={{ width: "20vw", margin: "0 auto" }}>
+							style={{ width: "17vw", margin: "0 auto" }}>
 							<MenuItem value={"JavaScript"}>JavaScript</MenuItem>
 							<MenuItem value={"Java"}>Java</MenuItem>
 							<MenuItem value={"C++"}>C++</MenuItem>
@@ -227,14 +191,6 @@ export default function UploadDialog() {
 					)}
 
 					<div className={classes.btnContainer}>
-						<Button
-							onClick={(e) => handleValidate()}
-							className={classes.validateBtn}>
-							Validate
-						</Button>
-						{validated ? (
-							<CheckCircleOutlineIcon fontSize="large" color="primary" />
-						) : null}
 						<Button
 							onClick={(e) => handleSubmit(e)}
 							className={classes.submitBtn}>
