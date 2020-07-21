@@ -6,10 +6,7 @@ const validator = require("validator");
 const userSchema = new mongoose.Schema({
 	name: {
 		type: String,
-		trim: true,
-	},
-	title: {
-		type: String,
+		required: true,
 		trim: true,
 	},
 	email: {
@@ -30,12 +27,18 @@ const userSchema = new mongoose.Schema({
 		trim: true,
 		minlength: 7,
 	},
-	experience: {
-		type: Map,
-		of: Number,
-		index: true,
-		default: {},
-	},
+	experience: [
+		{
+			language: {
+				type: String,
+				required: true,
+			},
+			level: {
+				type: Number,
+				required: true,
+			},
+		},
+	],
 	profileCompleted: {
 		type: Boolean,
 		default: false,
@@ -43,12 +46,6 @@ const userSchema = new mongoose.Schema({
 	balance: {
 		type: Number,
 		default: 3,
-	},
-	declined: {
-		type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Snippet" }],
-	},
-	avatar: {
-		type: Buffer,
 	},
 });
 
@@ -86,18 +83,10 @@ userSchema.statics.findUserByCredentials = async (email, password) => {
 	return user;
 };
 
-/////// A method for preventing uneccessary data to be sent back to client /////////
+/////// A method for hiding private data /////////
 userSchema.methods.toJSON = function () {
 	const userObject = this.toObject();
 	delete userObject.password;
-	delete userObject.avatar;
-	let expObj = [...userObject.experience.entries()].reduce(
-		(expObj, [key, value]) => ((expObj[key] = value), expObj),
-		{},
-	);
-	userObject.experience = expObj;
-	console.log(userObject.experience);
-
 	return userObject;
 };
 

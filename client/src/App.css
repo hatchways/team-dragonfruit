@@ -41,25 +41,3 @@ body {
 }
 
 
-.Dropzone {
-  height: 200px;
-	width: 30vw;
-	padding: 30px;
-  background-color: #fff;
-  border: 1px dashed rgba(187, 186, 186, 0.884);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-	font-size: 16px;
-	margin: 25px auto;
-}
-
-.Highlight {
-  background-color: #43DDC1;
-}
-
-.FileInput {
-  display: none;
-}

@@ -14,11 +14,9 @@ import {
 	FormControl,
 	Typography,
 } from "@material-ui/core";
-import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 
 import PrismDraft from "./PrismDraft";
 import validate from "./validateUpload";
-import Message from "../components/Message";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -58,45 +56,26 @@ const useStyles = makeStyles((theme) => ({
 		color: "white",
 		border: "transparent",
 		"&:hover": {
-			backgroundColor: "#6E3ADB",
-			color: "#43dd9a",
-		},
-	},
-	validateBtn: {
-		margin: "20px auto",
-		padding: "0.7rem 4rem",
-		borderRadius: "2rem",
-		background: theme.palette.primary.main,
-		fontSize: "1rem",
-		textTransform: "none",
-		boxShadow: "transparent",
-		outline: "transparent",
-		color: "white",
-		border: "transparent",
-		"&:hover": {
 			backgroundColor: "#43dd9a",
 			color: "#6E3ADB",
 		},
 	},
-	btnContainer: {
-		display: "flex",
-		justifyContent: "space-between",
-		width: "100%",
-	},
 }));
 
 export default function UploadDialog() {
-	const [open, setOpen] = useState(false);
-	const [errorData, setErrorData] = useState({});
-	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [validated, setValidated] = useState(false);
+	const [open, setOpen] = React.useState(false);
+	const [code, setCode] = React.useState("");
+	const classes = useStyles();
+
 	const [data, setData] = useState({
 		title: "",
 		language: "",
-		code: [],
+		code: "",
 	});
 
-	const classes = useStyles();
+	const [errorData, setErrorData] = useState({});
+	const [isSubmitting, setIsSubmitting] = useState(false);
+
 	const handleChange = (e) => {
 		setData({ ...data, [e.target.name]: e.target.value });
 	};
@@ -109,52 +88,35 @@ export default function UploadDialog() {
 		setOpen(false);
 	};
 
-	const handleChangeCode = (content) => {
-		setData({ ...data, code: content });
-	};
-
-	// const handleValidate = async () => {
-	// 	const errors = await validate(data);
-	// 	console.log(errors);
-	// 	if (Object.keys(errors).length === 0) {
-	// 		setValidated(true);
-	// 	}
-	// 	setErrorData(errors);
-	// 	setIsSubmitting(true);
-	// };
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-
-		// if (Object.keys(errorData).length === 0 && isSubmitting) {
-		// 	console.log("submitting: ", data);
-		// 	await axios.post("/api/users/upload", data);
-		// 	setData({
-		// 		language: "",
-		// 		title: "",
-		// 		code: [],
-		// 	});
-		// 	setIsSubmitting(false);
-		// 	setOpen(false);
-		// }
-
-		const errors = await validate(data);
-		setErrorData(errors);
+		setErrorData(validate(data));
 		setIsSubmitting(true);
 	};
 
 	useEffect(() => {
 		if (Object.keys(errorData).length === 0 && isSubmitting) {
+			const snippet = {
+				language: data.language,
+				title: data.title,
+				code: data.code,
+			};
+			console.log("snippet: ", snippet);
 			async function postCode(snippet) {
 				await axios.post("/api/users/upload", snippet);
-				console.log("from useEffect snippet: ", snippet);
 			}
-			postCode(data);
-			setData({ language: "", title: "", code: [] });
+			postCode(snippet);
+			setData({ language: "", title: "", code: "" });
+			setCode("");
 			setOpen(false);
 		}
 		setIsSubmitting(false);
-	}, [errorData, data, isSubmitting]);
+	}, [errorData, isSubmitting, data]);
+
+	const handleChangeCode = (content) => {
+		setCode(content);
+		setData({ ...data, code: content });
+	};
 
 	return (
 		<div>
@@ -191,11 +153,10 @@ export default function UploadDialog() {
 							onChange={handleChange}
 							label="Language"
 							style={{ width: "20vw", margin: "0 auto" }}>
-							<MenuItem value={"JavaScript"}>JavaScript</MenuItem>
-							<MenuItem value={"Java"}>Java</MenuItem>
-							<MenuItem value={"C++"}>C++</MenuItem>
-							<MenuItem value={"Python"}>Python</MenuItem>
-							<MenuItem value={"Ruby"}>Ruby</MenuItem>
+							<MenuItem value={"javascript"}>JavaScript</MenuItem>
+							<MenuItem value={"java"}>Java</MenuItem>
+							<MenuItem value={"c++"}>C++</MenuItem>
+							<MenuItem value={"python"}>Python</MenuItem>
 						</Select>
 
 						{errorData.language !== "" ? (
@@ -224,25 +185,11 @@ export default function UploadDialog() {
 				<PrismDraft language={data.language} sendCode={handleChangeCode} />
 
 				<DialogActions>
-					{errorData.balance && (
-						<Message message={errorData.balance} open={true} type="error" />
-					)}
-
-					<div className={classes.btnContainer}>
-						<Button
-							// onClick={(e) => handleValidate()}
-							className={classes.validateBtn}>
-							Validate
-						</Button>
-						{validated ? (
-							<CheckCircleOutlineIcon fontSize="large" color="primary" />
-						) : null}
-						<Button
-							onClick={(e) => handleSubmit(e)}
-							className={classes.submitBtn}>
-							Submit
-						</Button>
-					</div>
+					<Button
+						onClick={(e) => handleSubmit(e)}
+						className={classes.submitBtn}>
+						Submit
+					</Button>
 				</DialogActions>
 			</Dialog>
 		</div>

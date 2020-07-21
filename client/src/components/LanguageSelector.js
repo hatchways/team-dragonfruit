@@ -2,8 +2,6 @@ import React from "react";
 import { Typography, Box, Select } from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/styles";
-import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
-import { IconButton } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
 	text: {
@@ -19,37 +17,23 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		justifyContent: "space-between",
 	},
-	iconDone: {
-		color: "green !important",
-	},
-	iconRemove: {
-		color: "red !important",
-		marginRight: "-25px",
-	},
 }));
 
 const LanguageSelector = (props) => {
 	const classes = useStyles();
-	const [language, setLanguage] = React.useState("");
-	const [level, setLevel] = React.useState("");
-	const [userExp, setUserExp] = React.useState([]);
+	const [language, setLanguage] = React.useState([]);
+	const [level, setLevel] = React.useState([]);
 
 	const handleChangeLang = (e) => {
 		const lang = e.target.value;
 		setLanguage(lang);
+		props.getLang(lang);
 	};
 
 	const handleChangeLevel = (e) => {
 		const lev = e.target.value;
 		setLevel(lev);
-	};
-
-	const handleAdd = () => {
-		if (language !== "" && level !== "") {
-			let newExp = { [language]: level };
-			props.sendExp(newExp);
-			setUserExp(userExp.concat(newExp));
-		}
+		props.getLevel(lev);
 	};
 
 	return (
@@ -80,16 +64,6 @@ const LanguageSelector = (props) => {
 				<MenuItem value={2}>Intermediate</MenuItem>
 				<MenuItem value={3}>Advanced</MenuItem>
 			</Select>
-
-			<IconButton
-				className={classes.iconDone}
-				onClick={() => {
-					handleAdd();
-					setLevel("");
-					setLanguage("");
-				}}>
-				<CheckCircleOutlineIcon fontSize="large" />
-			</IconButton>
 		</Box>
 	);
 };
