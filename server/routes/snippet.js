@@ -9,9 +9,11 @@ const router = express.Router();
 
 /////// Upload code route handler ///////
 router.post("/upload", auth, balance, async (req, res) => {
+	const { title, language, code } = req.body;
 	const snippet = new Snippet({
-		...req.body,
-
+		title,
+		language,
+		code,
 		author: req.user._id,
 		reviewer: null,
 		comments: null,
@@ -20,14 +22,14 @@ router.post("/upload", auth, balance, async (req, res) => {
 		date_submitted: null,
 	});
 
-	// if (!req.user.experience.has(language)) {
-	// 	res.status(403).send({
-	// 		error: "Please specify your level in this language.",
-	// 	});
-	// }
-	// else {
-	// const level = req.user.experience.get(language);
-	// matchReviewer(language, level, snippet._id);
+	if (!req.user.experience.has(language)) {
+		res.status(403).send({
+			error: "Please specify your level in this language.",
+		});
+	}
+	else {
+	const level = req.user.experience.get(language);
+	matchReviewer(language, level, snippet._id);
 	try {
 		await snippet.save();
 		req.user.balance -= 1;
