@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function UploadDialog() {
+ class TestUpload extends React.component {
 	const [open, setOpen] = useState(false);
 	const [errorData, setErrorData] = useState({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -72,8 +72,16 @@ export default function UploadDialog() {
 		code: [],
 	});
 
-	const classes = useStyles();
-	const handleChange = (e) => {
+	 const classes = useStyles();
+	 
+	 state = {
+		 open: false,
+		 errorData: {},
+		 isSubmitting: false,
+		 data: {}
+	 };
+
+	handleChange = (e) => {
 		setData({ ...data, [e.target.name]: e.target.value });
 	};
 
@@ -188,3 +196,6 @@ export default function UploadDialog() {
 		</div>
 	);
 }
+
+
+export default TestUpload;
