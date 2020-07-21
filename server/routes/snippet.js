@@ -3,6 +3,7 @@ const express = require("express");
 const auth = require("../middleware/auth");
 const balance = require("../middleware/balance");
 const Snippet = require("../models/snippet");
+const User = require("../models/user");
 
 const router = express.Router();
 
@@ -131,6 +132,11 @@ router.post("/comment/:review_id", auth, async (req, res) => {
     foundSnippet.status = "completed";
     foundSnippet.date_submitted = Date.now();
 
+    // Add credit
+    const reviewer = await User.findById(foundSnippet.reviewer);
+    reviewer.balance += 1;
+
+    await reviewer.save();
     await foundSnippet.save();
 
     return res.status(200).json(foundSnippet);

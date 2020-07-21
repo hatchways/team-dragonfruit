@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Typography,
   Container,
@@ -10,7 +10,6 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-import { AuthContext } from "../context/AuthContext";
 import UserService from "../services/UserService";
 
 import Review from "./Review";
@@ -45,13 +44,6 @@ const useStyles = makeStyles((theme) => ({
 
 const ReviewList = ({ title }) => {
   const classes = useStyles();
-
-  // const {
-  //   requestedReviews,
-  //   setRequestedReviews,
-  //   receivedReviews,
-  //   setReceivedReviews,
-  // } = useContext(AuthContext);
 
   const [requestedReviews, setRequestedReviews] = useState([]);
   const [receivedReviews, setReceivedReviews] = useState([]);
