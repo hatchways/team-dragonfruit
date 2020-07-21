@@ -1,6 +1,5 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
-  Box,
   Typography,
   Container,
   Accordion,
@@ -22,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     background: "#ffffff",
     paddingTop: "3rem",
     height: "auto",
-    minHeight: "100vh",
+    minHeight: "85vh",
   },
   title: {
     fontSize: "1.5rem",
@@ -47,12 +46,15 @@ const useStyles = makeStyles((theme) => ({
 const ReviewList = ({ title }) => {
   const classes = useStyles();
 
-  const {
-    requestedReviews,
-    setRequestedReviews,
-    receivedReviews,
-    setReceivedReviews,
-  } = useContext(AuthContext);
+  // const {
+  //   requestedReviews,
+  //   setRequestedReviews,
+  //   receivedReviews,
+  //   setReceivedReviews,
+  // } = useContext(AuthContext);
+
+  const [requestedReviews, setRequestedReviews] = useState([]);
+  const [receivedReviews, setReceivedReviews] = useState([]);
 
   // total of each kind of reviews
   const requestedReviewNum =
@@ -63,12 +65,7 @@ const ReviewList = ({ title }) => {
   useEffect(() => {
     UserService.requestedReviews().then((data) => setRequestedReviews(data));
     UserService.receivedReviews().then((data) => setReceivedReviews(data));
-  }, [
-    receivedReviews,
-    requestedReviews,
-    setReceivedReviews,
-    setRequestedReviews,
-  ]);
+  }, []);
 
   if (!requestedReviews || !receivedReviews) return <Loading />;
 

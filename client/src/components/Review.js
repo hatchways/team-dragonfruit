@@ -1,4 +1,5 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -59,36 +60,35 @@ const Review = ({ review }) => {
   const { setSelectedReview, user } = useContext(AuthContext);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [pick, setPick] = React.useState(null);
 
+  const history = useHistory();
+
+  // handle Radio Button
   const handleChange = (event) => {
-    setPick(event.target.value);
+    const { value } = event.target;
+    if (value === "accept") {
+      UserService.acceptReview(review._id);
+      history.go();
+    } else if (value === "decline") {
+      UserService.declineReview(review._id);
+      history.go();
+    }
   };
 
   const handleSelected = () => {
     setSelectedReview(review);
   };
 
+  // handle Dialog
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
-
-  useEffect(() => {
-    if (pick === "accept") {
-      UserService.acceptReview(review._id);
-      // window.location.reload();
-    } else if (pick === "decline") {
-      UserService.declineReview(review._id);
-      // window.location.reload();
-    }
-  }, [pick, review._id]);
 
   return (
     <Box className={classes.card} onClick={handleSelected}>
@@ -125,7 +125,6 @@ const Review = ({ review }) => {
           <form>
             <RadioGroup
               name='pick'
-              value={pick}
               onChange={handleChange}
               className={classes.selectContainer}
             >

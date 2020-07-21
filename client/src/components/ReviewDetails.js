@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
 import {
   Paper,
   Container,
@@ -29,6 +30,11 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "95%",
     margin: "2rem auto",
     paddingBottom: "1rem",
+  },
+  rootSub: {
+    width: "90%",
+    margin: "2rem auto",
+    height: "80vh",
   },
   header: {
     display: "flex",
@@ -146,15 +152,21 @@ const ReviewDetails = () => {
 
   const { selectedReview, user } = useContext(AuthContext);
 
+  const history = useHistory();
+
   const [rating, setRating] = useState(0);
   const [code, setCode] = useState("");
-  // const [message, setMessage] = useState("");
+  const [message, setMessage] = useState("");
 
   // handle rating
   const handleRating = (e) => {
     e.preventDefault();
     UserService.rating(selectedReview._id, rating);
     setRating(rating);
+    setMessage(`You gave ${rating} star rating for this review. Thank you`);
+    setTimeout(() => {
+      setMessage("");
+    }, 6000);
   };
 
   // Send Comments
@@ -163,19 +175,25 @@ const ReviewDetails = () => {
   };
   const handleSendCode = () => {
     UserService.sendComments(selectedReview._id, code);
-    // window.location.reload();
+    setMessage(`You submitted your review`);
+    history.go();
+    setTimeout(() => {
+      setMessage("");
+    }, 6000);
   };
 
   if (!selectedReview)
     return (
-      <Typography
-        variant='h2'
-        color='primary'
-        align='center'
-        style={{ marginTop: "2rem" }}
-      >
-        Please select your review
-      </Typography>
+      <Paper className={classes.rootSub}>
+        <Typography
+          variant='h2'
+          color='primary'
+          align='center'
+          style={{ padding: "3rem" }}
+        >
+          Please select your review
+        </Typography>
+      </Paper>
     );
 
   // for requested
@@ -226,7 +244,8 @@ const ReviewDetails = () => {
         <Container>
           {selectedReview.reviewer && (
             <Box className={classes.avatarHeader}>
-              <Avatar src={img2} className={classes.avatarImg} />
+              {/* Avatar */}
+              <Avatar src={img1} className={classes.avatarImg} />
               <Box>
                 <Typography className={classes.authorName}>
                   {selectedReview.reviewer.name}
@@ -246,6 +265,7 @@ const ReviewDetails = () => {
             </Container>
           )}
         </Container>
+        {message && <Message open={true} type='success' message={message} />}
       </Paper>
     );
   }
@@ -263,7 +283,8 @@ const ReviewDetails = () => {
             </Typography>
           </Box>
           <Box className={classes.avatarHeader}>
-            <Avatar src={img1} className={classes.avatarImg} />
+            {/* Avatar */}
+            <Avatar src={img2} className={classes.avatarImg} />
             <Box>
               <Typography className={classes.posted}>Posted by</Typography>
               <Typography className={classes.authorName}>
@@ -283,7 +304,7 @@ const ReviewDetails = () => {
         {selectedReview.comments ? (
           <Box component='div'>
             <Typography variant='h4' className={classes.commentComplete}>
-              You're done with your comments on this request.
+              Your review is sent
             </Typography>
             <Container className={classes.codeContainer}>
               <CodeReader
@@ -300,6 +321,7 @@ const ReviewDetails = () => {
 
             <Container className={classes.reviewFooter}>
               <Box className={classes.avatarHeader}>
+                {/* Avatar */}
                 <Avatar src={img2} className={classes.avatarImg} />
                 <Box>
                   <Typography className={classes.authorName}>
@@ -323,6 +345,7 @@ const ReviewDetails = () => {
             </Container>
           </Box>
         ) : null}
+        {message && <Message open={true} type='success' message={message} />}
       </Paper>
     );
   }

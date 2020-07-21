@@ -54,10 +54,7 @@ const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [topupAmount, setTopupAmount] = useState(0);
   const [amount, setAmount] = useState(0);
-  const [reviews, setReviews] = useState(reviewData);
   const [selectedReview, setSelectedReview] = useState(null);
-  const [requestedReviews, setRequestedReviews] = useState(null);
-  const [receivedReviews, setReceivedReviews] = useState(null);
 
   useEffect(() => {
     UserService.getUser().then((data) => setUser(data));
@@ -77,14 +74,8 @@ const AuthProvider = ({ children }) => {
         setTopupAmount,
         amount,
         setAmount,
-        reviews,
-        setReviews,
         selectedReview,
         setSelectedReview,
-        requestedReviews,
-        setRequestedReviews,
-        receivedReviews,
-        setReceivedReviews,
       }}
     >
       {children}
