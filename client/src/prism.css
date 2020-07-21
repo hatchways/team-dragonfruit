@@ -134,7 +134,8 @@ pre[class*="language-"] {
 }
 
 .token.punctuation {
-  color: #00b688;
+	color: #00b688;
+	
 }
 
 .token.namespace {
