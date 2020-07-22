@@ -4,6 +4,7 @@ const notificationSchema = new mongoose.Schema({
 	status: {
 		type: String,
 		enum: ["new", "seen", "dismissed"],
+		required: true,
 		default: "new",
 	},
 	user: {
@@ -19,6 +20,11 @@ const notificationSchema = new mongoose.Schema({
 	event: {
 		type: String,
 		required: true,
+		enum: [
+			"You have a new request",
+			"Your request is accepted",
+			"Your code is reviewed",
+			]
 	},
 });
 

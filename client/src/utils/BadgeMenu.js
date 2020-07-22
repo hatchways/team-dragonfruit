@@ -1,16 +1,15 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import Badge from "@material-ui/core/Badge";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 import IconButton from "@material-ui/core/IconButton";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
 import Fade from "@material-ui/core/Fade";
-import { Button } from "@material-ui/core";
+import List from "@material-ui/core/List";
+
+import Notification from "./Notification";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -19,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	container: {
 		display: "flex",
-		marginLeft: "-60px",
+		marginLeft: "-80px",
 	},
 	paper: {
 		margin: theme.spacing(1),
@@ -50,19 +49,35 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function ListItemLink(props) {
-	return <ListItem button component="a" {...props} />;
-}
+const test = {
+	new: [
+		{ event: "Some New Notification", status: "new" },
+		{ event: "Some New Notification", status: "new" },
+	],
+	seen: [
+		{ event: "Some Seen Notification", status: "seen" },
+		{ event: "Some Seen Notification", status: "seen" },
+	],
+};
 
 export default function BadgeOverlap() {
 	const classes = useStyles();
 	const [checked, setChecked] = React.useState(false);
 	const [invisible, setInvisible] = React.useState(false);
+	const [notifications, setNotifications] = React.useState(test);
 
-	const handleBadgeVisibility = () => {
-		// if there is no new notifications set invisible to be true
-		setInvisible(!invisible);
-	};
+	// useEffect(() => {
+	// async function getNotifications() {
+	// 	const response = await axios.get("/api/users/notifications");
+	// 	setNotifications(response.data);
+	// 	if (notifications.new.length !== 0) {
+	// 		setInvisible(!invisible);
+	// 	}
+	// }
+
+	// getNotifications();
+
+	// }, []);
 
 	const handleChange = () => {
 		setChecked((prev) => !prev);
@@ -86,19 +101,14 @@ export default function BadgeOverlap() {
 			<div className={classes.container}>
 				<Fade in={checked}>
 					<Paper elevation={4} className={classes.paper}>
-						<List component="nav" aria-label="secondary mailbox folders">
-							<ListItem button className={classes.listItem}>
-								<ListItemText primary="You have a new request" />
-								<Button variant="outlined" className={classes.btn}>
-									Dismiss
-								</Button>
-							</ListItem>
-							<ListItemLink href="/" className={classes.listItem}>
-								<ListItemText primary="Your code is reviewed" />
-								<Button variant="outlined" className={classes.btn}>
-									Dismiss
-								</Button>
-							</ListItemLink>
+						<List component="nav">
+							{notifications.new.map((notif) => {
+								return <Notification notification={notif} key={notif.id} />;
+							})}
+
+							{notifications.seen.map((notif) => {
+								return <Notification notification={notif} key={notif.id} />;
+							})}
 						</List>
 					</Paper>
 				</Fade>
