@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
-	Typography,
-	Container,
-	Accordion,
-	AccordionDetails,
-	AccordionSummary,
+
+  Typography,
+  Container,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -16,6 +18,7 @@ import Review from "./Review";
 import Loading from "./Loading";
 
 const useStyles = makeStyles((theme) => ({
+
 	root: {
 		width: "24rem",
 		background: "#ffffff",
@@ -66,6 +69,7 @@ const useStyles = makeStyles((theme) => ({
 			border: "3px solid #43DDC1",
 		},
 	},
+
 }));
 
 const ReviewList = ({ title }) => {
@@ -80,12 +84,15 @@ const ReviewList = ({ title }) => {
 	const receivedReviewNum =
 		receivedReviews !== null ? receivedReviews.length : 0;
 
+
 	useEffect(() => {
 		UserService.requestedReviews().then((data) => setRequestedReviews(data));
 		UserService.receivedReviews().then((data) => setReceivedReviews(data));
 	}, []);
 
+
 	if (!requestedReviews || !receivedReviews) return <Loading />;
+
 
 	return (
 		<Container className={classes.root}>
@@ -93,6 +100,7 @@ const ReviewList = ({ title }) => {
 				{title}
 			</Typography>
 			{/* Request */}
+
 
 			<Accordion className={classes.requested}>
 				<AccordionSummary

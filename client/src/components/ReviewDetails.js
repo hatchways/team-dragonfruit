@@ -26,12 +26,14 @@ import PrismDraft from "../utils/PrismDraft";
 import Message from "./Message";
 
 const useStyles = makeStyles((theme) => ({
+
 	root: {
 		width: "90%",
 		maxWidth: "95%",
 		margin: "2rem auto",
 		paddingBottom: "1rem",
 	},
+
 
 	header: {
 		display: "flex",
@@ -180,6 +182,7 @@ const ReviewDetails = () => {
 		}, 6000);
 	};
 
+
 	// Send Comments
 	const handleCode = (comments) => {
 		setCode(comments);
@@ -210,6 +213,7 @@ const ReviewDetails = () => {
 				</a>
 			</Paper>
 		);
+
 
 	// for requested
 	if (selectedReview.author._id === user._id) {
@@ -254,6 +258,7 @@ const ReviewDetails = () => {
 				<Container className={classes.codeContainer}>
 					{/* <CodeReader code={selectedReview.code} className={classes.code} /> */}
 				</Container>
+
 
 				<Container>
 					{selectedReview.reviewer && (
@@ -308,11 +313,13 @@ const ReviewDetails = () => {
 					</Box>
 				</Container>
 
+
 				<Divider />
 
 				<Container className={classes.codeContainer}>
 					{/* <CodeReader code={selectedReview.code} className={classes.code} /> */}
 				</Container>
+
 
 				<Divider />
 				{selectedReview.comments ? (
@@ -362,6 +369,7 @@ const ReviewDetails = () => {
 			</Paper>
 		);
 	}
+
 };
 
 export default ReviewDetails;

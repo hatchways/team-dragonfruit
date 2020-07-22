@@ -57,6 +57,7 @@ const Review = ({ review }) => {
 
 	const { setSelectedReview, user } = useContext(AuthContext);
 
+
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
 	const history = useHistory();
@@ -73,6 +74,7 @@ const Review = ({ review }) => {
 		}
 	};
 
+
 	const handleSelected = () => {
 		setSelectedReview(review);
 	};
@@ -85,8 +87,10 @@ const Review = ({ review }) => {
 		setAnchorEl(null);
 	};
 
+
 	const open = Boolean(anchorEl);
 	const id = open ? "simple-popover" : undefined;
+
 
 	return (
 		<Box className={classes.card} onClick={handleSelected}>
@@ -128,6 +132,7 @@ const Review = ({ review }) => {
 			</Box>
 		</Box>
 	);
+
 };
 
 export default Review;
