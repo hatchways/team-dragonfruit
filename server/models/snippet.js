@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const snippetSchema = new mongoose.Schema({
 	code: {
@@ -21,7 +21,7 @@ const snippetSchema = new mongoose.Schema({
 	},
 	title: {
 		type: String,
-		default: "Unknown",
+		required: true,
 	},
 	language: {
 		type: String,
@@ -48,5 +48,5 @@ const snippetSchema = new mongoose.Schema({
 	},
 });
 
-const Snippet = mongoose.model('Snippet', snippetSchema);
+const Snippet = mongoose.model("Snippet", snippetSchema);
 module.exports = Snippet;
