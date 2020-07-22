@@ -27,18 +27,11 @@ const userSchema = new mongoose.Schema({
 		trim: true,
 		minlength: 7,
 	},
-	experience: [
-		{
-			language: {
-				type: String,
-				required: true,
-			},
-			level: {
-				type: Number,
-				required: true,
-			},
-		},
-	],
+	experience: {
+		type: Map,
+		of: Number,
+		default: {},
+	},
 	profileCompleted: {
 		type: Boolean,
 		default: false,
@@ -83,10 +76,18 @@ userSchema.statics.findUserByCredentials = async (email, password) => {
 	return user;
 };
 
-/////// A method for hiding private data /////////
+/////// A method for preventing uneccessary data to be sent back to client /////////
 userSchema.methods.toJSON = function () {
 	const userObject = this.toObject();
 	delete userObject.password;
+	delete userObject.avatar;
+	let expObj = [...userObject.experience.entries()].reduce(
+		(expObj, [key, value]) => ((expObj[key] = value), expObj),
+		{},
+	);
+	userObject.experience = expObj;
+	console.log(userObject.experience);
+
 	return userObject;
 };
 
