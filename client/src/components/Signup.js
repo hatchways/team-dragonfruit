@@ -1,61 +1,61 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
 
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from "../context/AuthContext";
 
-import AuthService from '../services/AuthService';
+import AuthService from "../services/AuthService";
 
-import Message from './Message';
+import Message from "./Message";
 
-import { Typography, TextField, Box, Paper, Button } from '@material-ui/core';
+import { Typography, TextField, Box, Paper, Button } from "@material-ui/core";
 
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from "@material-ui/styles";
 
-import validate from '../utils/validateForm';
+import validate from "../utils/validateForm";
 
 const useStyles = makeStyles((theme) => ({
   registerContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '500px',
-    maxWidth: '600px',
-    margin: '2rem auto',
-    padding: '3rem 0',
-    alignItems: 'center',
-    background: 'secondary',
+    display: "flex",
+    flexDirection: "column",
+    width: "500px",
+    maxWidth: "600px",
+    margin: "2rem auto",
+    padding: "3rem 0",
+    alignItems: "center",
+    background: "secondary",
   },
   title: {
-    marginBottom: '3rem',
+    marginBottom: "3rem",
   },
   input: {
-    width: '300px',
-    marginBottom: '1rem',
+    width: "300px",
+    marginBottom: "1rem",
   },
   registerBtn: {
-    padding: '0.7rem 4rem',
-    borderRadius: '2rem',
-    background: 'turquoise',
-    textTransform: 'capitalize',
-    fontSize: '1rem',
-    margin: '3rem 0',
-    '&:hover': {
-      backgroundColor: '#43dd9a',
-      color: '#6E3ADB',
+    padding: "0.7rem 4rem",
+    borderRadius: "2rem",
+    background: "turquoise",
+    textTransform: "capitalize",
+    fontSize: "1rem",
+    margin: "3rem 0",
+    "&:hover": {
+      backgroundColor: "#43dd9a",
+      color: "#6E3ADB",
     },
   },
   text: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   link: {
-    color: 'primary',
-    fontWeight: 'bold',
-    marginLeft: '0.7rem',
-    textDecoration: 'none',
+    color: "primary",
+    fontWeight: "bold",
+    marginLeft: "0.7rem",
+    textDecoration: "none",
   },
   error: {
-    color: 'red',
-    textAlign: 'center',
-    marginBottom: '0.5rem',
+    color: "red",
+    textAlign: "center",
+    marginBottom: "0.5rem",
   },
 }));
 
@@ -65,9 +65,9 @@ const Signup = () => {
   const authContext = useContext(AuthContext);
 
   const [userData, setUserData] = useState({
-    name: 'default',
-    email: '',
-    password: '',
+    name: "default",
+    email: "",
+    password: "",
   });
 
   const [errorData, setErrorData] = useState({});
@@ -87,7 +87,7 @@ const Signup = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem('user')) {
+    if (localStorage.getItem("user")) {
       authContext.setIsAuthenticated(true);
     }
 
@@ -98,8 +98,8 @@ const Signup = () => {
         } else {
           authContext.setUser(data);
           authContext.setIsAuthenticated(true);
-          localStorage.setItem('user', JSON.stringify(data));
-          console.log({ msg: 'Register OK' });
+          localStorage.setItem("user", JSON.stringify(data));
+          console.log({ msg: "Register OK" });
         }
       });
     }
@@ -121,7 +121,7 @@ const Signup = () => {
             className={classes.input}
             inputProps={{
               min: 0,
-              style: { textAlign: 'center', fontWeight: 'bold' },
+              style: { textAlign: "center", fontWeight: "bold" },
             }}
             required
             name='email'
@@ -141,7 +141,7 @@ const Signup = () => {
             className={classes.input}
             inputProps={{
               min: 6,
-              style: { textAlign: 'center', fontWeight: 'bold' },
+              style: { textAlign: "center", fontWeight: "bold" },
             }}
             required
             name='password'
@@ -161,7 +161,7 @@ const Signup = () => {
             disableElevation
             className={classes.registerBtn}
           >
-            Continue
+            Sign Up
           </Button>
 
           <Box>
