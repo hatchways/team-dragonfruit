@@ -15,6 +15,10 @@ import UserService from "../services/UserService";
 import moment from "moment";
 import StyledRadio from "../utils/StyledRadio";
 
+import io from "socket.io-client";
+
+let socket = io.connect("http://localhost:3001");
+
 const useStyles = makeStyles((theme) => ({
   card: {
     padding: "1.3rem 1rem",
@@ -68,10 +72,25 @@ const Review = ({ review }) => {
     const { value } = event.target;
     if (value === "accept") {
       UserService.acceptReview(review._id);
-      history.go();
+      // socket.emit("messages", "accept to review");
+      socket.emit("messages", {
+        user: user._id,
+        event: "accept to review",
+        snippet: review._id,
+      });
+      setTimeout(() => {
+        history.go();
+      }, 1000);
     } else if (value === "decline") {
       UserService.declineReview(review._id);
-      history.go();
+      socket.emit("messages", {
+        user: user._id,
+        event: "decline to review",
+        snippet: review._id,
+      });
+      setTimeout(() => {
+        history.go();
+      }, 1000);
     }
   };
 
