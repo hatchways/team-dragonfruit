@@ -35,17 +35,7 @@ const useStyles = makeStyles((theme) => ({
 	icon: {
 		color: "white",
 		fontSize: "large",
-		marginLeft: "-2px",
-	},
-	listItem: {
-		width: "18rem",
-		borderBottom: "1px solid #eee",
-	},
-	btn: {
-		textTransform: "none",
-		color: theme.palette.primary.main,
-		fontSize: "12px",
-		border: "1px solid #43DDc1",
+		marginLeft: "-1px",
 	},
 }));
 
@@ -63,24 +53,33 @@ const test = {
 export default function BadgeOverlap() {
 	const classes = useStyles();
 	const [checked, setChecked] = React.useState(false);
-	const [invisible, setInvisible] = React.useState(false);
+	const [invisible, setInvisible] = React.useState(true);
 	const [notifications, setNotifications] = React.useState(test);
 
-	// useEffect(() => {
-	// async function getNotifications() {
-	// 	const response = await axios.get("/api/users/notifications");
-	// 	setNotifications(response.data);
-	// 	if (notifications.new.length !== 0) {
-	// 		setInvisible(!invisible);
-	// 	}
-	// }
+	useEffect(() => {
+		// async function getNotifications() {
+		// 	const response = await axios.get("/api/users/notifications");
+		// 	setNotifications(response.data);
+		// 	if (notifications.new.length !== 0) {
+		// 		setInvisible(false);
+		// 	}
+		// }
 
-	// getNotifications();
-
-	// }, []);
+		// getNotifications();
+		if (notifications.new.length !== 0) {
+			setInvisible(false);
+		}
+	}, []);
 
 	const handleChange = () => {
 		setChecked((prev) => !prev);
+		setInvisible(true);
+
+		notifications.new.forEach(async (notif) => {
+			await axios.post(`/api/users/notifications/${notif._id}`, {
+				status: "seen",
+			});
+		});
 	};
 
 	return (

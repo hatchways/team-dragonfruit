@@ -26,9 +26,9 @@ router.get("/notifications", auth, async (req, res) => {
 });
 
 /////// Change status of a notification ///////
-router.post("/notifications/:notif_id", auth, async (req, res) => {
+router.post("/notifications/:notif_id", async (req, res) => {
 	const notification = await Notification.findById(notif_id);
-	notification.status = req.body;
+	notification.status = req.body.status;
 	await notification.save();
 });
 
