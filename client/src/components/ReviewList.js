@@ -17,10 +17,12 @@ import Loading from "./Loading";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
+		width: "24rem",
 		background: "#ffffff",
 		paddingTop: "3rem",
 		height: "auto",
-		minHeight: "85vh",
+		minHeight: "100vh",
+		margin: "0 1rem",
 	},
 	title: {
 		fontSize: "1.5rem",
@@ -39,6 +41,30 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "center",
+	},
+	requested: {
+		maxHeight: "40vh",
+		overflowY: "scroll",
+		marginBottom: "30px",
+
+		"&::-webkit-scrollbar": {
+			width: "7px",
+		},
+		"&::-webkit-scrollbar-thumb": {
+			borderRadius: "6px",
+			border: "3px solid #43DDC1",
+		},
+	},
+	received: {
+		maxHeight: "40vh",
+		overflowY: "scroll",
+		"&::-webkit-scrollbar": {
+			width: "7px",
+		},
+		"&::-webkit-scrollbar-thumb": {
+			borderRadius: "6px",
+			border: "3px solid #43DDC1",
+		},
 	},
 }));
 
@@ -67,7 +93,8 @@ const ReviewList = ({ title }) => {
 				{title}
 			</Typography>
 			{/* Request */}
-			<Accordion>
+
+			<Accordion className={classes.requested}>
 				<AccordionSummary
 					expandIcon={<ExpandMoreIcon />}
 					aria-controls="panel1a-content"
@@ -79,13 +106,14 @@ const ReviewList = ({ title }) => {
 				<AccordionDetails>
 					<div className={classes.list}>
 						{/* {requestedReviews.map((review) => (
-              <Review review={review} key={review._id} />
-            ))} */}
+							<Review review={review} key={review._id} />
+						))} */}
 					</div>
 				</AccordionDetails>
 			</Accordion>
+
 			{/* Receive */}
-			<Accordion>
+			<Accordion className={classes.received}>
 				<AccordionSummary
 					expandIcon={<ExpandMoreIcon />}
 					aria-controls="panel1a-content"

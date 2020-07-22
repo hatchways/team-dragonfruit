@@ -146,7 +146,7 @@ router.patch("/decline/:review_id", auth, async (req, res) => {
 
 // submit a comment
 router.post("/comment/:review_id", auth, async (req, res) => {
-  const { comment } = req.body;
+	const { comment } = req.body;
 
   try {
     const foundSnippet = await Snippet.findById(req.params.review_id);
@@ -176,24 +176,24 @@ router.post("/comment/:review_id", auth, async (req, res) => {
 
 // rating feedback
 router.patch("/rating/:review_id", auth, async (req, res) => {
-  const { rating } = req.body;
+	const { rating } = req.body;
 
-  try {
-    const foundSnippet = await Snippet.findById(req.params.review_id);
+	try {
+		const foundSnippet = await Snippet.findById(req.params.review_id);
 
-    if (!foundSnippet) {
-      return res.status(404).json({ message: "Snippet Not Found" });
-    }
+		if (!foundSnippet) {
+			return res.status(404).json({ message: "Snippet Not Found" });
+		}
 
-    foundSnippet.rating = rating;
+		foundSnippet.rating = rating;
 
-    await foundSnippet.save();
+		await foundSnippet.save();
 
-    return res.status(200).json(foundSnippet);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: err.message });
-  }
+		return res.status(200).json(foundSnippet);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ message: err.message });
+	}
 });
 
 module.exports = router;

@@ -1,177 +1,147 @@
-import axios from "axios";
-import React, { useState } from "react";
-import { Typography, Paper, Button, Dialog } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import { IconButton } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
+import axios from 'axios';
+import React, { useState } from 'react';
+import { Typography, Paper, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
+import { IconButton } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
-import LanguageSelector from "./LanguageSelector";
+import LanguageSelector from './LanguageSelector';
 
 const useStyles = makeStyles((theme) => ({
-	registerContainer: {
-		display: "flex",
-		flexDirection: "column",
-		width: "800px",
-		maxWidth: "1000px",
-		margin: "2rem auto",
-		padding: "3rem 0",
-		alignItems: "center",
-		background: "secondary",
-	},
-	title: {
-		marginBottom: "3rem",
-	},
-	registerBtn: {
-		padding: "0.7rem 4rem",
-		borderRadius: "2rem",
-		background: "turquoise",
-		textTransform: "capitalize",
-		fontSize: "1rem",
-		margin: "3rem 0",
-		"&:hover": {
-			backgroundColor: "#43dd9a",
-			color: "#6E3ADB",
-		},
-	},
-	text: {
-		fontWeight: "bold",
-		fontSize: "16px",
-		margin: "10px",
-		marginLeft: "35px",
-		padding: "0",
-	},
-	form: {
-		margin: theme.spacing(1),
-		minWidth: 120,
-		display: "flex",
-		justifyContent: "space-between",
-	},
-	iconBtn: {
-		border: "1px solid grey",
-		borderRadius: "5px",
-		background: "turquoise",
-		margin: "20px",
-	},
+  registerContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '800px',
+    maxWidth: '1000px',
+    margin: '2rem auto',
+    padding: '3rem 0',
+    alignItems: 'center',
+    background: 'secondary',
+  },
+  title: {
+    marginBottom: '3rem',
+  },
+  registerBtn: {
+    padding: '0.7rem 4rem',
+    borderRadius: '2rem',
+    background: 'turquoise',
+    textTransform: 'capitalize',
+    fontSize: '1rem',
+    margin: '3rem 0',
+    '&:hover': {
+      backgroundColor: '#43dd9a',
+      color: '#6E3ADB',
+    },
+  },
+  text: {
+    fontWeight: 'bold',
+    fontSize: '16px',
+    margin: '10px',
+    marginLeft: '35px',
+    padding: '0',
+  },
+  form: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  iconBtn: {
+    border: '1px solid grey',
+    borderRadius: '5px',
+    background: 'turquoise',
+    margin: '20px',
+  },
 }));
 
-let userExp = [];
-let Langs = [];
-let Levels = [];
+const userExp = [];
+const Langs = [];
+const Levels = [];
 
 const Onboarding = () => {
-	const classes = useStyles();
-	const history = useHistory();
+  const classes = useStyles();
+  const [selectLanguages, setSelectLanguages] = React.useState([]);
 
-	const [open, setOpen] = React.useState(true);
-	const [selectLanguages, setSelectLanguages] = React.useState([]);
-	const [exp, setExp] = React.useState({});
+  const history = useHistory();
 
-	const handleClose = () => {
-		setOpen(false);
-		history.push("/");
-	};
+  const removeLanguage = () => {
+    let selectedLangs = [...selectLanguages];
+    selectedLangs.pop();
+    setSelectLanguages(selectedLangs);
+  };
 
-	const removeLanguage = (name) => {
-		let selectedLangs = [...selectLanguages];
-		console.log(selectLanguages);
-		console.log(selectedLangs);
-		console.log(name);
-		Langs = Langs.filter((lang) => lang !== name);
-		console.log("Langs: ", Langs);
-	};
+  const addLanguage = () => {
+    const id = Math.random();
+    const selectedLangs = [...selectLanguages];
+    selectedLangs.push({
+      item: <LanguageSelector getLang={getLang} getLevel={getLevel} key={id} />,
+    });
+    setSelectLanguages(selectedLangs);
+  };
 
-	const getState = (lang, lev) => {
-		setExp({ language: lang, level: lev });
-		console.log(exp);
-		userExp.push(exp);
-	};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-	const addLanguage = () => {
-		const id = Math.random();
-		const selectedLangs = [...selectLanguages];
-		selectedLangs.push({
-			item: (
-				<LanguageSelector
-					getLang={getLang}
-					getLevel={getLevel}
-					key={id}
-					remove={removeLanguage}
-					sendState={getState}
-				/>
-			),
-		});
-		setSelectLanguages(selectedLangs);
-	};
+    Langs.forEach((lang, i) => {
+      const newObj = { language: lang, level: Levels[i] };
+      userExp.push(newObj);
+    });
+    console.log(userExp);
+    await axios.post('/api/users/experience', { userExp });
+    history.push('/');
+  };
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
+  const getLang = (lang) => {
+    Langs.push(lang);
+  };
 
-		// Langs.forEach((lang, i) => {
-		// 	const newObj = { language: lang, level: Levels[i] };
-		// 	userExp.push(newObj);
-		// });
+  const getLevel = (level) => {
+    Levels.push(level);
+  };
 
-		//////// TEST ///////////
-		// const testExp = new Map();
-		// testExp.set("JavaScript", 1);
-		// testExp.set("Ruby", 2);
-		const testExp = {
-			Java: 1,
-			Ruby: 3,
-			Python: 2,
-		};
+  return (
+    <form>
+      <Paper className={classes.registerContainer}>
+        <Typography variant='h3' className={classes.title}>
+          Add your experience here:
+        </Typography>
 
-		console.log(testExp);
-		await axios.post("/api/users/experience", testExp);
-		// history.push("/");
-	};
+        {selectLanguages.map((language) => language.item)}
 
-	const getLang = (lang) => {
-		// Langs.push(lang);
-		setExp({ language: lang });
-	};
+        <div style={{ display: 'flex' }}>
+          <IconButton
+            className={classes.iconBtn}
+            label='Add'
+            onClick={addLanguage}
+          >
+            <AddCircleOutlineIcon color='primary' />
+            <Typography color='primary'>Add one language</Typography>
+          </IconButton>
+          <IconButton
+            className={classes.iconBtn}
+            label='Add'
+            onClick={removeLanguage}
+          >
+            <RemoveCircleOutlineIcon color='primary' />
+            <Typography color='primary'>Remove one language</Typography>
+          </IconButton>
+        </div>
 
-	const getLevel = (level) => {
-		Levels.push(level);
-	};
-
-	return (
-		<Dialog open={open} fullWidth maxWidth="md">
-			<form>
-				<Paper className={classes.registerContainer}>
-					<Typography variant="h3" className={classes.title}>
-						Add your experience here:
-					</Typography>
-
-					{selectLanguages.map((language) => language.item)}
-
-					<div style={{ display: "flex" }}>
-						<IconButton
-							className={classes.iconBtn}
-							label="Add"
-							onClick={addLanguage}>
-							<AddCircleOutlineIcon color="primary" />
-							<Typography color="primary">Add one language</Typography>
-						</IconButton>
-					</div>
-
-					<Button
-						type="submit"
-						variant="contained"
-						color="primary"
-						disableElevation
-						onClick={handleSubmit}
-						className={classes.registerBtn}>
-						Submit
-					</Button>
-					<Button onClick={handleClose} color="primary">
-						Close
-					</Button>
-				</Paper>
-			</form>
-		</Dialog>
-	);
+        <Button
+          type='submit'
+          variant='contained'
+          color='primary'
+          disableElevation
+          onClick={handleSubmit}
+          className={classes.registerBtn}
+        >
+          Submit
+        </Button>
+      </Paper>
+    </form>
+  );
 };
 
 export default Onboarding;
