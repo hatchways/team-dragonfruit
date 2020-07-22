@@ -7,7 +7,7 @@ const snippetSchema = new mongoose.Schema({
 	},
 	status: {
 		type: String,
-		enum: ["pending", "in-review", "completed"],
+		enum: ["pending", "in-review", "completed", "waitlisted"],
 		default: "pending",
 	},
 	author: {

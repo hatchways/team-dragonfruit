@@ -30,14 +30,21 @@ const matchReviewer = async (snippet_id) => {
 			// remove that person from the array
 			reviewers = reviewers.filter((el) => el != reviewer);
 
-			// do another match
-			reviewer = reviewers[randomIndexGenerator(reviewers.length)];
+			// check if there is any reviewers left. If not, wait-list the snippet
+			if (reviewer.length === 0) {
+				snippet.status = "waitlisted";
+				await snippet.save();
+				done = true;
+				return;
+			} else {
+				// try another match
+				reviewer = reviewers[randomIndexGenerator(reviewers.length)];
+			}
 		} else {
-			// send request for the reviewer
-			console.log("Send request to: ", reviewer);
-			await axios.post(`/api/users/request/${reviewer._id}/${snippet_id}`);
-
+			// request the reviewer
+			console.log("request to: ", reviewer);
 			done = true;
+			return reviewer;
 		}
 	}
 };

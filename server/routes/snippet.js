@@ -28,7 +28,12 @@ router.post("/upload", auth, balance, async (req, res) => {
 		});
 	} else {
 		try {
-			matchReviewer(snippet._id);
+			const reviewer = await matchReviewer(snippet._id);
+			if (reviewer) {
+				snippet.reviewer = reviewer._id;
+				snippet.status = "requested";
+				snippet.date_requested = Date.now();
+			}
 			await snippet.save();
 			req.user.balance -= 1;
 			await req.user.save();
@@ -125,7 +130,12 @@ router.patch("/decline/:review_id", auth, async (req, res) => {
 		await req.user.save();
 
 		// Try to find another reviewer
-		matchReviewer(req.params.review_id);
+		const reviewer = await matchReviewer(req.params.review_id);
+		if (reviewer) {
+			snippet.reviewer = reviewer._id;
+			snippet.status = "requested";
+			snippet.date_requested = Date.now();
+		}
 
 		return res.status(200).json(foundSnippet);
 	} catch (err) {
@@ -184,19 +194,6 @@ router.patch("/rating/:review_id", auth, async (req, res) => {
 		console.error(err);
 		res.status(500).json({ message: err.message });
 	}
-});
-
-/////// Send a request for review route handler  ///////
-router.post("/request/:user_id/:review_id", async (req, res) => {
-	const user = await User.findById(req.params.user_id);
-	const snippet = await Snippet.findById(req.params.review_id);
-
-	// Notify user about the request
-
-	// change snippet status
-	snippet.status = "requested";
-	snippet.date_requested = Date.now();
-	await snippet.save();
 });
 
 module.exports = router;
