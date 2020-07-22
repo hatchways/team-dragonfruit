@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -13,6 +13,7 @@ import UploadDialog from "../utils/UploadDialog";
 
 //??** Is it the only way to show the image to import the file?
 //??** I couldn't get it to show just by passing the src props!
+import JohnDoe from "../../src/images/avatar1.png";
 import logo from "../../src/images/logo.png";
 
 const useStyles = makeStyles((theme) => ({
@@ -59,18 +60,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+//**??Use hooks for getting the avatar src and keep it in the state object??**//
+
 export default function Navbar() {
 	const classes = useStyles();
 	const history = useHistory();
-	const [imgSrc, setImgSrc] = useState("");
-
-	useEffect(() => {
-		const user = localStorage.getItem("user");
-		if (user) {
-			const id = JSON.parse(user)._id;
-			setImgSrc(`/api/users/avatar/${id}`);
-		}
-	}, []);
 
 	return (
 		<AppBar position="static" className={classes.root}>
@@ -99,7 +93,7 @@ export default function Navbar() {
 					</Button>
 					<BadgeMenu />
 					<UploadDialog />
-					<ImageAvatar alt="User Avatar" src={imgSrc} />
+					<ImageAvatar alt="John Doe" src={JohnDoe} />
 					<Menu title="Profile" />
 				</Toolbar>
 			</div>

@@ -68,10 +68,11 @@ export default function UploadDialog() {
 	const [data, setData] = useState({
 		title: "",
 		language: "",
-		code: [],
+		code: "",
 	});
 
 	const classes = useStyles();
+
 	const handleChange = (e) => {
 		setData({ ...data, [e.target.name]: e.target.value });
 	};
@@ -96,7 +97,6 @@ export default function UploadDialog() {
 		setErrorData(errors);
 
 		if (Object.keys(errorData).length === 0 && isSubmitting) {
-	
 			console.log("submitting: ", data);
 			await axios.post("/api/users/upload", data);
 			setData({ language: "", title: "", code: [] });
@@ -105,7 +105,6 @@ export default function UploadDialog() {
 		}
 	};
 
-	
 	return (
 		<div>
 			<Button

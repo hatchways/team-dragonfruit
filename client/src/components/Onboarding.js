@@ -1,156 +1,147 @@
-import axios from "axios";
-import React from "react";
-import { Typography, Paper, Button, Dialog } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
-import { useHistory } from "react-router-dom";
+import axios from 'axios';
+import React, { useState } from 'react';
+import { Typography, Paper, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
+import { IconButton } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
-import LanguageSelector from "./LanguageSelector";
-import LanguageRenderer from "./LanguageRenderer";
-
+import LanguageSelector from './LanguageSelector';
 
 const useStyles = makeStyles((theme) => ({
-	registerContainer: {
-		display: "flex",
-		flexDirection: "column",
-		width: "800px",
-		maxWidth: "1000px",
-		margin: "2rem auto",
-		padding: "3rem 0",
-		alignItems: "center",
-		background: "secondary",
-	},
-	title: {
-		marginBottom: "3rem",
-		color: theme.palette.primary.main,
-	},
-	registerBtn: {
-		padding: "0.7rem 4rem",
-		borderRadius: "2rem",
-		background: "turquoise",
-		textTransform: "capitalize",
-		fontSize: "1rem",
-		margin: "3rem 0",
-		"&:hover": {
-			backgroundColor: "#43dd9a",
-			color: "#6E3ADB",
-		},
-	},
-	text: {
-		fontWeight: "bold",
-		fontSize: "16px",
-		margin: "10px",
-		marginLeft: "35px",
-		padding: "0",
-	},
-	form: {
-		margin: theme.spacing(1),
-		minWidth: 120,
-		display: "flex",
-		justifyContent: "space-between",
-	},
-	iconBtn: {
-		border: "1px solid grey",
-		borderRadius: "5px",
-		background: "turquoise",
-		margin: "20px",
-	},
-	closeBtn: {
-		border: "1px solid #43dd9a",
-		borderRadius: "2rem",
-	},
+  registerContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '800px',
+    maxWidth: '1000px',
+    margin: '2rem auto',
+    padding: '3rem 0',
+    alignItems: 'center',
+    background: 'secondary',
+  },
+  title: {
+    marginBottom: '3rem',
+  },
+  registerBtn: {
+    padding: '0.7rem 4rem',
+    borderRadius: '2rem',
+    background: 'turquoise',
+    textTransform: 'capitalize',
+    fontSize: '1rem',
+    margin: '3rem 0',
+    '&:hover': {
+      backgroundColor: '#43dd9a',
+      color: '#6E3ADB',
+    },
+  },
+  text: {
+    fontWeight: 'bold',
+    fontSize: '16px',
+    margin: '10px',
+    marginLeft: '35px',
+    padding: '0',
+  },
+  form: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  iconBtn: {
+    border: '1px solid grey',
+    borderRadius: '5px',
+    background: 'turquoise',
+    margin: '20px',
+  },
 }));
 
+const userExp = [];
+const Langs = [];
+const Levels = [];
+
 const Onboarding = () => {
-	const classes = useStyles();
-	const history = useHistory();
-	const [open, setOpen] = React.useState(true);
-	const [userExp, setUserExp] = React.useState([]);
+  const classes = useStyles();
+  const [selectLanguages, setSelectLanguages] = React.useState([]);
 
-	const handleClose = () => {
-		setOpen(false);
-		history.push("/");
-	};
+  const history = useHistory();
 
-	// Get experience object from LanguageSelector
-	const getExp = (exp) => {
-		setUserExp(userExp.concat(exp));
-	};
+  const removeLanguage = () => {
+    let selectedLangs = [...selectLanguages];
+    selectedLangs.pop();
+    setSelectLanguages(selectedLangs);
+  };
 
-	// Get the language to be removed from LanguageRenderer
-	const removeLanguage = (language) => {
-		let newUserExp = userExp.filter((el) => Object.keys(el)[0] !== language);
-		setUserExp(newUserExp);
-	};
+  const addLanguage = () => {
+    const id = Math.random();
+    const selectedLangs = [...selectLanguages];
+    selectedLangs.push({
+      item: <LanguageSelector getLang={getLang} getLevel={getLevel} key={id} />,
+    });
+    setSelectLanguages(selectedLangs);
+  };
 
-	// API call to send userExp that is an array of objects
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		console.log(userExp);
-		await axios.post("/api/users/experience", userExp);
-		setOpen(false);
-		history.push("/");
-	};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-	// A function for rendering selected languages
-	const renderLanguages = (userExp) => {
-		let value;
-		const exps = userExp.map((el) => {
-			if (el !== {}) {
-				if (Object.values(el)[0] === 1) {
-					value = "Beginner";
-				} else if (Object.values(el)[0] === 2) {
-					value = "Intermediate";
-				} else {
-					value = "Advanced";
-				}
-				return (
-					<div key={Object.keys(el)[0]}>
-						<LanguageRenderer
-							removeLanguage={removeLanguage}
-							language={Object.keys(el)[0]}
-							level={value}
-						/>
-					</div>
-				);
-			} else {
-				return <div></div>;
-			}
-		});
-		return <div>{exps}</div>;
-	};
+    Langs.forEach((lang, i) => {
+      const newObj = { language: lang, level: Levels[i] };
+      userExp.push(newObj);
+    });
+    console.log(userExp);
+    await axios.post('/api/users/experience', { userExp });
+    history.push('/');
+  };
 
-	return (
-		<Dialog open={open} fullWidth maxWidth="md">
-			<form>
-				
-				<Paper className={classes.registerContainer}>
-					<Typography variant="h5" className={classes.title}>
-						Add your experience
-					</Typography>
+  const getLang = (lang) => {
+    Langs.push(lang);
+  };
 
-					<LanguageSelector sendExp={getExp} />
+  const getLevel = (level) => {
+    Levels.push(level);
+  };
 
-					{renderLanguages(userExp)}
+  return (
+    <form>
+      <Paper className={classes.registerContainer}>
+        <Typography variant='h3' className={classes.title}>
+          Add your experience here:
+        </Typography>
 
-					<Button
-						type="submit"
-						variant="contained"
-						color="primary"
-						disableElevation
-						onClick={handleSubmit}
-						className={classes.registerBtn}>
-						Submit
-					</Button>
-					<Button
-						onClick={handleClose}
-						color="primary"
-						className={classes.closeBtn}>
-						Close
-					</Button>
-				</Paper>
-			</form>
-		</Dialog>
-	);
+        {selectLanguages.map((language) => language.item)}
+
+        <div style={{ display: 'flex' }}>
+          <IconButton
+            className={classes.iconBtn}
+            label='Add'
+            onClick={addLanguage}
+          >
+            <AddCircleOutlineIcon color='primary' />
+            <Typography color='primary'>Add one language</Typography>
+          </IconButton>
+          <IconButton
+            className={classes.iconBtn}
+            label='Add'
+            onClick={removeLanguage}
+          >
+            <RemoveCircleOutlineIcon color='primary' />
+            <Typography color='primary'>Remove one language</Typography>
+          </IconButton>
+        </div>
+
+        <Button
+          type='submit'
+          variant='contained'
+          color='primary'
+          disableElevation
+          onClick={handleSubmit}
+          className={classes.registerBtn}
+        >
+          Submit
+        </Button>
+      </Paper>
+    </form>
+  );
 };
 
 export default Onboarding;

@@ -50,6 +50,7 @@ export default function SimpleMenu(props) {
 		setAnchorEl(event.currentTarget);
 	};
 
+
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
@@ -72,6 +73,7 @@ export default function SimpleMenu(props) {
 				<ArrowDropDownIcon className={classes.icon} />
 			</Button>
 
+
 			<Menu
 				id="simple-menu"
 				anchorEl={anchorEl}
@@ -81,11 +83,6 @@ export default function SimpleMenu(props) {
 				<MenuItem onClick={handleClose}>
 					<Link to="/onboarding" className={classes.link}>
 						My experience
-					</Link>
-				</MenuItem>
-				<MenuItem onClick={handleClose}>
-					<Link to="/edit" className={classes.link}>
-						Edit my profile
 					</Link>
 				</MenuItem>
 				<MenuItem>
