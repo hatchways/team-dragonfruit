@@ -71,6 +71,8 @@ const Review = ({ review }) => {
 			history.go();
 		}
 	};
+
+
 	const handleSelected = () => {
 		setSelectedReview(review);
 	};
@@ -79,6 +81,10 @@ const Review = ({ review }) => {
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+
 
 	const open = Boolean(anchorEl);
 	const id = open ? "simple-popover" : undefined;

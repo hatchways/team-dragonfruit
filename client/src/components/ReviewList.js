@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
-	Typography,
-	Container,
-	Accordion,
-	AccordionDetails,
-	AccordionSummary,
+
+  Typography,
+  Container,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -85,7 +87,9 @@ const ReviewList = ({ title }) => {
 		UserService.receivedReviews().then((data) => setReceivedReviews(data));
 	}, []);
 
+
 	if (!requestedReviews || !receivedReviews) return <Loading />;
+
 
 	return (
 		<Container className={classes.root}>

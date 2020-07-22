@@ -32,11 +32,8 @@ const useStyles = makeStyles((theme) => ({
 		margin: "2rem auto",
 		paddingBottom: "1rem",
 	},
-	rootSub: {
-		width: "90%",
-		margin: "2rem auto",
-		height: "80vh",
-	},
+
+
 	header: {
 		display: "flex",
 		alignItems: "center",

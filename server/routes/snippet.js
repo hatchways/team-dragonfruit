@@ -52,20 +52,22 @@ router.get("/snippet", auth, async (req, res) => {
 
 // fetch requested reviews
 router.get("/requested", auth, async (req, res) => {
-	try {
-		const requestedReviews = await Snippet.find({ author: req.user._id })
-			.populate("author", ["name"])
-			.populate("reviewer", ["name"]);
 
-		if (!requestedReviews) {
-			return res.status(404).json({ message: "No requested reviews found" });
-		}
+  try {
+    const requestedReviews = await Snippet.find({ author: req.user._id })
+      .populate("author", ["name"])
+      .populate("reviewer", ["name"]);
 
-		return res.status(200).json(requestedReviews);
-	} catch (err) {
-		console.error(err);
-		res.status(500).json({ message: err.message });
-	}
+    if (!requestedReviews) {
+      return res.status(404).json({ message: "No requested reviews found" });
+    }
+
+    return res.status(200).json(requestedReviews);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+
 });
 
 // fetch received reviews
@@ -147,6 +149,9 @@ router.patch("/decline/:review_id", auth, async (req, res) => {
 // submit a comment
 router.post("/comment/:review_id", auth, async (req, res) => {
 	const { comment } = req.body;
+
+	
+
 
   try {
     const foundSnippet = await Snippet.findById(req.params.review_id);
