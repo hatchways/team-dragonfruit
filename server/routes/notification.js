@@ -27,9 +27,21 @@ router.get("/notifications", auth, async (req, res) => {
 
 /////// Change status of a notification ///////
 router.post("/notifications/:notif_id", auth, async (req, res) => {
-	const notification = await Notification.findById(notif_id);
+	const notification = await Notification.findById(req.params.notif_id);
 	notification.status = req.body.status;
 	await notification.save();
+});
+
+/////// For test: Store notifications in db ///////
+router.post("/notifications/create/:snippet_id", auth, async (req, res) => {
+	const notification = new Notification({
+		user: req.user.id,
+		snippet: req.params.snippet_id,
+		event: req.body.event,
+	});
+
+	await notification.save();
+	res.send(notification);
 });
 
 module.exports = router;
