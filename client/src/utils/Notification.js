@@ -50,7 +50,7 @@ const Notification = (props) => {
 
 	return (
 		<ListItem className={classes.listItem} key={props.notification._id}>
-			<Link to="/balance" className={classes.link}>
+			<Link to="/reviews" className={classes.link}>
 				<ListItemText primary={`${props.notification.event}`} />
 			</Link>
 			{status === "new" || status === "seen" ? (
