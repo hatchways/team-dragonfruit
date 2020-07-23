@@ -10,8 +10,14 @@ const randomIndexGenerator = (length) => {
 const matchReviewer = async (snippet_id) => {
 	const snippet = await Snippet.findById(snippet_id);
 	const language = snippet.language;
-	const author = snippet.populate("author").execPopulate();
+	const author = await snippet.populate("author").execPopulate();
+
+	// console.log("author: ", author);
+	// console.log("exp: ", author.experience);
+
 	const level = author.experience.get(language);
+	// const level = author.experience.get(`${language}`);
+	// console.log("level: ", level);
 
 	let reviewers = await User.find({
 		["experience." + language]: { $gte: level },
