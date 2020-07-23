@@ -100,7 +100,7 @@ const Review = ({ review }) => {
 					<Typography variant="subtitle1" className={classes.status}>
 						{review.status}
 					</Typography>
-				) : review.comments.length !== 0 ? (
+				) : review.comments ? (
 					<Typography className={classes.status}>Done</Typography>
 				) : (
 					<form>
