@@ -126,7 +126,6 @@ router.patch("/decline/:review_id", auth, async (req, res) => {
 		// change status and reviewer
 		foundSnippet.status = "pending";
 		foundSnippet.reviewer = null;
-		// req.user.declined = req.user.declined.concat(req.params.review_id);
 		req.user.declined.push(req.params.review_id);
 
 		await foundSnippet.save();
@@ -135,9 +134,9 @@ router.patch("/decline/:review_id", auth, async (req, res) => {
 		// Try to find another reviewer
 		const reviewer = await matchReviewer(req.params.review_id);
 		if (reviewer) {
-			snippet.reviewer = reviewer._id;
-			snippet.status = "requested";
-			snippet.date_requested = Date.now();
+			foundSnippet.reviewer = reviewer._id;
+			foundSnippet.status = "requested";
+			foundSnippet.date_requested = Date.now();
 		}
 
 		return res.status(200).json(foundSnippet);

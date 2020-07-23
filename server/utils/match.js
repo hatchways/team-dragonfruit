@@ -19,10 +19,9 @@ const matchReviewer = async (snippet_id) => {
 	});
 
 	// remove author from reviewers array
-	// reviewers = reviewers.filter((el) => el._id != author.author._id);
-
-	//****  WHY doesn't this work?!
-	const index = reviewers.findIndex((el) => el._id === author.author._id);
+	const index = reviewers.findIndex(
+		(el) => el._id.toString() === author.author._id.toString(),
+	);
 	console.log("index: ", index);
 	reviewers.splice(index, 1);
 
@@ -36,7 +35,10 @@ const matchReviewer = async (snippet_id) => {
 			console.log("Declined by: ", reviewer);
 
 			// remove that person from the array
-			reviewers = reviewers.filter((el) => el != reviewer);
+			const index = reviewers.findIndex(
+				(el) => el._id.toString() === reviewer._id.toString(),
+			);
+			reviewers.splice(index, 1);
 
 			// check if there is any reviewers left. If not, wait-list the snippet
 			if (reviewer.length === 0) {
