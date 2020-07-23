@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 import Fade from "@material-ui/core/Fade";
 import List from "@material-ui/core/List";
-import { withStyles } from "@material-ui/core/styles";
+
 
 import Notification from "./Notification";
 
@@ -68,89 +68,71 @@ const test = {
 	],
 };
 
-class BadgeOverlap extends React.Component {
-	// const classes = useStyles();
-	// const [checked, setChecked] = React.useState(false);
-	// const [invisible, setInvisible] = React.useState(true);
-	//  const[notifications, setNotifications] = React.useState({ });
+const BadgeOverlap = () => {
+	const classes = useStyles();
+	const [checked, setChecked] = React.useState(false);
+	const [invisible, setInvisible] = React.useState(true);
+	const [notifications, setNotifications] = React.useState({});
 
-	state = { checked: false, invisible: true, notifications: {} };
+	useEffect(() => {
+		async function getNotifications() {
+			const response = await axios.get("/api/users/notifications");
+			setNotifications(response.data);
+			console.log(notifications);
+			if (notifications.new.length !== 0) {
+				setInvisible(false);
+			}
+		}
 
-	// useEffect(() => {
-	// 	async function getNotifications() {
-	// 		const response = await axios.get("/api/users/notifications");
-	// 		setNotifications(response.data);
-	// 		console.log(notifications);
-	// 		// if (notifications.new.length !== 0) {
-	// 		// 	setInvisible(false);
-	// 		// }
-	// 	}
+		getNotifications();
+		// if (notifications.new.length !== 0) {
+		// 	setInvisible(false);
+		// }
+	}, []);
 
-	// 	getNotifications();
+	const handleChange = () => {
+		setChecked((prev) => !prev);
+		setInvisible(true);
 
-	// }, []);
-
-	async componentDidMount() {
-		const response = await axios.get("/api/users/notifications");
-		this.setState({ notifications: response.data });
-	}
-
-	// const handleChange = () => {
-	// 	setChecked((prev) => !prev);
-	// 	setInvisible(true);
-
-	// 	notifications.new.forEach(async (notif) => {
-	// 		await axios.post(`/api/users/notifications/${notif._id}`, {
-	// 			status: "seen",
-	// 		});
-	// 	});
-	// };
-
-	handleChange = () => {
-		this.setState({ checked: !this.state.checked, invisible: true });
-
-		this.state.notifications.new.forEach(async (notif) => {
+		notifications.new.forEach(async (notif) => {
 			await axios.post(`/api/users/notifications/${notif._id}`, {
 				status: "seen",
 			});
 		});
 	};
 
-	render() {
-		const { classes } = this.props;
-		return (
-			<div className={classes.root}>
-				<Badge
-					color="secondary"
-					overlap="circle"
-					badgeContent=""
-					variant="dot"
-					invisible={this.state.invisible}>
-					<div className={clsx(classes.shape, classes.shapeCircle)}>
-						<IconButton onClick={(e) => this.handleChange()}>
-							<NotificationsNoneIcon className={classes.icon} />
-						</IconButton>
-					</div>
-				</Badge>
-
-				<div className={classes.container}>
-					<Fade in={this.state.checked}>
-						<Paper elevation={4} className={classes.paper}>
-							<List component="nav">
-								{this.state.notifications.new.map((notif) => {
-									return <Notification notification={notif} key={notif.id} />;
-								})}
-
-								{this.state.notifications.seen.map((notif) => {
-									return <Notification notification={notif} key={notif.id} />;
-								})}
-							</List>
-						</Paper>
-					</Fade>
+	return (
+		<div className={classes.root}>
+			<Badge
+				color="secondary"
+				overlap="circle"
+				badgeContent=""
+				variant="dot"
+				invisible={invisible}>
+				<div className={clsx(classes.shape, classes.shapeCircle)}>
+					<IconButton onClick={(e) => handleChange()}>
+						<NotificationsNoneIcon className={classes.icon} />
+					</IconButton>
 				</div>
-			</div>
-		);
-	}
-}
+			</Badge>
 
-export default withStyles(useStyles)(BadgeOverlap);
+			<div className={classes.container}>
+				<Fade in={checked}>
+					<Paper elevation={4} className={classes.paper}>
+						<List component="nav">
+							{notifications.new.map((notif) => {
+								return <Notification notification={notif} key={notif.id} />;
+							})}
+
+							{notifications.seen.map((notif) => {
+								return <Notification notification={notif} key={notif.id} />;
+							})}
+						</List>
+					</Paper>
+				</Fade>
+			</div>
+		</div>
+	);
+};
+
+export default BadgeOverlap;
