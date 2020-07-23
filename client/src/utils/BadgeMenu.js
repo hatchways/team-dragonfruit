@@ -9,7 +9,6 @@ import Paper from "@material-ui/core/Paper";
 import Fade from "@material-ui/core/Fade";
 import List from "@material-ui/core/List";
 
-
 import Notification from "./Notification";
 
 const useStyles = makeStyles((theme) => ({
@@ -79,7 +78,9 @@ const BadgeOverlap = () => {
 			const response = await axios.get("/api/users/notifications");
 			setNotifications(response.data);
 			console.log(notifications);
+
 			if (notifications.new.length !== 0) {
+				// show the dot
 				setInvisible(false);
 			}
 		}
@@ -92,6 +93,8 @@ const BadgeOverlap = () => {
 
 	const handleChange = () => {
 		setChecked((prev) => !prev);
+
+		// hide the dot
 		setInvisible(true);
 
 		notifications.new.forEach(async (notif) => {
