@@ -72,7 +72,6 @@ const Review = ({ review }) => {
 		}
 	};
 
-
 	const handleSelected = () => {
 		setSelectedReview(review);
 	};
@@ -84,7 +83,6 @@ const Review = ({ review }) => {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
-
 
 	const open = Boolean(anchorEl);
 	const id = open ? "simple-popover" : undefined;
@@ -102,7 +100,7 @@ const Review = ({ review }) => {
 					<Typography variant="subtitle1" className={classes.status}>
 						{review.status}
 					</Typography>
-				) : review.comments ? (
+				) : review.comments.length !== 0 ? (
 					<Typography className={classes.status}>Done</Typography>
 				) : (
 					<form>
