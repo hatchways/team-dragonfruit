@@ -12,29 +12,36 @@ import Checkout from "./pages/Checkout";
 import PrivateRoute from "./hocs/PrivateRoute";
 import PublicRoute from "./hocs/PublicRoute";
 import AuthProvider from "./context/AuthContext";
+import NotificationProvider from "./context/NotificationContext";
 import OnboardingPage from "./pages/OnboardingPage";
 import EditProfile from "./pages/EditProfile.js";
 import "./App.css";
 
 function App() {
-	return (
-		<MuiThemeProvider theme={theme}>
-			<AuthProvider>
-				<BrowserRouter>
-					<Switch>
-						<PublicRoute exact path="/signup" component={Signup} />
-						<PublicRoute exact path="/login" component={Login} />
-						<PrivateRoute path="/" exact component={Profile} />
-						<PrivateRoute path="/balance" component={Balance} />
-						<PrivateRoute path="/checkout" component={Checkout} />
-						<PrivateRoute path="/reviews" exact component={Reviews} />
-						<PrivateRoute path="/onboarding" exact component={OnboardingPage} />
-						<PrivateRoute path="/edit" exact component={EditProfile} />
-					</Switch>
-				</BrowserRouter>
-			</AuthProvider>
-		</MuiThemeProvider>
-	);
+  return (
+    <MuiThemeProvider theme={theme}>
+      <NotificationProvider>
+        <AuthProvider>
+          <BrowserRouter>
+            <Switch>
+              <PublicRoute path='/signup' component={Signup} />
+              <PublicRoute path='/login' component={Login} />
+              <PrivateRoute path='/' exact component={Profile} />
+              <PrivateRoute path='/balance' component={Balance} />
+              <PrivateRoute path='/checkout' component={Checkout} />
+              <PrivateRoute path='/reviews' exact component={Reviews} />
+								<PrivateRoute path="/edit" exact component={EditProfile} />
+              <PrivateRoute
+                path='/onboarding'
+                exact
+                component={OnboardingPage}
+              />
+            </Switch>
+          </BrowserRouter>
+        </AuthProvider>
+      </NotificationProvider>
+    </MuiThemeProvider>
+  );
 }
 
 export default App;

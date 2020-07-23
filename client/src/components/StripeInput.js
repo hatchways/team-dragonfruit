@@ -25,7 +25,6 @@ import { AuthContext } from "../context/AuthContext";
 import UserService from "../services/UserService";
 
 import Message from "./Message";
-require("dotenv").config();
 
 const useStyles = makeStyles((theme) => ({
   container: {

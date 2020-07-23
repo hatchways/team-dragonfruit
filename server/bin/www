@@ -9,7 +9,8 @@ require("dotenv").config();
 
 var app = require("../app");
 var http = require("http");
-require('../db/mongoose');
+require("../db/mongoose");
+const { init } = require("../socket");
 
 /**
  * Get port from environment and store in Express.
@@ -23,6 +24,9 @@ app.set("port", port);
  */
 
 var server = http.createServer(app);
+
+//socket
+init(server);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -88,3 +92,5 @@ function onListening() {
 
   console.log("Listening on " + bind);
 }
+
+module.exports = server;

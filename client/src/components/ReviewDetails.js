@@ -18,6 +18,7 @@ import img2 from "../images/avatar2.png";
 import DocumentGIF from "../images/getDocuments.gif";
 
 import { AuthContext } from "../context/AuthContext";
+import { NotificationContext } from "../context/NotificationContext";
 
 import CodeReader from "../utils/CodeReader";
 import UserService from "../services/UserService";
@@ -26,12 +27,55 @@ import PrismDraft from "../utils/PrismDraft";
 import Message from "./Message";
 
 const useStyles = makeStyles((theme) => ({
-	root: {
-		width: "90%",
-		maxWidth: "95%",
-		margin: "2rem auto",
-		paddingBottom: "1rem",
-	},
+  root: {
+    width: "90%",
+    maxWidth: "95%",
+    margin: "2rem auto",
+    paddingBottom: "1rem",
+  },
+  rootSub: {
+    width: "90%",
+    margin: "2rem auto",
+    height: "80vh",
+  },
+  header: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    margin: "1.5rem auto",
+    paddingTop: "1.5rem",
+  },
+  date: {
+    color: "#bababa",
+    fontSize: "0.9rem",
+    fontWeight: "500",
+  },
+  avatarHeader: {
+    display: "flex",
+    alignItems: "center",
+  },
+  avatarImg: {
+    margin: "0.5rem",
+  },
+  position: {
+    color: "#bababa",
+    fontSize: "0.8rem",
+    fontWeight: "500",
+  },
+  authorName: {
+    fontSize: "0.8rem",
+    fontWeight: "bold",
+    marginTop: "0",
+  },
+  ratingBtn: {
+    padding: "0.3rem 0.8rem",
+    borderRadius: "2rem",
+    background: "turquoise",
+    textTransform: "capitalize",
+    fontSize: "0.8rem",
+    boxShadow: "transparent",
+    outline: "transparent",
+    border: "transparent",
 
 	header: {
 		display: "flex",
@@ -169,47 +213,63 @@ const ReviewDetails = () => {
 	const [code, setCode] = useState("");
 	const [message, setMessage] = useState("");
 
-	// handle rating
-	const handleRating = (e) => {
-		e.preventDefault();
-		UserService.rating(selectedReview._id, rating);
-		setRating(rating);
-		setMessage(`You gave ${rating} star rating for this review. Thank you`);
-		setTimeout(() => {
-			setMessage("");
-		}, 6000);
-	};
+  const { selectedReview, user } = useContext(AuthContext);
+  const { setMsg } = useContext(NotificationContext);
 
-	// Send Comments
-	const handleCode = (comments) => {
-		setCode(comments);
-	};
-	const handleSendCode = () => {
-		UserService.sendComments(selectedReview._id, code);
-		setMessage(`You submitted your review`);
-		history.go();
-		setTimeout(() => {
-			setMessage("");
-		}, 6000);
-	};
+  // const history = useHistory();
 
-	if (!selectedReview)
-		return (
-			<Paper className={classes.rightContainer}>
-				<Typography variant="h4" color="primary" align="center">
-					Please select an item to view the details
-				</Typography>
+  const [rating, setRating] = useState(0);
+  const [code, setCode] = useState("");
+  const [message, setMessage] = useState("");
 
-				<img src={DocumentGIF} alt="Document GIF" />
+  // handle rating
+  const handleRating = (e) => {
+    e.preventDefault();
+    UserService.rating(selectedReview._id, rating);
+    setRating(rating);
+    setMsg({
+      action: "get rating for review",
+      user: selectedReview.author._id,
+      snippet: selectedReview._id,
+    });
+    setMessage(`You gave ${rating} star rating for this review. Thank you`);
+    setTimeout(() => {
+      setMessage("");
+    }, 6000);
+  };
 
-				<a
-					className={classes.link}
-					href="https://stories.freepik.com/business?utm_source=Stories&utm_medium=referral&utm_campaign=web-attribution&utm_term=copy%20and%20attribute&utm_content=donwload-pop-up"
-					target="blank">
-					Illustration by Stories by Freepik
-				</a>
-			</Paper>
-		);
+  // Send Comments
+  const handleCode = (comments) => {
+    setCode(comments);
+  };
+  const handleSendCode = (e) => {
+    e.preventDefault();
+    UserService.sendComments(selectedReview._id, code);
+    setMsg({
+      action: "get a review",
+      user: selectedReview.author._id,
+      snippet: selectedReview._id,
+    });
+    setMessage(`You submitted your review`);
+    // history.go();
+    setTimeout(() => {
+      setMessage("");
+    }, 6000);
+  };
+
+  if (!selectedReview)
+    return (
+      <Paper className={classes.rootSub}>
+        <Typography
+          variant='h2'
+          color='primary'
+          align='center'
+          style={{ padding: "3rem" }}
+        >
+          Please select your review
+        </Typography>
+      </Paper>
+    );
 
 	// for requested
 	if (selectedReview.author._id === user._id) {
@@ -255,58 +315,58 @@ const ReviewDetails = () => {
 					{/* <CodeReader code={selectedReview.code} className={classes.code} /> */}
 				</Container>
 
-				<Container>
-					{selectedReview.reviewer && (
-						<Box className={classes.avatarHeader}>
-							{/* Avatar */}
-							<Avatar src={img1} className={classes.avatarImg} />
-							<Box>
-								<Typography className={classes.authorName}>
-									{selectedReview.reviewer.name}
-								</Typography>
-								<Typography className={classes.position}>
-									review your request
-								</Typography>
-							</Box>
-						</Box>
-					)}
-					{selectedReview.comments && (
-						<Container className={classes.codeContainer}>
-							{/* <CodeReader
-								code={selectedReview.comments}
-								className={classes.code}
-							/> */}
-						</Container>
-					)}
-				</Container>
-				{message && <Message open={true} type="success" message={message} />}
-			</Paper>
-		);
-	}
-	// for received
-	else if (selectedReview.reviewer._id === user._id) {
-		return (
-			<Paper className={classes.root}>
-				<Container className={classes.header}>
-					<Box>
-						<Typography variant="h6" className={classes.title}>
-							{selectedReview.title}
-						</Typography>
-						<Typography className={classes.date}>
-							{`${moment(selectedReview.date_requested).format("MMM Do YYYY")}`}
-						</Typography>
-					</Box>
-					<Box className={classes.avatarHeader}>
-						{/* Avatar */}
-						<Avatar src={img2} className={classes.avatarImg} />
-						<Box>
-							<Typography className={classes.posted}>Posted by</Typography>
-							<Typography className={classes.authorName}>
-								{selectedReview.author.name}
-							</Typography>
-						</Box>
-					</Box>
-				</Container>
+        <Container>
+          {selectedReview.reviewer && (
+            <Box className={classes.avatarHeader}>
+              {/* Avatar */}
+              <Avatar src={img1} className={classes.avatarImg} />
+              <Box>
+                <Typography className={classes.authorName}>
+                  {selectedReview.reviewer.name}
+                </Typography>
+                <Typography className={classes.position}>
+                  review your request
+                </Typography>
+              </Box>
+            </Box>
+          )}
+          {selectedReview.comments && (
+            <Container className={classes.codeContainer}>
+              <CodeReader
+                code={selectedReview.comments}
+                className={classes.code}
+              />
+            </Container>
+          )}
+        </Container>
+        {message && <Message open={true} type='success' message={message} />}
+      </Paper>
+    );
+  }
+  // for received
+  else if (selectedReview.reviewer._id === user._id) {
+    return (
+      <Paper className={classes.root}>
+        <Container className={classes.header}>
+          <Box>
+            <Typography variant='h6' className={classes.title}>
+              {selectedReview.title}
+            </Typography>
+            <Typography className={classes.date}>
+              {`${moment(selectedReview.date_requested).format("MMM Do YYYY")}`}
+            </Typography>
+          </Box>
+          <Box className={classes.avatarHeader}>
+            {/* Avatar */}
+            <Avatar src={img2} className={classes.avatarImg} />
+            <Box>
+              <Typography className={classes.posted}>Posted by</Typography>
+              <Typography className={classes.authorName}>
+                {selectedReview.author.name}
+              </Typography>
+            </Box>
+          </Box>
+        </Container>
 
 				<Divider />
 
@@ -314,54 +374,55 @@ const ReviewDetails = () => {
 					{/* <CodeReader code={selectedReview.code} className={classes.code} /> */}
 				</Container>
 
-				<Divider />
-				{selectedReview.comments ? (
-					<Box component="div">
-						<Typography variant="h4" className={classes.commentComplete}>
-							Your review is sent
-						</Typography>
-						<Container className={classes.codeContainer}>
-							{/* <CodeReader
-								code={selectedReview.comments}
-								className={classes.code}
-							/> */}
-						</Container>
-					</Box>
-				) : selectedReview.status === "in-review" ? (
-					<Box component="div">
-						<Container className={classes.codeContainer}>
-							<PrismDraft sendCode={handleCode} />
-						</Container>
+        <Divider />
+        {selectedReview.comments ? (
+          <Box component='div'>
+            <Typography variant='h4' className={classes.commentComplete}>
+              Your review is sent
+            </Typography>
+            <Container className={classes.codeContainer}>
+              <CodeReader
+                code={selectedReview.comments}
+                className={classes.code}
+              />
+            </Container>
+          </Box>
+        ) : selectedReview.status === "in-review" ? (
+          <Box component='div'>
+            <Container className={classes.codeContainer}>
+              <PrismDraft sendCode={handleCode} />
+            </Container>
 
-						<Container className={classes.reviewFooter}>
-							<Box className={classes.avatarHeader}>
-								{/* Avatar */}
-								<Avatar src={img2} className={classes.avatarImg} />
-								<Box>
-									<Typography className={classes.authorName}>
-										{selectedReview.reviewer.name}
-									</Typography>
-									<Typography className={classes.position}>
-										Senior Developer
-									</Typography>
-								</Box>
-							</Box>
-							<Button
-								type="button"
-								variant="contained"
-								disableElevation
-								color="primary"
-								className={classes.sendBtn}
-								onClick={handleSendCode}>
-								Submit review
-							</Button>
-						</Container>
-					</Box>
-				) : null}
-				{message && <Message open={true} type="success" message={message} />}
-			</Paper>
-		);
-	}
+            <Container className={classes.reviewFooter}>
+              <Box className={classes.avatarHeader}>
+                {/* Avatar */}
+                <Avatar src={img2} className={classes.avatarImg} />
+                <Box>
+                  <Typography className={classes.authorName}>
+                    {selectedReview.reviewer.name}
+                  </Typography>
+                  <Typography className={classes.position}>
+                    Senior Developer
+                  </Typography>
+                </Box>
+              </Box>
+              <Button
+                type='button'
+                variant='contained'
+                disableElevation
+                color='primary'
+                className={classes.sendBtn}
+                onClick={handleSendCode}
+              >
+                Submit review
+              </Button>
+            </Container>
+          </Box>
+        ) : null}
+        {message && <Message open={true} type='success' message={message} />}
+      </Paper>
+    );
+  }
 };
 
 export default ReviewDetails;
