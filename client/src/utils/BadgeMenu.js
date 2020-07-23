@@ -94,7 +94,7 @@ export default function BadgeOverlap() {
                 <ImageIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary='Photos' secondary='Jan 9, 2014' />
+            <ListItemText primary={notificationMsg.event} />
           </ListItem>
           <ListItem>
             <ListItemAvatar>

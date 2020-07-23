@@ -23,6 +23,7 @@ const init = (server) => {
       };
       // console.log(notification);
       socket.emit("notification", notification);
+      // io.to(socket.id).emit("notification", notification);
     });
 
     socket.on("disconnect", () => console.log("User disconnected"));
