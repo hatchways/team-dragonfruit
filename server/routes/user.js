@@ -53,9 +53,17 @@ router.post("/logout", auth, async (req, res) => {
 	res.send("logged out successfully.");
 });
 
-/////// User profile route handler ///////
+/////// Retrieve user profile route handler ///////
 router.get("/me", auth, async (req, res) => {
 	const user = req.user;
+	res.send(user);
+});
+
+/////// Update user profile route handler ///////
+router.patch("/me", auth, async (req, res) => {
+	const { name, title } = req.body;
+	const user = await User.findByIdAndUpdate(req.user.id, { name, title });
+	await user.save();
 	res.send(user);
 });
 

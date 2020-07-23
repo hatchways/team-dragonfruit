@@ -1,5 +1,6 @@
-import React from "react";
-import { Typography, Paper, Button, Dialog } from "@material-ui/core";
+import axios from "axios";
+import React, { useState } from "react";
+import { Paper, Button, Dialog, TextField, Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useHistory } from "react-router-dom";
 
@@ -13,65 +14,87 @@ const useStyles = makeStyles((theme) => ({
 		width: "800px",
 		maxWidth: "1000px",
 		margin: "2rem auto",
-		padding: "3rem 0",
+		padding: "2rem 0",
 		alignItems: "center",
 		background: "secondary",
 	},
-	title: {
-		marginBottom: "3rem",
-		color: theme.palette.primary.main,
+	closeBtn: {
+		border: "1px solid #43dd9a",
+		borderRadius: "2rem",
 	},
-	registerBtn: {
+	submitBtn: {
+		margin: "20px auto",
 		padding: "0.7rem 4rem",
 		borderRadius: "2rem",
 		background: "turquoise",
-		textTransform: "capitalize",
 		fontSize: "1rem",
-		margin: "3rem 0",
+		textTransform: "none",
+		boxShadow: "transparent",
+		outline: "transparent",
+		color: "white",
+		border: "transparent",
 		"&:hover": {
 			backgroundColor: "#43dd9a",
 			color: "#6E3ADB",
 		},
 	},
-	text: {
-		fontWeight: "bold",
-		fontSize: "16px",
-		margin: "10px",
-		marginLeft: "35px",
-		padding: "0",
-	},
-	form: {
-		margin: theme.spacing(1),
-		minWidth: 120,
+	nameContainer: {
 		display: "flex",
 		justifyContent: "space-between",
+		width: "80%",
 	},
-	iconBtn: {
-		border: "1px solid grey",
-		borderRadius: "5px",
-		background: "turquoise",
-		margin: "20px",
-	},
-	closeBtn: {
-		border: "1px solid #43dd9a",
-		borderRadius: "2rem",
+	text: {
+		width: "80%",
+		margin: "0 2rem",
 	},
 }));
 
 const EditProfile = () => {
 	const classes = useStyles();
 	const history = useHistory();
-	const [open, setOpen] = React.useState(true);
+	const [open, setOpen] = useState(true);
+	const [data, setData] = useState({});
+
+	const handleChange = (e) => {
+		setData({ ...data, [e.target.name]: e.target.value });
+	};
 
 	const handleClose = () => {
 		setOpen(false);
 		history.push("/");
 	};
+
+	const handleSubmit = async () => {
+		setOpen(false);
+		history.push("/");
+		await axios.patch("/api/users/me", data);
+	};
 	return (
 		<WithBackground>
 			<Dialog open={open} fullWidth maxWidth="md">
 				<Paper className={classes.container}>
+					<Box className={classes.nameContainer}>
+						<TextField
+							name="name"
+							label="Name"
+							variant="outlined"
+							onChange={(e) => handleChange(e)}
+							className={classes.text}
+						/>
+						<TextField
+							name="title"
+							label="Job Title"
+							variant="outlined"
+							onChange={(e) => handleChange(e)}
+							className={classes.text}
+						/>
+					</Box>
 					<UploadAvatar />
+					<Button
+						onClick={(e) => handleSubmit(e)}
+						className={classes.submitBtn}>
+						Submit
+					</Button>
 					<Button
 						onClick={handleClose}
 						color="primary"
