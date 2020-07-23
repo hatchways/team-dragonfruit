@@ -41,7 +41,7 @@ const matchReviewer = async (snippet_id) => {
 			reviewers.splice(index, 1);
 
 			// check if there is any reviewers left. If not, wait-list the snippet
-			if (reviewer.length === 0) {
+			if (reviewers.length === 0) {
 				snippet.status = "waitlisted";
 				await snippet.save();
 				done = true;
@@ -54,8 +54,8 @@ const matchReviewer = async (snippet_id) => {
 			// request the reviewer
 			console.log("request to: ", reviewer);
 			done = true;
+			return reviewer;
 		}
-		return reviewer;
 	}
 };
 
