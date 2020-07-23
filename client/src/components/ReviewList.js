@@ -1,19 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
-
-  Typography,
-  Container,
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-
+	Typography,
+	Container,
+	Accordion,
+	AccordionDetails,
+	AccordionSummary,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-
-import UserService from "../services/UserService";
 
 import Review from "./Review";
 import Loading from "./Loading";
@@ -98,11 +94,10 @@ const ReviewList = ({ title }) => {
 			setRequestedReviews(response.data);
 		}
 		getReceived();
+		getRequested();
 	}, []);
 
-
 	if (!requestedReviews || !receivedReviews) return <Loading />;
-
 
 	return (
 		<Container className={classes.root}>
@@ -122,9 +117,9 @@ const ReviewList = ({ title }) => {
 				</AccordionSummary>
 				<AccordionDetails>
 					<div className={classes.list}>
-						{/* {requestedReviews.map((review) => (
+						{requestedReviews.map((review) => (
 							<Review review={review} key={review._id} />
-						))} */}
+						))}
 					</div>
 				</AccordionDetails>
 			</Accordion>
@@ -141,9 +136,9 @@ const ReviewList = ({ title }) => {
 				</AccordionSummary>
 				<AccordionDetails>
 					<div className={classes.list}>
-						{/* {receivedReviews.map((review) => (
-              <Review review={review} key={review._id} />
-            ))} */}
+						{receivedReviews.map((review) => (
+							<Review review={review} key={review._id} />
+						))}
 					</div>
 				</AccordionDetails>
 			</Accordion>

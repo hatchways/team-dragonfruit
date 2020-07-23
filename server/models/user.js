@@ -81,11 +81,12 @@ userSchema.methods.toJSON = function () {
 	const userObject = this.toObject();
 	delete userObject.password;
 	delete userObject.avatar;
-	let expObj = [...userObject.experience.entries()].reduce(
-		(expObj, [key, value]) => ((expObj[key] = value), expObj),
-		{},
-	);
-	userObject.experience = expObj;
+	// let expObj = [...userObject.experience.entries()].reduce(
+	// 	(expObj, [key, value]) => ((expObj[key] = value), expObj),
+	// 	{},
+	// );
+
+	// userObject.experience = expObj;
 	console.log(userObject.experience);
 
 	return userObject;

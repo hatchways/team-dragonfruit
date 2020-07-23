@@ -12,6 +12,7 @@ import {
 import Rating from "@material-ui/lab/Rating";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
+import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 
 import img1 from "../images/avatar1.png";
 import img2 from "../images/avatar2.png";
@@ -32,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
 		margin: "2rem auto",
 		paddingBottom: "1rem",
 	},
-
 
 	header: {
 		display: "flex",
@@ -137,6 +137,9 @@ const useStyles = makeStyles((theme) => ({
 		margin: "1.5rem auto",
 		color: theme.palette.primary.main,
 		textAlign: "center",
+		fontWeight: "bold",
+		// display: "flex",
+		// alignItems: "center",
 	},
 	link: {
 		textDecoration: "none",
@@ -150,7 +153,7 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
-		margin: "2rem 2rem",
+		margin: "1rem 2rem",
 	},
 }));
 
@@ -313,8 +316,11 @@ const ReviewDetails = () => {
 				<Divider />
 				{selectedReview.comments ? (
 					<Box component="div">
-						<Typography variant="h4" className={classes.commentComplete}>
-							Your review is sent
+						<Typography variant="h6" className={classes.commentComplete}>
+							<AssignmentTurnedInIcon
+								style={{ color: "turquoise", marginBottom: "-4px" }}
+							/>
+							Your review is submitted
 						</Typography>
 						<Container className={classes.codeContainer}>
 							<CodeReader
