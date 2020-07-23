@@ -12,25 +12,32 @@ import Checkout from "./pages/Checkout";
 import PrivateRoute from "./hocs/PrivateRoute";
 import PublicRoute from "./hocs/PublicRoute";
 import AuthProvider from "./context/AuthContext";
+import NotificationProvider from "./context/NotificationContext";
 import OnboardingPage from "./pages/OnboardingPage";
 import "./App.css";
 
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
-      <AuthProvider>
-        <BrowserRouter>
-          <Switch>
-            <PublicRoute path='/signup' component={Signup} />
-            <PublicRoute path='/login' component={Login} />
-            <PrivateRoute path='/' exact component={Profile} />
-            <PrivateRoute path='/balance' component={Balance} />
-            <PrivateRoute path='/checkout' component={Checkout} />
-            <Route path='/reviews' exact component={Reviews} />
-            <PrivateRoute path='/onboarding' exact component={OnboardingPage} />
-          </Switch>
-        </BrowserRouter>
-      </AuthProvider>
+      <NotificationProvider>
+        <AuthProvider>
+          <BrowserRouter>
+            <Switch>
+              <PublicRoute path='/signup' component={Signup} />
+              <PublicRoute path='/login' component={Login} />
+              <PrivateRoute path='/' exact component={Profile} />
+              <PrivateRoute path='/balance' component={Balance} />
+              <PrivateRoute path='/checkout' component={Checkout} />
+              <PrivateRoute path='/reviews' exact component={Reviews} />
+              <PrivateRoute
+                path='/onboarding'
+                exact
+                component={OnboardingPage}
+              />
+            </Switch>
+          </BrowserRouter>
+        </AuthProvider>
+      </NotificationProvider>
     </MuiThemeProvider>
   );
 }

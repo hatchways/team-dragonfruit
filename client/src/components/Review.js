@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { useHistory } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -8,16 +7,12 @@ import {
   FormControlLabel,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import { AuthContext } from "../context/AuthContext";
+import { NotificationContext } from "../context/NotificationContext";
 import UserService from "../services/UserService";
 import moment from "moment";
 import StyledRadio from "../utils/StyledRadio";
-
-import io from "socket.io-client";
-
-let socket = io.connect("http://localhost:3001");
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -62,35 +57,27 @@ const Review = ({ review }) => {
   const classes = useStyles();
 
   const { setSelectedReview, user } = useContext(AuthContext);
+  const { setMsg } = useContext(NotificationContext);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const history = useHistory();
 
   // handle Radio Button
   const handleChange = (event) => {
     const { value } = event.target;
     if (value === "accept") {
       UserService.acceptReview(review._id);
-      // socket.emit("messages", "accept to review");
-      socket.emit("messages", {
-        user: user._id,
-        event: "accept to review",
+      setMsg({
+        action: "accept to review",
         snippet: review._id,
+        user: review.author._id,
       });
-      setTimeout(() => {
-        history.go();
-      }, 1000);
     } else if (value === "decline") {
       UserService.declineReview(review._id);
-      socket.emit("messages", {
-        user: user._id,
-        event: "decline to review",
+      setMsg({
+        action: "decline a review",
         snippet: review._id,
+        user: review.author._id,
       });
-      setTimeout(() => {
-        history.go();
-      }, 1000);
     }
   };
 

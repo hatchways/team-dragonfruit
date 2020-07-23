@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import Badge from "@material-ui/core/Badge";
@@ -14,11 +14,7 @@ import ImageIcon from "@material-ui/icons/Image";
 import WorkIcon from "@material-ui/icons/Work";
 import BeachAccessIcon from "@material-ui/icons/BeachAccess";
 
-// import io from "socket.io-client";
-
-// const socket = io.connect("http://localhost:3001");
-
-let socket;
+import { NotificationContext } from "../context/NotificationContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,24 +41,9 @@ const useStyles = makeStyles((theme) => ({
 export default function BadgeOverlap() {
   const classes = useStyles();
 
+  const { notificationMsg } = useContext(NotificationContext);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
-
-  // useEffect(() => {
-  //   socket = io("http://localhost:3001");
-
-  //   console.log(socket);
-
-  //   const user = localStorage.getItem("user");
-  //   const currentUser = JSON.parse(user);
-
-  //   socket.emit("currentUser", currentUser);
-  //   // socket.emit("messages", "Hi there");
-
-  //   return () => {
-  //     socket.emit("disconnect");
-  //     socket.off();
-  //   };
-  // });
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -74,6 +55,8 @@ export default function BadgeOverlap() {
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
+
+  console.log("ABC", notificationMsg);
 
   return (
     <div className={classes.root}>

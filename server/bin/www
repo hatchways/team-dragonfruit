@@ -10,7 +10,7 @@ require("dotenv").config();
 var app = require("../app");
 var http = require("http");
 require("../db/mongoose");
-const { event } = require("../socket/notification");
+const { init } = require("../socket");
 
 /**
  * Get port from environment and store in Express.
@@ -25,26 +25,8 @@ app.set("port", port);
 
 var server = http.createServer(app);
 
-// Socket
-var io = require("socket.io")(server);
-
-io.on("connection", (socket) => {
-  console.log("Connected: ", socket.id);
-
-  let map = new Map();
-
-  socket.on("currentUser", (currentUser) => {
-    map.set(currentUser, socket.id);
-    console.log(map.get(currentUser));
-  });
-
-  socket.on("messages", ({ user, event, snippet }) => {
-    console.log(`Hello ${user} and ${event} with ${snippet}`);
-    // event({ user, snippet, event });
-  });
-
-  socket.on("disconnect", () => console.log("User disconnected"));
-});
+//socket
+init(server);
 
 /**
  * Listen on provided port, on all network interfaces.

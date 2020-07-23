@@ -17,6 +17,7 @@ import img1 from "../images/avatar1.png";
 import img2 from "../images/avatar2.png";
 
 import { AuthContext } from "../context/AuthContext";
+import { NotificationContext } from "../context/NotificationContext";
 
 import CodeReader from "../utils/CodeReader";
 import UserService from "../services/UserService";
@@ -151,8 +152,9 @@ const ReviewDetails = () => {
   const classes = useStyles();
 
   const { selectedReview, user } = useContext(AuthContext);
+  const { setMsg } = useContext(NotificationContext);
 
-  const history = useHistory();
+  // const history = useHistory();
 
   const [rating, setRating] = useState(0);
   const [code, setCode] = useState("");
@@ -163,6 +165,11 @@ const ReviewDetails = () => {
     e.preventDefault();
     UserService.rating(selectedReview._id, rating);
     setRating(rating);
+    setMsg({
+      action: "get rating for review",
+      user: selectedReview.author._id,
+      snippet: selectedReview._id,
+    });
     setMessage(`You gave ${rating} star rating for this review. Thank you`);
     setTimeout(() => {
       setMessage("");
@@ -173,10 +180,16 @@ const ReviewDetails = () => {
   const handleCode = (comments) => {
     setCode(comments);
   };
-  const handleSendCode = () => {
+  const handleSendCode = (e) => {
+    e.preventDefault();
     UserService.sendComments(selectedReview._id, code);
+    setMsg({
+      action: "get a review",
+      user: selectedReview.author._id,
+      snippet: selectedReview._id,
+    });
     setMessage(`You submitted your review`);
-    history.go();
+    // history.go();
     setTimeout(() => {
       setMessage("");
     }, 6000);

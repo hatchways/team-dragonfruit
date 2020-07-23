@@ -1,12 +1,34 @@
-// const server = require("./bin/www");
+const init = (server) => {
+  let io = require("socket.io")(server);
+  // var cookie = require("cookies");
 
-// // Socket
-// var io = require("socket.io")(server);
+  io.on("connection", (socket) => {
+    console.log("Connected: ", socket.id);
 
-// io.on("connection", (client) => {
-//   console.log("Hello");
+    socket.on("notify", (msg) => {
+      console.log(msg.action);
+    });
 
-//   client.on("join", (data) => {
-//     console.log(data);
-//   });
-// });
+    // let map = new Map();
+    // socket.on("currentUser", (currentUser) => {
+    //   map.set(socket.id, currentUser._id);
+    //   console.log(map.get(socket.id));
+    // });
+
+    socket.on("notify", (msg) => {
+      const notification = {
+        user: msg.user,
+        snippet: msg.snippet,
+        event: msg.action,
+      };
+      // console.log(notification);
+      socket.emit("notification", notification);
+    });
+
+    socket.on("disconnect", () => console.log("User disconnected"));
+  });
+};
+
+const message = () => {};
+
+module.exports = { init };
