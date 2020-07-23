@@ -251,7 +251,7 @@ const ReviewDetails = () => {
 				<Divider />
 
 				<Container className={classes.codeContainer}>
-					{/* <CodeReader code={selectedReview.code} className={classes.code} /> */}
+					<CodeReader code={selectedReview.code} className={classes.code} />
 				</Container>
 
 				<Container>
@@ -310,7 +310,7 @@ const ReviewDetails = () => {
 				<Divider />
 
 				<Container className={classes.codeContainer}>
-					{/* <CodeReader code={selectedReview.code} className={classes.code} /> */}
+					<CodeReader code={selectedReview.code} className={classes.code} />
 				</Container>
 
 				<Divider />
