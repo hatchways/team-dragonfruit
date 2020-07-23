@@ -12,16 +12,19 @@ const matchReviewer = async (snippet_id) => {
 	const language = snippet.language;
 	const author = await snippet.populate("author").execPopulate();
 
-	// console.log("author: ", author);
-	// console.log("exp: ", author.experience);
-
-	const level = author.experience.get(language);
-	// const level = author.experience.get(`${language}`);
-	// console.log("level: ", level);
+	const level = author.author.experience.get(language);
 
 	let reviewers = await User.find({
 		["experience." + language]: { $gte: level },
 	});
+
+	// remove author from reviewers array
+	// reviewers = reviewers.filter((el) => el._id != author.author._id);
+
+	//****  WHY doesn't this work?!
+	const index = reviewers.findIndex((el) => el._id === author.author._id);
+	console.log("index: ", index);
+	reviewers.splice(index, 1);
 
 	console.log("Potential reviewers: ", reviewers);
 
@@ -49,8 +52,8 @@ const matchReviewer = async (snippet_id) => {
 			// request the reviewer
 			console.log("request to: ", reviewer);
 			done = true;
-			return reviewer;
 		}
+		return reviewer;
 	}
 };
 

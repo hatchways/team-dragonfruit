@@ -28,25 +28,23 @@ router.post("/upload", auth, balance, async (req, res) => {
 			error: "Please specify your level in this language.",
 		});
 	} else {
-	try {
-		
-		await snippet.save();
-		req.user.balance -= 1;
-		await req.user.save();
+		try {
+			await snippet.save();
+			req.user.balance -= 1;
+			await req.user.save();
 
-		const reviewer = await matchReviewer(snippet._id);
-		if (reviewer) {
-			snippet.reviewer = reviewer._id;
-			snippet.status = "requested";
-			snippet.date_requested = Date.now();
+			const reviewer = await matchReviewer(snippet._id);
+			if (reviewer) {
+				snippet.reviewer = reviewer._id;
+				snippet.status = "requested";
+				snippet.date_requested = Date.now();
+			}
+
+			res.status(201).send(snippet);
+		} catch (e) {
+			res.status(400).send(e);
 		}
-
-		
-		res.status(201).send(snippet);
-	} catch (e) {
-		res.status(400).send(e);
 	}
-	// }
 });
 
 /////// Retrieve code route handler ///////
