@@ -19,9 +19,21 @@ const useStyles = makeStyles((theme) => ({
 	container: {
 		display: "flex",
 		marginLeft: "-80px",
+		width: "20rem",
 	},
 	paper: {
 		margin: theme.spacing(1),
+		maxHeight: "40vh",
+		width: "20rem",
+		overflow: "scroll",
+
+		"&::-webkit-scrollbar": {
+			width: "5px",
+		},
+		"&::-webkit-scrollbar-thumb": {
+			borderRadius: "6px",
+			border: "2px solid #43DDC1",
+		},
 	},
 	shape: {
 		backgroundColor: theme.palette.secondary.main,
@@ -43,8 +55,13 @@ const test = {
 	new: [
 		{ event: "Some New Notification", status: "new" },
 		{ event: "Some New Notification", status: "new" },
+		{ event: "Some New Notification", status: "new" },
+		{ event: "Some New Notification", status: "new" },
 	],
 	seen: [
+		{ event: "Some Seen Notification", status: "seen" },
+		{ event: "Some Seen Notification", status: "seen" },
+		{ event: "Some Seen Notification", status: "seen" },
 		{ event: "Some Seen Notification", status: "seen" },
 		{ event: "Some Seen Notification", status: "seen" },
 	],
