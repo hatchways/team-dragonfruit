@@ -90,7 +90,6 @@ userSchema.methods.toJSON = function () {
 		(expObj, [key, value]) => ((expObj[key] = value), expObj),
 		{},
 	);
-
 	userObject.experience = expObj;
 	console.log(userObject.experience);
 

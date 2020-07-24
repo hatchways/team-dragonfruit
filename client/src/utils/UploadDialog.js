@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UploadDialog() {
+	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 	const [errorData, setErrorData] = useState({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -70,8 +71,6 @@ export default function UploadDialog() {
 		language: "",
 		code: "",
 	});
-
-	const classes = useStyles();
 
 	const handleChange = (e) => {
 		setData({ ...data, [e.target.name]: e.target.value });
@@ -190,9 +189,7 @@ export default function UploadDialog() {
 					)}
 
 					<div className={classes.btnContainer}>
-						<Button
-							onClick={(e) => handleSubmit(e)}
-							className={classes.submitBtn}>
+						<Button onClick={(e) => handleSubmit(e)} className={classes.submitBtn}>
 							Submit
 						</Button>
 					</div>

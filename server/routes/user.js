@@ -69,7 +69,7 @@ router.patch("/me", auth, async (req, res) => {
 // get balance
 router.get("/balance", auth, (req, res) => {
 	const user = req.user;
-	res.status(200).send(user);
+	return res.status(200).send(user);
 });
 
 // add credit to top-up
@@ -160,7 +160,6 @@ router.post(
 	auth,
 	upload.single("avatar"),
 	async (req, res) => {
-		console.log("req: ", req.file);
 		const buffer = await sharp(req.file.buffer)
 			.resize({ width: 300, height: 300 })
 			.png()
@@ -175,7 +174,7 @@ router.post(
 );
 
 /////// Retrieve user profile picture route handler ///////
-router.get("/avatar/:id", auth, async (req, res) => {
+router.get("/avatar/:id", async (req, res) => {
 	try {
 		const user = await User.findById(req.params.id);
 
