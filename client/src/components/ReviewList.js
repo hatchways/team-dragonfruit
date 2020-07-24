@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {
-  Typography,
-  Container,
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
+	Typography,
+	Container,
+	Accordion,
+	AccordionDetails,
+	AccordionSummary,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -16,30 +16,30 @@ import Review from "./Review";
 import Loading from "./Loading";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    background: "#ffffff",
-    paddingTop: "3rem",
-    height: "auto",
-    minHeight: "85vh",
-  },
-  title: {
-    fontSize: "1.5rem",
-    fontWeight: "bold",
-    marginBottom: "1rem",
-  },
-  total: {
-    color: theme.palette.primary.main,
-  },
-  heading: {
-    fontSize: "1rem",
-    fontWeight: "bold",
-    color: theme.palette.primary.main,
-  },
-  list: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-  },
+	root: {
+		background: "#ffffff",
+		paddingTop: "3rem",
+		height: "auto",
+		minHeight: "85vh",
+	},
+	title: {
+		fontSize: "1.5rem",
+		fontWeight: "bold",
+		marginBottom: "1rem",
+	},
+	total: {
+		color: theme.palette.primary.main,
+	},
+	heading: {
+		fontSize: "1rem",
+		fontWeight: "bold",
+		color: theme.palette.primary.main,
+	},
+	list: {
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "center",
+	},
 }));
 
 const ReviewList = ({ title }) => {
@@ -54,16 +54,15 @@ const ReviewList = ({ title }) => {
 	const receivedReviewNum =
 		receivedReviews !== null ? receivedReviews.length : 0;
 
-  const [requestedReviews, setRequestedReviews] = useState([]);
-  const [receivedReviews, setReceivedReviews] = useState([]);
-
 	if (!requestedReviews || !receivedReviews) return <Loading />;
 
-  useEffect(() => {
-    UserService.requestedReviews().then((data) => setRequestedReviews(data));
-    UserService.receivedReviews().then((data) => setReceivedReviews(data));
-  }, []);
+	// useEffect(() => {
+	// 	UserService.requestedReviews().then((data) => setRequestedReviews(data));
+	// 	UserService.receivedReviews().then((data) => setReceivedReviews(data));
+	// }, []);
 
+	return (
+		<Container>
 			<Accordion className={classes.requested}>
 				<AccordionSummary
 					expandIcon={<ExpandMoreIcon />}
@@ -75,9 +74,9 @@ const ReviewList = ({ title }) => {
 				</AccordionSummary>
 				<AccordionDetails>
 					<div className={classes.list}>
-						{requestedReviews.map((review) => (
+						{/* {requestedReviews.map((review) => (
 							<Review review={review} key={review._id} />
-						))}
+						))} */}
 					</div>
 				</AccordionDetails>
 			</Accordion>
@@ -94,9 +93,9 @@ const ReviewList = ({ title }) => {
 				</AccordionSummary>
 				<AccordionDetails>
 					<div className={classes.list}>
-						{receivedReviews.map((review) => (
+						{/* {receivedReviews.map((review) => (
 							<Review review={review} key={review._id} />
-						))}
+						))} */}
 					</div>
 				</AccordionDetails>
 			</Accordion>
