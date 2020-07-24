@@ -69,24 +69,25 @@ const BadgeOverlap = () => {
 	const classes = useStyles();
 	const [checked, setChecked] = React.useState(false);
 	const [invisible, setInvisible] = React.useState(true);
-	const [notifications, setNotifications] = React.useState(test);
+	const [notifications, setNotifications] = React.useState({
+		new: [],
+		seen: [],
+	});
 
 	useEffect(() => {
-		// async function getNotifications() {
-		// 	const response = await axios.get("/api/users/notifications");
-		// 	setNotifications(response.data);
-		// 	console.log(notifications);
-
-		// 	if (notifications.new.length !== 0) {
-		// 		// show the dot
-		// 		setInvisible(false);
-		// 	}
-		// }
-
-		// getNotifications();
-		if (notifications.new.length !== 0) {
-			setInvisible(false);
+		async function getNotifications() {
+			const response = await axios.get("/api/users/notifications");
+			if (response.data.new.length !== 0) {
+				setInvisible(false);
+			}
+			setNotifications(response.data);
+			console.log(notifications);
 		}
+
+		getNotifications();
+		// if (notifications.new.length !== 0) {
+		// 	setInvisible(false);
+		// }
 	}, []);
 
 	const handleChange = () => {

@@ -50,12 +50,13 @@ const BadgeNotif = (props) => {
 
 	return (
 		<ListItem className={classes.listItem} key={props.notification._id}>
-			<Link
+			{/* <Link
 				to={{
 					pathname: "/reviewes",
 					state: props.snippet,
 				}}
-				className={classes.link}>
+				className={classes.link}> */}
+			<Link to="/reviews" className={classes.link}>
 				<ListItemText primary={`${props.notification.event}`} />
 			</Link>
 			{status === "new" || status === "seen" ? (
