@@ -226,9 +226,7 @@ const ReviewDetails = () => {
 					{selectedReview.comments && (
 						<Box>
 							<form className={classes.ratingForm} onSubmit={handleRating}>
-								<Box className={classes.ratingTitle}>
-									Tap a star to rate review
-								</Box>
+								<Box className={classes.ratingTitle}>Tap a star to rate review</Box>
 								<Rating
 									name="rating"
 									value={rating || selectedReview.rating}
@@ -271,10 +269,7 @@ const ReviewDetails = () => {
 					)}
 					{selectedReview.comments && (
 						<Container className={classes.codeContainer}>
-							<CodeReader
-								code={selectedReview.comments}
-								className={classes.code}
-							/>
+							<CodeReader code={selectedReview.comments} className={classes.code} />
 						</Container>
 					)}
 				</Container>
@@ -323,10 +318,7 @@ const ReviewDetails = () => {
 							Your review is submitted
 						</Typography>
 						<Container className={classes.codeContainer}>
-							<CodeReader
-								code={selectedReview.comments}
-								className={classes.code}
-							/>
+							<CodeReader code={selectedReview.comments} className={classes.code} />
 						</Container>
 					</Box>
 				) : selectedReview.status === "in-review" ? (
@@ -343,9 +335,7 @@ const ReviewDetails = () => {
 									<Typography className={classes.authorName}>
 										{selectedReview.reviewer.name}
 									</Typography>
-									<Typography className={classes.position}>
-										Senior Developer
-									</Typography>
+									<Typography className={classes.position}>Senior Developer</Typography>
 								</Box>
 							</Box>
 							<Button
