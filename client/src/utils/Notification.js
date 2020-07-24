@@ -27,7 +27,7 @@ class Notification extends React.Component {
 	initSocket = () => {
 		const socket = io(socketUrl);
 		this.setState({ socket });
-		socket.on("connect", this.setState({ event: "Welcome!" }));
+		// socket.on("connect", this.setState({ event: "Welcome!" }));
 		socket.on("notification", (event) => this.setState({ event }));
 	};
 	handleClose = () => {
