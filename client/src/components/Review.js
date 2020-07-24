@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import {
 	Box,
 	Typography,
-	Popover,
 	RadioGroup,
 	FormControlLabel,
 } from "@material-ui/core";

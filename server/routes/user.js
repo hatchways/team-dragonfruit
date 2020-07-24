@@ -24,7 +24,6 @@ router.post("/signup", async (req, res) => {
 			httpOnly: true,
 			maxAge: 30 * 24 * 60 * 60 * 1000,
 		});
-
 		res.status(201).send(user);
 	} catch (e) {
 		res.status(400).send(e);

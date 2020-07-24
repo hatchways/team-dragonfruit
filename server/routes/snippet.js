@@ -22,7 +22,6 @@ router.post("/upload", auth, balance, async (req, res) => {
 		date_accepted: null,
 		date_submitted: null,
 	});
-
 	if (!req.user.experience.has(language)) {
 		res.status(403).send({
 			error: "Please specify your level in this language.",
@@ -85,7 +84,7 @@ router.get("/received", auth, async (req, res) => {
 		}
 
 		return res.status(200).json(receivedReviews);
-	} catch (error) {
+	} catch (err) {
 		console.error(err);
 		res.status(500).json({ message: err.message });
 	}

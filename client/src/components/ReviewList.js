@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
 	Typography,
@@ -9,8 +10,6 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-
-import UserService from "../services/UserService";
 
 import Review from "./Review";
 import Loading from "./Loading";
@@ -80,9 +79,22 @@ const ReviewList = ({ title }) => {
 	const receivedReviewNum =
 		receivedReviews !== null ? receivedReviews.length : 0;
 
+	// useEffect(() => {
+	// 	UserService.requestedReviews().then((data) => setRequestedReviews(data));
+	// 	UserService.receivedReviews().then((data) => setReceivedReviews(data));
+	// }, []);
+
 	useEffect(() => {
-		UserService.requestedReviews().then((data) => setRequestedReviews(data));
-		UserService.receivedReviews().then((data) => setReceivedReviews(data));
+		async function getReceived() {
+			const response = await axios.get("/api/users/received");
+			setReceivedReviews(response.data);
+		}
+		async function getRequested() {
+			const response = await axios.get("/api/users/requested");
+			setRequestedReviews(response.data);
+		}
+		getReceived();
+		getRequested();
 	}, []);
 
 	if (!requestedReviews || !receivedReviews) return <Loading />;

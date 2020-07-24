@@ -12,6 +12,7 @@ import {
 import Rating from "@material-ui/lab/Rating";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
+import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 
 import img1 from "../images/avatar1.png";
 import img2 from "../images/avatar2.png";
@@ -71,11 +72,6 @@ const useStyles = makeStyles((theme) => ({
 		boxShadow: "transparent",
 		outline: "transparent",
 		border: "transparent",
-
-		"&:hover": {
-			backgroundColor: "#43dd9a",
-			color: "#6E3ADB",
-		},
 	},
 	ratingForm: {
 		display: "flex",
@@ -141,6 +137,9 @@ const useStyles = makeStyles((theme) => ({
 		margin: "1.5rem auto",
 		color: theme.palette.primary.main,
 		textAlign: "center",
+		fontWeight: "bold",
+		// display: "flex",
+		// alignItems: "center",
 	},
 	link: {
 		textDecoration: "none",
@@ -154,7 +153,7 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
-		margin: "2rem 2rem",
+		margin: "1rem 2rem",
 	},
 }));
 
@@ -252,7 +251,7 @@ const ReviewDetails = () => {
 				<Divider />
 
 				<Container className={classes.codeContainer}>
-					{/* <CodeReader code={selectedReview.code} className={classes.code} /> */}
+					<CodeReader code={selectedReview.code} className={classes.code} />
 				</Container>
 
 				<Container>
@@ -272,10 +271,10 @@ const ReviewDetails = () => {
 					)}
 					{selectedReview.comments && (
 						<Container className={classes.codeContainer}>
-							{/* <CodeReader
+							<CodeReader
 								code={selectedReview.comments}
 								className={classes.code}
-							/> */}
+							/>
 						</Container>
 					)}
 				</Container>
@@ -311,20 +310,23 @@ const ReviewDetails = () => {
 				<Divider />
 
 				<Container className={classes.codeContainer}>
-					{/* <CodeReader code={selectedReview.code} className={classes.code} /> */}
+					<CodeReader code={selectedReview.code} className={classes.code} />
 				</Container>
 
 				<Divider />
 				{selectedReview.comments ? (
 					<Box component="div">
-						<Typography variant="h4" className={classes.commentComplete}>
-							Your review is sent
+						<Typography variant="h6" className={classes.commentComplete}>
+							<AssignmentTurnedInIcon
+								style={{ color: "turquoise", marginBottom: "-4px" }}
+							/>
+							Your review is submitted
 						</Typography>
 						<Container className={classes.codeContainer}>
-							{/* <CodeReader
+							<CodeReader
 								code={selectedReview.comments}
 								className={classes.code}
-							/> */}
+							/>
 						</Container>
 					</Box>
 				) : selectedReview.status === "in-review" ? (

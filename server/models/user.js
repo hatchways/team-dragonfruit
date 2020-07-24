@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
 	title: {
 		type: String,
 		trim: true,
+		default: "Coder",
 	},
 	email: {
 		type: String,
@@ -89,6 +90,7 @@ userSchema.methods.toJSON = function () {
 		(expObj, [key, value]) => ((expObj[key] = value), expObj),
 		{},
 	);
+
 	userObject.experience = expObj;
 	console.log(userObject.experience);
 
