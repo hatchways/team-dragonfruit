@@ -8,6 +8,7 @@ const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
 const userRouter = require("./routes/user");
 const snippetRouter = require("./routes/snippet");
+const notificationRouter = require("./routes/notification");
 
 const { json, urlencoded } = express;
 
@@ -23,6 +24,7 @@ app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 app.use("/api/users", userRouter);
 app.use("/api/users", snippetRouter);
+app.use("/api/users", notificationRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

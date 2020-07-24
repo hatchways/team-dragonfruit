@@ -155,6 +155,7 @@ export default function UploadDialog() {
 							<MenuItem value={"Java"}>Java</MenuItem>
 							<MenuItem value={"C++"}>C++</MenuItem>
 							<MenuItem value={"Python"}>Python</MenuItem>
+							<MenuItem value={"Ruby"}>Ruby</MenuItem>
 						</Select>
 
 						{errorData.language !== "" ? (
