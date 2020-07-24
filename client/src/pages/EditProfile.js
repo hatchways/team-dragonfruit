@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 
 import WithBackground from "../hocs/withBackground";
 import UploadAvatar from "../components/UploadAvatar";
+import Notification from "../utils/Notification";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -90,19 +91,15 @@ const EditProfile = () => {
 						/>
 					</Box>
 					<UploadAvatar />
-					<Button
-						onClick={(e) => handleSubmit(e)}
-						className={classes.submitBtn}>
+					<Button onClick={(e) => handleSubmit(e)} className={classes.submitBtn}>
 						Submit
 					</Button>
-					<Button
-						onClick={handleClose}
-						color="primary"
-						className={classes.closeBtn}>
+					<Button onClick={handleClose} color="primary" className={classes.closeBtn}>
 						Close
 					</Button>
 				</Paper>
 			</Dialog>
+			<Notification />
 		</WithBackground>
 	);
 };

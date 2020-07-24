@@ -1,32 +1,33 @@
-import React from 'react';
+import React from "react";
 
-import { makeStyles } from '@material-ui/core/styles';
-
-import Navbar from './Navbar';
-
-import StripeInput from '../components/StripeInput';
+import { makeStyles } from "@material-ui/core/styles";
+import Navbar from "./Navbar";
+import StripeInput from "../components/StripeInput";
+import Notification from "../utils/Notification";
 
 const useStyles = makeStyles((theme) => ({
-  checkoutContainer: {
-    display: 'flex',
-    backgroundColor: '#dee2e6',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: '95vh',
-  },
+	checkoutContainer: {
+		display: "flex",
+		backgroundColor: "#dee2e6",
+		alignItems: "center",
+		justifyContent: "center",
+		width: "100%",
+		height: "95vh",
+	},
 }));
 
 const Checkout = () => {
-  const classes = useStyles();
-  return (
-    <>
-      <Navbar />
-      <div className={classes.checkoutContainer}>
-        <StripeInput />
-      </div>
-    </>
-  );
+	const classes = useStyles();
+	return (
+		<>
+			<Navbar />
+			<div className={classes.checkoutContainer}>
+				
+					<StripeInput />
+				<Notification/>
+			</div>
+		</>
+	);
 };
 
 export default Checkout;

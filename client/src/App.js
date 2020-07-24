@@ -17,8 +17,6 @@ import OnboardingPage from "./pages/OnboardingPage";
 import EditProfile from "./pages/EditProfile.js";
 import "./App.css";
 
-import TestNotif from "./utils/TestNotif";
-
 function App() {
 	return (
 		<MuiThemeProvider theme={theme}>
@@ -33,12 +31,7 @@ function App() {
 							<PrivateRoute path="/checkout" component={Checkout} />
 							<PrivateRoute path="/reviews" exact component={Reviews} />
 							<PrivateRoute path="/edit" exact component={EditProfile} />
-							<PrivateRoute
-								path="/onboarding"
-								exact
-								component={OnboardingPage}
-							/>
-							<PublicRoute path="/test" exact component={TestNotif} />
+							<PrivateRoute path="/onboarding" exact component={OnboardingPage} />
 						</Switch>
 					</BrowserRouter>
 				</AuthProvider>

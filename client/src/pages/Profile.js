@@ -7,6 +7,7 @@ import Navbar from "./Navbar";
 import ProjectCard from "../utils/ProjectCard";
 import project1 from "../../src/images/project1.png";
 import project2 from "../../src/images/project2.png";
+import Notification from "../utils/Notification";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -120,6 +121,7 @@ export default function CenteredGrid() {
 					</Grid>
 				</Grid>
 			</div>
+			<Notification />
 		</div>
 	);
 }

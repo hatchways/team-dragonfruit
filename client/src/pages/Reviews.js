@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Navbar from "./Navbar";
 import ReviewList from "../components/ReviewList";
 import ReviewDetails from "../components/ReviewDetails";
+import Notification from "../utils/Notification";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -28,6 +29,7 @@ const Reviews = () => {
 					</Grid>
 				</Grid>
 			</div>
+			<Notification />
 		</div>
 	);
 };
