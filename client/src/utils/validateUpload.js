@@ -31,7 +31,7 @@ const validate = async (userData) => {
 		errors.title = "Please provide a title";
 	}
 	// Avoid submitting empty editor
-	if (code.length === 0) {
+	if (code === "") {
 		errors.code = "Please provide the code to be reviewed";
 	}
 

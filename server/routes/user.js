@@ -24,7 +24,6 @@ router.post("/signup", async (req, res) => {
 			httpOnly: true,
 			maxAge: 30 * 24 * 60 * 60 * 1000,
 		});
-
 		res.status(201).send(user);
 	} catch (e) {
 		res.status(400).send(e);
@@ -62,7 +61,7 @@ router.get("/me", auth, async (req, res) => {
 // get balance
 router.get("/balance", auth, (req, res) => {
 	const user = req.user;
-	res.status(200).send(user);
+	return res.status(200).send(user);
 });
 
 // add credit to top-up
@@ -125,10 +124,10 @@ router.get("/review", auth, async (req, res) => {
 /////// Update user experience route handler ///////
 router.post("/experience", auth, async (req, res) => {
 	const user = await User.findById(req.user._id);
-
-	req.body.forEach((exp) => {
-		user.experience.set(Object.keys(exp)[0], Object.values(exp)[0]);
-	});
+	console.log(req.body);
+	for (let [key, value] of Object.entries(req.body)) {
+		user.experience.set(key, value);
+	}
 
 	user.profileCompleted = true;
 	await user.save();

@@ -8,7 +8,6 @@ import ProjectCard from "../utils/ProjectCard";
 import project1 from "../../src/images/project1.png";
 import project2 from "../../src/images/project2.png";
 
-
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
@@ -43,7 +42,6 @@ export default function CenteredGrid() {
 		<div>
 			<Navbar />
 			<div className={classes.root}>
-				
 				<Grid container spacing={3}>
 					<Grid item container>
 						<Grid item xs={12} className={classes.header}>

@@ -62,16 +62,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UploadDialog() {
+	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 	const [errorData, setErrorData] = useState({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [data, setData] = useState({
 		title: "",
 		language: "",
-		code: [],
+		code: "",
 	});
 
-	const classes = useStyles();
 	const handleChange = (e) => {
 		setData({ ...data, [e.target.name]: e.target.value });
 	};
@@ -89,9 +89,6 @@ export default function UploadDialog() {
 	};
 
 	const handleSubmit = async (e) => {
-		const user = JSON.parse(localStorage.getItem("user"));
-		const experience = user.experience;
-		console.log(experience);
 		e.preventDefault();
 		setIsSubmitting(true);
 
@@ -99,7 +96,6 @@ export default function UploadDialog() {
 		setErrorData(errors);
 
 		if (Object.keys(errorData).length === 0 && isSubmitting) {
-	
 			console.log("submitting: ", data);
 			await axios.post("/api/users/upload", data);
 			setData({ language: "", title: "", code: [] });
@@ -108,7 +104,6 @@ export default function UploadDialog() {
 		}
 	};
 
-	
 	return (
 		<div>
 			<Button
@@ -160,7 +155,6 @@ export default function UploadDialog() {
 							<MenuItem value={"Java"}>Java</MenuItem>
 							<MenuItem value={"C++"}>C++</MenuItem>
 							<MenuItem value={"Python"}>Python</MenuItem>
-							<MenuItem value={"Ruby"}>Ruby</MenuItem>
 						</Select>
 
 						{errorData.language !== "" ? (
@@ -194,9 +188,7 @@ export default function UploadDialog() {
 					)}
 
 					<div className={classes.btnContainer}>
-						<Button
-							onClick={(e) => handleSubmit(e)}
-							className={classes.submitBtn}>
+						<Button onClick={(e) => handleSubmit(e)} className={classes.submitBtn}>
 							Submit
 						</Button>
 					</div>
