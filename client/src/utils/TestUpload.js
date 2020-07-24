@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -17,9 +17,15 @@ import {
 
 import PrismDraft from "./PrismDraft";
 import validate from "./validateUpload";
-import Message from "../components/Message";
 
 const useStyles = makeStyles((theme) => ({
+	container: {
+		margin: theme.spacing(2),
+		minWidth: 120,
+		display: "flex",
+		justifyContent: "space-between",
+		minHeight: "700px",
+	},
 	content: {
 		display: "flex",
 		justifyContent: "space-between",
@@ -50,18 +56,13 @@ const useStyles = makeStyles((theme) => ({
 		color: "white",
 		border: "transparent",
 		"&:hover": {
-			backgroundColor: "#6E3ADB",
-			color: "#43dd9a",
+			backgroundColor: "#43dd9a",
+			color: "#6E3ADB",
 		},
-	},
-	btnContainer: {
-		display: "flex",
-		justifyContent: "space-between",
-		width: "100%",
 	},
 }));
 
-export default function UploadDialog() {
+ class TestUpload extends React.component {
 	const [open, setOpen] = useState(false);
 	const [errorData, setErrorData] = useState({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -71,8 +72,16 @@ export default function UploadDialog() {
 		code: [],
 	});
 
-	const classes = useStyles();
-	const handleChange = (e) => {
+	 const classes = useStyles();
+	 
+	 state = {
+		 open: false,
+		 errorData: {},
+		 isSubmitting: false,
+		 data: {}
+	 };
+
+	handleChange = (e) => {
 		setData({ ...data, [e.target.name]: e.target.value });
 	};
 
@@ -89,26 +98,26 @@ export default function UploadDialog() {
 	};
 
 	const handleSubmit = async (e) => {
-		const user = JSON.parse(localStorage.getItem("user"));
-		const experience = user.experience;
-		console.log(experience);
 		e.preventDefault();
 		setIsSubmitting(true);
-
-		const errors = await validate(data);
-		setErrorData(errors);
-
-		if (Object.keys(errorData).length === 0 && isSubmitting) {
-	
-			console.log("submitting: ", data);
-			await axios.post("/api/users/upload", data);
-			setData({ language: "", title: "", code: [] });
-			setIsSubmitting(false);
-			setOpen(false);
-		}
+		setErrorData(await validate(data));
 	};
 
-	
+	useEffect(() => {
+		console.log("errorData: ", errorData);
+		if (Object.keys(errorData).length === 0 && isSubmitting) {
+			async function postCode(snippet) {
+				await axios.post("/api/users/upload", snippet);
+				console.log("from useEffect snippet: ", snippet);
+			}
+
+			postCode(data);
+			setData({ language: "", title: "", code: [] });
+			setOpen(false);
+		}
+		setIsSubmitting(false);
+	}, [errorData, isSubmitting, data, open]);
+
 	return (
 		<div>
 			<Button
@@ -124,27 +133,15 @@ export default function UploadDialog() {
 				</DialogTitle>
 
 				<DialogContent className={classes.content}>
-					<div style={{ display: "flex", flexDirection: "column" }}>
-						<TextField
-							required
-							name="title"
-							label="Title"
-							type="text"
-							variant="outlined"
-							onChange={handleChange}
-							style={{ width: "30vw", margin: "0 auto" }}
-						/>
-						{errorData.title !== "" ? (
-							<Typography
-								variant="subtitle1"
-								style={{
-									color: "red",
-									textAlign: "center",
-								}}>
-								{errorData.title}
-							</Typography>
-						) : null}
-					</div>
+					<TextField
+						name="title"
+						label="Title"
+						type="text"
+						variant="outlined"
+						onChange={handleChange}
+						style={{ width: "30vw", margin: "0 auto" }}
+					/>
+
 					<FormControl variant="outlined">
 						<InputLabel required id="select-language">
 							Language
@@ -155,7 +152,7 @@ export default function UploadDialog() {
 							value={data.language}
 							onChange={handleChange}
 							label="Language"
-							style={{ width: "17vw", margin: "0 auto" }}>
+							style={{ width: "20vw", margin: "0 auto" }}>
 							<MenuItem value={"JavaScript"}>JavaScript</MenuItem>
 							<MenuItem value={"Java"}>Java</MenuItem>
 							<MenuItem value={"C++"}>C++</MenuItem>
@@ -189,19 +186,16 @@ export default function UploadDialog() {
 				<PrismDraft language={data.language} sendCode={handleChangeCode} />
 
 				<DialogActions>
-					{errorData.balance && (
-						<Message message={errorData.balance} open={true} type="error" />
-					)}
-
-					<div className={classes.btnContainer}>
-						<Button
-							onClick={(e) => handleSubmit(e)}
-							className={classes.submitBtn}>
-							Submit
-						</Button>
-					</div>
+					<Button
+						onClick={(e) => handleSubmit(e)}
+						className={classes.submitBtn}>
+						Submit
+					</Button>
 				</DialogActions>
 			</Dialog>
 		</div>
 	);
 }
+
+
+export default TestUpload;
