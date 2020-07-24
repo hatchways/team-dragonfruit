@@ -30,6 +30,7 @@ router.post("/notifications/:notif_id", auth, async (req, res) => {
 	const notification = await Notification.findById(req.params.notif_id);
 	notification.status = req.body.status;
 	await notification.save();
+	res.send();
 });
 
 /////// For test: Store notifications in db ///////
