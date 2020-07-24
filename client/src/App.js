@@ -17,31 +17,34 @@ import OnboardingPage from "./pages/OnboardingPage";
 import EditProfile from "./pages/EditProfile.js";
 import "./App.css";
 
+import TestNotif from "./utils/TestNotif";
+
 function App() {
-  return (
-    <MuiThemeProvider theme={theme}>
-      <NotificationProvider>
-        <AuthProvider>
-          <BrowserRouter>
-            <Switch>
-              <PublicRoute path='/signup' component={Signup} />
-              <PublicRoute path='/login' component={Login} />
-              <PrivateRoute path='/' exact component={Profile} />
-              <PrivateRoute path='/balance' component={Balance} />
-              <PrivateRoute path='/checkout' component={Checkout} />
-              <PrivateRoute path='/reviews' exact component={Reviews} />
-								<PrivateRoute path="/edit" exact component={EditProfile} />
-              <PrivateRoute
-                path='/onboarding'
-                exact
-                component={OnboardingPage}
-              />
-            </Switch>
-          </BrowserRouter>
-        </AuthProvider>
-      </NotificationProvider>
-    </MuiThemeProvider>
-  );
+	return (
+		<MuiThemeProvider theme={theme}>
+			<NotificationProvider>
+				<AuthProvider>
+					<BrowserRouter>
+						<Switch>
+							<PublicRoute path="/signup" component={Signup} />
+							<PublicRoute path="/login" component={Login} />
+							<PrivateRoute path="/" exact component={Profile} />
+							<PrivateRoute path="/balance" component={Balance} />
+							<PrivateRoute path="/checkout" component={Checkout} />
+							<PrivateRoute path="/reviews" exact component={Reviews} />
+							<PrivateRoute path="/edit" exact component={EditProfile} />
+							<PrivateRoute
+								path="/onboarding"
+								exact
+								component={OnboardingPage}
+							/>
+							<PublicRoute path="/test" exact component={TestNotif} />
+						</Switch>
+					</BrowserRouter>
+				</AuthProvider>
+			</NotificationProvider>
+		</MuiThemeProvider>
+	);
 }
 
 export default App;
