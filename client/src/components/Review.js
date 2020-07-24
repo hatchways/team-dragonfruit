@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import {
 	Box,
@@ -52,14 +52,21 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Review = ({ review }) => {
-	const classes = useStyles();
+const Review = (props) => {
+	const { review } = props;
 
 	const { setSelectedReview, user } = useContext(AuthContext);
-
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
 	const history = useHistory();
+	const classes = useStyles();
+
+	useEffect(() => {
+		if (props.location.state === review._id) {
+			console.log(props.location.state);
+			setSelectedReview(review);
+		}
+	}, []);
 
 	// handle Radio Button
 	const handleChange = (event) => {
@@ -80,9 +87,6 @@ const Review = ({ review }) => {
 	// handle Dialog
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
-	};
-	const handleClose = () => {
-		setAnchorEl(null);
 	};
 
 	const open = Boolean(anchorEl);

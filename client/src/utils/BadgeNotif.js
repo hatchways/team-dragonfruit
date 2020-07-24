@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Notification = (props) => {
+const BadgeNotif = (props) => {
 	const [status, setStatus] = React.useState(props.notification.status);
 	const classes = useStyles();
 
@@ -50,7 +50,12 @@ const Notification = (props) => {
 
 	return (
 		<ListItem className={classes.listItem} key={props.notification._id}>
-			<Link to="/reviews" className={classes.link}>
+			<Link
+				to={{
+					pathname: "/reviewes",
+					state: props.snippet,
+				}}
+				className={classes.link}>
 				<ListItemText primary={`${props.notification.event}`} />
 			</Link>
 			{status === "new" || status === "seen" ? (
@@ -65,4 +70,4 @@ const Notification = (props) => {
 	);
 };
 
-export default Notification;
+export default BadgeNotif;

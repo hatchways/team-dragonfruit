@@ -9,7 +9,7 @@ import Paper from "@material-ui/core/Paper";
 import Fade from "@material-ui/core/Fade";
 import List from "@material-ui/core/List";
 
-import Notification from "./Notification";
+import BadgeNotif from "./BadgeNotif";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -53,17 +53,15 @@ const useStyles = makeStyles((theme) => ({
 
 const test = {
 	new: [
-		{ event: "Some New Notification", status: "new" },
-		{ event: "Some New Notification", status: "new" },
-		{ event: "Some New Notification", status: "new" },
-		{ event: "Some New Notification", status: "new" },
+		{ event: "Your code is reviewed", status: "new" },
+		{ event: "Your review got feedback", status: "new" },
+		{ event: "You have a new request", status: "new" },
 	],
 	seen: [
-		{ event: "Some Seen Notification", status: "seen" },
-		{ event: "Some Seen Notification", status: "seen" },
-		{ event: "Some Seen Notification", status: "seen" },
-		{ event: "Some Seen Notification", status: "seen" },
-		{ event: "Some Seen Notification", status: "seen" },
+		{ event: "Your code is reviewed", status: "seen" },
+		{ event: "Your review got feedback", status: "seen" },
+		{ event: "You have a new request", status: "seen" },
+		{ event: "You have a new request", status: "seen" },
 	],
 };
 
@@ -71,24 +69,24 @@ const BadgeOverlap = () => {
 	const classes = useStyles();
 	const [checked, setChecked] = React.useState(false);
 	const [invisible, setInvisible] = React.useState(true);
-	const [notifications, setNotifications] = React.useState({});
+	const [notifications, setNotifications] = React.useState(test);
 
 	useEffect(() => {
-		async function getNotifications() {
-			const response = await axios.get("/api/users/notifications");
-			setNotifications(response.data);
-			console.log(notifications);
+		// async function getNotifications() {
+		// 	const response = await axios.get("/api/users/notifications");
+		// 	setNotifications(response.data);
+		// 	console.log(notifications);
 
-			if (notifications.new.length !== 0) {
-				// show the dot
-				setInvisible(false);
-			}
-		}
-
-		getNotifications();
-		// if (notifications.new.length !== 0) {
-		// 	setInvisible(false);
+		// 	if (notifications.new.length !== 0) {
+		// 		// show the dot
+		// 		setInvisible(false);
+		// 	}
 		// }
+
+		// getNotifications();
+		if (notifications.new.length !== 0) {
+			setInvisible(false);
+		}
 	}, []);
 
 	const handleChange = () => {
@@ -124,11 +122,11 @@ const BadgeOverlap = () => {
 					<Paper elevation={4} className={classes.paper}>
 						<List component="nav">
 							{notifications.new.map((notif) => {
-								return <Notification notification={notif} key={notif.id} />;
+								return <BadgeNotif notification={notif} key={notif.id} />;
 							})}
 
 							{notifications.seen.map((notif) => {
-								return <Notification notification={notif} key={notif.id} />;
+								return <BadgeNotif notification={notif} key={notif.id} />;
 							})}
 						</List>
 					</Paper>
