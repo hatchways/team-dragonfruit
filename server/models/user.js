@@ -45,6 +45,9 @@ const userSchema = new mongoose.Schema({
 		type: Number,
 		default: 3,
 	},
+	avatar: {
+		type: Buffer,
+	},
 });
 
 userSchema.virtual("snippets", {
