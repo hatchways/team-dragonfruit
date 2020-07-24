@@ -15,18 +15,19 @@ const init = (server) => {
 		console.log("Connected! socket-id is: ", socket.id, "user-id is: ", userID);
 
 		//// store the user in the usersMap
-		usersMap.set(socket.id, userID);
+		usersMap.set(userID, socket.id);
 
 		socket.on("disconnect", (socket) => {
 			//// remove user from usersMap when they disconnect
-			usersMap.delete(socket.id);
-			console.log("User disconnected");
+			const userID = getByValue(usersMap, socket.id);
+			usersMap.delete(userID);
+			console.log("User with this ID is disconnected: ", userID);
 		});
 	});
 };
 
 const notify = (userID, event) => {
-	const socketID = getByValue(usersMap, userID);
+	const socketID = usersMap.get(userID);
 	io.to(socketID).emit("notification", event);
 };
 

@@ -100,10 +100,6 @@ router.patch("/accept/:review_id", auth, async (req, res) => {
 		foundSnippet.reviewer = req.user.id;
 
 		//// notification
-
-		const event = `Your ${foundSnippet.title} code is accepted to be reviewed.`;
-		notifiy(foundSnippet.author, event);
-
 		const notif = new Notification({
 			user: req.user._id,
 			snippet: req.params.review_id,
@@ -112,6 +108,9 @@ router.patch("/accept/:review_id", auth, async (req, res) => {
 
 		await foundSnippet.save();
 		await notif.save();
+
+		const event = `Your ${foundSnippet.title} code is accepted to be reviewed.`;
+		notify(foundSnippet.author, event);
 
 		return res.status(200).json(foundSnippet);
 	} catch (err) {
@@ -135,9 +134,6 @@ router.patch("/decline/:review_id", auth, async (req, res) => {
 		req.user.declined.push(req.params.review_id);
 
 		//// notification
-		const event = `Your ${foundSnippet.title} code has been declined. We'll try another reviewer.`;
-		notifiy(foundSnippet.author, event);
-
 		const notif = new Notification({
 			user: req.user._id,
 			snippet: req.params.review_id,
@@ -146,6 +142,9 @@ router.patch("/decline/:review_id", auth, async (req, res) => {
 
 		await foundSnippet.save();
 		await notif.save();
+
+		const event = `Your ${foundSnippet.title} code has been declined. We'll try another reviewer.`;
+		notify(foundSnippet.author, event);
 
 		return res.status(200).json(foundSnippet);
 	} catch (err) {
@@ -174,9 +173,6 @@ router.post("/comment/:review_id", auth, async (req, res) => {
 		reviewer.balance += 1;
 
 		//// notification
-		const event = `Your ${foundSnippet.title} code has been reviewed.`;
-		notifiy(foundSnippet.author, event);
-
 		const notif = new Notification({
 			user: req.user._id,
 			snippet: req.params.review_id,
@@ -186,6 +182,9 @@ router.post("/comment/:review_id", auth, async (req, res) => {
 		await reviewer.save();
 		await foundSnippet.save();
 		await notif.save();
+
+		const event = `Your ${foundSnippet.title} code has been reviewed.`;
+		notify(foundSnippet.author, event);
 
 		return res.status(200).json(foundSnippet);
 	} catch (err) {
@@ -208,9 +207,6 @@ router.patch("/rating/:review_id", auth, async (req, res) => {
 		foundSnippet.rating = rating;
 
 		//// notification
-		const event = `Your review on ${foundSnippet.title} has get feedback.`;
-		notifiy(foundSnippet.reviewer, event);
-
 		const notif = new Notification({
 			user: req.user._id,
 			snippet: req.params.review_id,
@@ -218,6 +214,9 @@ router.patch("/rating/:review_id", auth, async (req, res) => {
 		});
 		await foundSnippet.save();
 		await notif.save();
+
+		const event = `Your review on ${foundSnippet.title} has get feedback.`;
+		notify(foundSnippet.reviewer, event);
 
 		return res.status(200).json(foundSnippet);
 	} catch (err) {
