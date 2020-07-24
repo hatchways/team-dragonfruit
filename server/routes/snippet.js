@@ -6,6 +6,7 @@ const Snippet = require("../models/snippet");
 const User = require("../models/user");
 const matchReviewer = require("../utils/match");
 const Notification = require("../models/notification");
+const notify = require("../socket");
 
 const router = express.Router();
 
@@ -48,100 +49,109 @@ router.get("/snippet", auth, async (req, res) => {
 
 // fetch requested reviews
 router.get("/requested", auth, async (req, res) => {
-  try {
-    const requestedReviews = await Snippet.find({ author: req.user._id })
-      .populate("author", ["name"])
-      .populate("reviewer", ["name"]);
+	try {
+		const requestedReviews = await Snippet.find({ author: req.user._id })
+			.populate("author", ["name"])
+			.populate("reviewer", ["name"]);
 
-    if (!requestedReviews) {
-      return res.status(404).json({ message: "No requested reviews found" });
-    }
+		if (!requestedReviews) {
+			return res.status(404).json({ message: "No requested reviews found" });
+		}
 
-    return res.status(200).json(requestedReviews);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: err.message });
-  }
+		return res.status(200).json(requestedReviews);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ message: err.message });
+	}
 });
 
 // fetch received reviews
 router.get("/received", auth, async (req, res) => {
-  try {
-    const receivedReviews = await Snippet.find({
-      reviewer: req.user._id,
-    })
-      .populate("author", ["name"])
-      .populate("reviewer", ["name"]);
+	try {
+		const receivedReviews = await Snippet.find({
+			reviewer: req.user._id,
+		})
+			.populate("author", ["name"])
+			.populate("reviewer", ["name"]);
 
-    if (!receivedReviews) {
-      return res.status(404).json({ message: "No received reviews found" });
-    }
+		if (!receivedReviews) {
+			return res.status(404).json({ message: "No received reviews found" });
+		}
 
-    return res.status(200).json(receivedReviews);
-  } catch (error) {
-    console.error(err);
-    res.status(500).json({ message: err.message });
-  }
+		return res.status(200).json(receivedReviews);
+	} catch (error) {
+		console.error(err);
+		res.status(500).json({ message: err.message });
+	}
 });
 
 // accept a review
 router.patch("/accept/:review_id", auth, async (req, res) => {
-  try {
-    const foundSnippet = await Snippet.findById(req.params.review_id);
+	try {
+		const foundSnippet = await Snippet.findById(req.params.review_id);
 
-    if (!foundSnippet) {
-      return res.status(404).json({ message: "Snippet Not Found" });
-    }
+		if (!foundSnippet) {
+			return res.status(404).json({ message: "Snippet Not Found" });
+		}
 
-    // change status and date_accepted
-    foundSnippet.status = "in-review";
+		// change status and date_accepted
+		foundSnippet.status = "in-review";
 		foundSnippet.date_accepted = Date.now();
-	foundSnippet.reviewer = req.user.id;
-    // notification
-    const notif = new Notification({
-      user: req.user._id,
-      snippet: req.params.review_id,
-      event: "Your request is accepted",
-    });
+		foundSnippet.reviewer = req.user.id;
 
-    await foundSnippet.save();
-    await notif.save();
+		//// notification
 
-    return res.status(200).json(foundSnippet);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: err.message });
-  }
+		const event = `Your ${foundSnippet.title} code is accepted to be reviewed.`;
+		notifiy(foundSnippet.author, event);
+
+		const notif = new Notification({
+			user: req.user._id,
+			snippet: req.params.review_id,
+			event: "Your request is accepted",
+		});
+
+		await foundSnippet.save();
+		await notif.save();
+
+		return res.status(200).json(foundSnippet);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ message: err.message });
+	}
 });
 
 // decline a review
 router.patch("/decline/:review_id", auth, async (req, res) => {
-  try {
-    const foundSnippet = await Snippet.findById(req.params.review_id);
+	try {
+		const foundSnippet = await Snippet.findById(req.params.review_id);
 
-    if (!foundSnippet) {
-      return res.status(404).json({ message: "Snippet Not Found" });
-    }
+		if (!foundSnippet) {
+			return res.status(404).json({ message: "Snippet Not Found" });
+		}
 
-    // change status and reviewer
-    foundSnippet.status = "pending";
+		// change status and reviewer
+		foundSnippet.status = "pending";
 		foundSnippet.reviewer = null;
-	req.user.declined.push(req.params.review_id);
-    // notification
-    const notif = new Notification({
-      user: req.user._id,
-      snippet: req.params.review_id,
-      event: "Your request is declined",
-    });
+		req.user.declined.push(req.params.review_id);
 
-    await foundSnippet.save();
-    await notif.save();
+		//// notification
+		const event = `Your ${foundSnippet.title} code has been declined. We'll try another reviewer.`;
+		notifiy(foundSnippet.author, event);
 
-    return res.status(200).json(foundSnippet);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: err.message });
-  }
+		const notif = new Notification({
+			user: req.user._id,
+			snippet: req.params.review_id,
+			event: "Your request is declined",
+		});
+
+		await foundSnippet.save();
+		await notif.save();
+
+		return res.status(200).json(foundSnippet);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ message: err.message });
+	}
 });
 
 // submit a comment
@@ -151,64 +161,69 @@ router.post("/comment/:review_id", auth, async (req, res) => {
 	try {
 		const foundSnippet = await Snippet.findById(req.params.review_id);
 
-  try {
-    const foundSnippet = await Snippet.findById(req.params.review_id);
+		if (!foundSnippet) {
+			return res.status(404).json({ message: "Snippet Not Found" });
+		}
 
-    if (!foundSnippet) {
-      return res.status(404).json({ message: "Snippet Not Found" });
-    }
+		// change status, comments, data_submitted
+		foundSnippet.comments = comment;
+		foundSnippet.status = "completed";
+		foundSnippet.date_submitted = Date.now();
+		// Add credit
+		const reviewer = await User.findById(foundSnippet.reviewer);
+		reviewer.balance += 1;
 
-    // change status, comments, data_submitted
-    foundSnippet.comments = comment;
-    foundSnippet.status = "completed";
-    foundSnippet.date_submitted = Date.now();
-    // Add credit
-    const reviewer = await User.findById(foundSnippet.reviewer);
-    reviewer.balance += 1;
-    // notification
-    const notif = new Notification({
-      user: req.user._id,
-      snippet: req.params.review_id,
-      event: "You got review for your request",
-    });
+		//// notification
+		const event = `Your ${foundSnippet.title} code has been reviewed.`;
+		notifiy(foundSnippet.author, event);
 
-    await reviewer.save();
-    await foundSnippet.save();
-    await notif.save();
+		const notif = new Notification({
+			user: req.user._id,
+			snippet: req.params.review_id,
+			event: "You got review for your request",
+		});
 
-    return res.status(200).json(foundSnippet);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: err.message });
-  }
+		await reviewer.save();
+		await foundSnippet.save();
+		await notif.save();
+
+		return res.status(200).json(foundSnippet);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ message: err.message });
+	}
 });
 
 // rating feedback
 router.patch("/rating/:review_id", auth, async (req, res) => {
 	const { rating } = req.body;
 
-  try {
-    const foundSnippet = await Snippet.findById(req.params.review_id);
+	try {
+		const foundSnippet = await Snippet.findById(req.params.review_id);
 
-    if (!foundSnippet) {
-      return res.status(404).json({ message: "Snippet Not Found" });
-    }
-    // snippet
-    foundSnippet.rating = rating;
-    // notification
-    const notif = new Notification({
-      user: req.user._id,
-      snippet: req.params.review_id,
-      event: "Your review got rating",
-    });
-    await foundSnippet.save();
-    await notif.save();
+		if (!foundSnippet) {
+			return res.status(404).json({ message: "Snippet Not Found" });
+		}
+		// snippet
+		foundSnippet.rating = rating;
 
-    return res.status(200).json(foundSnippet);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: err.message });
-  }
+		//// notification
+		const event = `Your review on ${foundSnippet.title} has get feedback.`;
+		notifiy(foundSnippet.reviewer, event);
+
+		const notif = new Notification({
+			user: req.user._id,
+			snippet: req.params.review_id,
+			event: "Your review got rating",
+		});
+		await foundSnippet.save();
+		await notif.save();
+
+		return res.status(200).json(foundSnippet);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ message: err.message });
+	}
 });
 
 module.exports = router;

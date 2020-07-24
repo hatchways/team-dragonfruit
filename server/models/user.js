@@ -90,7 +90,6 @@ userSchema.methods.toJSON = function () {
 		{},
 	);
 	userObject.experience = expObj;
-	console.log(userObject.experience);
 
 	return userObject;
 };

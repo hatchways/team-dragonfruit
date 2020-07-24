@@ -19,6 +19,7 @@ class TestNotif extends React.Component {
 		socket.on("connect", () => {
 			console.log("I am connected!");
 		});
+		socket.on("notification", (event) => console.log(event));
 	};
 }
 

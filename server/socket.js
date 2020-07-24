@@ -17,23 +17,6 @@ const init = (server) => {
 		//// store the user in the usersMap
 		usersMap.set(socket.id, userID);
 
-		socket.on("notify", (msg) => {
-			console.log(msg.action);
-		});
-
-		socket.on("notify", (msg) => {
-			const notification = {
-				user: msg.user,
-				snippet: msg.snippet,
-				event: msg.action,
-			};
-			// console.log(notification);
-			socket.emit("notification", notification);
-			// io.to(socket.id).emit("notification", notification);
-		});
-
-		
-
 		socket.on("disconnect", (socket) => {
 			//// remove user from usersMap when they disconnect
 			usersMap.delete(socket.id);
@@ -42,6 +25,15 @@ const init = (server) => {
 	});
 };
 
-const message = () => {};
+const notify = (userID, event) => {
+	const socketID = getByValue(usersMap, userID);
+	io.to(socketID).emit("notification", event);
+};
 
-module.exports = { init };
+const getByValue = (map, searchValue) => {
+	for (let [key, value] of map.entries()) {
+		if (value === searchValue) return key;
+	}
+};
+
+module.exports = { init, notify };
