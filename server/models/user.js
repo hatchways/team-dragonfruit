@@ -45,6 +45,11 @@ const userSchema = new mongoose.Schema({
 		type: Number,
 		default: 3,
 	},
+	declined: [
+		{ type: mongoose.Schema.Types.ObjectId,
+			ref: "Snippet"
+		}
+		],
 	avatar: {
 		type: Buffer,
 	},
@@ -84,16 +89,18 @@ userSchema.statics.findUserByCredentials = async (email, password) => {
 	return user;
 };
 
-/////// A method for preventing uneccessary data to be sent back to client /////////
+/////// A method for preventing unnecessary data to be sent back to client /////////
 userSchema.methods.toJSON = function () {
 	const userObject = this.toObject();
 	delete userObject.password;
 	delete userObject.avatar;
-	let expObj = [...userObject.experience.entries()].reduce(
-		(expObj, [key, value]) => ((expObj[key] = value), expObj),
-		{},
-	);
-	userObject.experience = expObj;
+	if (userObject.experience) {
+		userObject.experience = [...userObject.experience.entries()].reduce(
+			(expObj, [key, value]) => ((expObj[key] = value), expObj),
+			{},
+		);
+	}
+
 
 	return userObject;
 };
