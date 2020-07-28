@@ -19,14 +19,12 @@ const useStyles = makeStyles((theme) => ({
 const Checkout = () => {
 	const classes = useStyles();
 	return (
-		<>
+		<div className={classes.checkoutContainer}>
 			<Navbar />
-			<div className={classes.checkoutContainer}>
-				
-					<StripeInput />
+				<StripeInput />
 				<Notification/>
 			</div>
-		</>
+
 	);
 };
 

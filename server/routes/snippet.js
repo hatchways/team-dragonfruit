@@ -11,6 +11,7 @@ const notify = require("../socket");
 const router = express.Router();
 
 /////// Upload code route handler ///////
+// noinspection JSUnresolvedFunction
 router.post("/upload", auth, balance, async (req, res) => {
 	const { code, title, language } = req.body;
 	const snippet = new Snippet({
@@ -30,16 +31,12 @@ router.post("/upload", auth, balance, async (req, res) => {
 		});
 	} else {
 		try {
+
 			await snippet.save();
 			req.user.balance -= 1;
 			await req.user.save();
 
-			const reviewer = await matchReviewer(snippet._id);
-			if (reviewer) {
-				snippet.reviewer = reviewer._id;
-				snippet.status = "requested";
-				snippet.date_requested = Date.now();
-			}
+			await matchReviewer(snippet._id);
 
 			res.status(201).send(snippet);
 		} catch (e) {
@@ -94,12 +91,15 @@ router.get("/received", auth, async (req, res) => {
 
 // accept a review
 router.patch("/accept/:review_id", auth, async (req, res) => {
+
 	try {
 		const foundSnippet = await Snippet.findById(req.params.review_id);
 
 		if (!foundSnippet) {
 			return res.status(404).json({ message: "Snippet Not Found" });
 		}
+
+
 
 		// change status and date_accepted
 		foundSnippet.status = "in-review";
@@ -151,12 +151,8 @@ router.patch("/decline/:review_id", auth, async (req, res) => {
 		await notif.save();
 
 		// Try to find another reviewer
-		const reviewer = await matchReviewer(req.params.review_id);
-		if (reviewer) {
-			foundSnippet.reviewer = reviewer._id;
-			foundSnippet.status = "requested";
-			foundSnippet.date_requested = Date.now();
-		}
+		await matchReviewer(req.params.review_id);
+
 		const event = `Your ${foundSnippet.title} code has been declined. We'll try another reviewer.`;
 		notify(foundSnippet.author, event);
 

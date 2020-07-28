@@ -1,10 +1,8 @@
-const express = require("express");
 const User = require("../models/user");
 const Snippet = require("../models/snippet");
 
 const randomIndexGenerator = (length) => {
-	const randomIndex = Math.floor(Math.random() * length);
-	return randomIndex;
+	return Math.floor(Math.random() * length);
 };
 
 const matchReviewer = async (snippet_id) => {
@@ -18,6 +16,7 @@ const matchReviewer = async (snippet_id) => {
 		["experience." + language]: { $gte: level },
 	});
 
+
 	// remove author from reviewers array
 	const index = reviewers.findIndex(
 		(el) => el._id.toString() === author.author._id.toString(),
@@ -27,11 +26,19 @@ const matchReviewer = async (snippet_id) => {
 
 	console.log("Potential reviewers: ", reviewers);
 
-	let done = false;
+	// return if there is no reviewers for now
+	if (reviewers.length === 0) {
+		snippet.status = "waitlisted";
+		await snippet.save();
+		return;
+	}
+
 	let reviewer = reviewers[randomIndexGenerator(reviewers.length)];
+	let done = false;
 
 	while (done === false) {
-		if (reviewer.declined.indexOf(snippet_id) != -1) {
+
+		if (reviewer.declined.indexOf(snippet_id) !== -1) {
 			console.log("Declined by: ", reviewer);
 
 			// remove that person from the array
@@ -47,14 +54,19 @@ const matchReviewer = async (snippet_id) => {
 				done = true;
 				return;
 			} else {
+
 				// try another match
 				reviewer = reviewers[randomIndexGenerator(reviewers.length)];
 			}
-		} else {
+		}
+		else {
 			// request the reviewer
 			console.log("request to: ", reviewer);
 			done = true;
-			return reviewer;
+			snippet.reviewer = reviewer._id;
+			snippet.status = "requested";
+			snippet.date_requested = Date.now();
+			await snippet.save();
 		}
 	}
 };
