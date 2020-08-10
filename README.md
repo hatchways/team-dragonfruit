@@ -16,12 +16,12 @@
 This is a web application that enables users to upload their code snippets and have them reviewed by other developers.
 
 ## Tech Stack
-##### MERN: MongoDB, Express, ReactJS, NodeJS
-##### Material-UI
-##### Mongoose
-##### JSON Web Token
-##### Socket.io
-##### Stripe
+* **MERN: MongoDB, Express, ReactJS, NodeJS**
+* **Material-UI**
+* **Mongoose**
+* **JSON Web Token**
+* **Socket.io**
+* **Stripe**
 
 ## Work flow
 * Each user must specify their level of knowledge in at least one programming language, and they can only upload snippets in that language.
@@ -42,7 +42,7 @@ This is a web application that enables users to upload their code snippets and h
 * The matched reviewer is requested to review a code snippet, and they have the chance to accept or decline the request.
 
 ![Image](https://github.com/hatchways/team-dragonfruit/blob/dev/assets/screenshots/reviewes.png "Reviews Page")
-
+ 
 * Once accpeted, the reviewer can comment on the code snippet and submit it for the author to view.
 
 ## Getting started
