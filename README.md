@@ -1,4 +1,16 @@
-# EXPRESS-STARTER
+# Mentorshare App
+
+## About
+This is a web application that enables users to upload their code snippets and have them reviewed by other developers.
+
+## Work flow
+* Each user must specify their level of knowledge in at least one programming language, and they can only upload snippets in that language.
+* Users need to pay for their code to be reviewed and each review costs one credit. 
+* Users can increase their balance through online payment, handled by `Stripe`.
+* Reviewers receive credit for reviewing.
+* Code snippets are matched with reviewers automatically, based on knowledge level of the author and a potential reviewer which is equal or greater.
+* The matched reviewer is requested to review a code snippet, and they have the chance to accept or decline the request.
+* Once accpeted, the reviewer can comment on the code snippet and submit it for the author to view.
 
 ## Environment variables
 
