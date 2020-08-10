@@ -1,5 +1,13 @@
 # Mentorshare App
 
+## Table of Contents
+[About](#about)
+
+[Tech Stack](#tech-stack)
+
+
+
+
 ## About
 This is a web application that enables users to upload their code snippets and have them reviewed by other developers.
 
@@ -33,12 +41,40 @@ This is a web application that enables users to upload their code snippets and h
 
 * Once accpeted, the reviewer can comment on the code snippet and submit it for the author to view.
 
-## Environment variables
+## Getting started
+**1.** In order to run this app, you need to have `node.js` installed.
 
-In order to run the server, you need to create `.env.local` file in `/server` with the following content:
+**2.** `git clone git@github.com:hatchways/team-dragonfruit.git`
+
+**3.** Install server-side dependencies and start running:
+  ```
+  cd team-dragonfruit/server
+  ```
+  ```
+  npm install
+  ```
+  ```
+  npm run dev
+  ```
+   ##### Environment variables
+
+   In order to run the server, you need to create `.env.local` file in `/server` with the following content:
 
 ```
 MONGODB_URL=mongodb+srv://<USERNAME>:<PASSWORD>@cluster0-ttgy0.mongodb.net/<DB_NAME>?retryWrites=true&w=majority
 JWT_SECRET=<JWT_SECRET>
 STRIPE_SECRET=<STRIPE_SECRET>
 ```
+**4.** Install client-side dependencies and start running:
+  ```
+  cd team-dragonfruit/client
+  ```
+  ```
+  npm install
+  ```
+  ```
+  npm run start
+  ```
+  
+  
+
