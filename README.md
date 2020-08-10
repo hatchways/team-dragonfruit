@@ -1,9 +1,13 @@
 # Mentorshare App
 
 ## Table of Contents
-[About](#about)
+* [About](#about)
 
-[Tech Stack](#tech-stack)
+* [Tech Stack](#tech-stack)
+
+* [Work flow](#work-flow)
+
+* [Getting started](#getting-started)
 
 
 
